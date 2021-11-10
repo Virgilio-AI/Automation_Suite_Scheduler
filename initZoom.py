@@ -7,12 +7,10 @@
 # contact: virgiliomurilloochoa1@gmail.com
 
 import pyautogui as pg
-#import subproces
 import pandas as pd
 from datetime import datetime
 import os
 import time as t
-import sys
 import traceback
 
 cancelButton='img_initZoom/cancelButton.png'
@@ -26,13 +24,6 @@ joinFromBrowserButton='img_initZoom/joinFromBrowserButton.png'
 tabBrowserCloseButton='img_initZoom/tabBrowserCloseButton.png'
 
 test='img_initZoom/test.png'
-# browser configurations
-link = sys.argv[0]
-link = 'https://up-edu-mx.zoom.us/j/95958659368?pwd=YkFZNFFOYVdLeFRtdjhmcy8yUU1Ldz09'
-defaultBrowser='brave'
-openTerminal = 'st -e sh -c '
-bashCommands = defaultBrowser + " '" + link + "'"
-openExplorer = bashCommands + ' &'
 
 
 
@@ -80,8 +71,9 @@ def clickUntilFound(timeLimit,img):
 def closeAllBrowserTabs(time):
 	counter=0
 	while 1:
-		counter+=0.2
-		if counter == time:
+		counter+=0.5
+		print(int(counter))
+		if int(counter) == time:
 			return
 		try:
 			x,y=pg.locateCenterOnScreen(tabBrowserCloseButton,confidence=0.9)
@@ -93,19 +85,42 @@ def closeAllBrowserTabs(time):
 			t.sleep(0.2)
 			pass
 
+def moveToMonitorOnLeft():
+	pg.keyDown('win')
+	pg.keyDown('shift')
+	pg.keyDown('<')
+	pg.keyUp('<')
+	pg.keyUp('win')
+	pg.keyUp('shift')
 
-def initZoom():
+def moveToMonitorOnRight():
+	pg.keyDown('win')
+	pg.keyDown('shift')
+	pg.keyDown('>')
+	pg.keyUp('>')
+	pg.keyUp('win')
+	pg.keyUp('shift')
+
+
+def initZoom(link):
+	# explorer options
+	defaultBrowser='brave'
+	openTerminal = 'st -e sh -c '
+	bashCommands = defaultBrowser + " '" + link + "'"
+	openExplorer = bashCommands + " &"
+	# main program
 	os.system(openExplorer)
 	clickUntilFound(30,cancelButton)
 	clickUntilFound(5,joinFromBrowserButton)
 	if forkIfDifferent(5,signed) == 2:
 		clickUntilFound(5,userButton)
-		closeAllBrowserTabs(20)
-		os.system(openExplorer)
-		clickUntilFound(5,cancelButton)
-		clickUntilFound(5,joinFromBrowserButton)
-		clickUntilFound(5,finalJoinButton)
+		t.sleep(1)
+		closeAllBrowserTabs(5)
+		initZoom(link)
+	moveToMonitorOnRight()
+#		os.system(openExplorer)
+#		clickUntilFound(5,cancelButton)
+#		clickUntilFound(5,joinFromBrowserButton)
+#		clickUntilFound(5,finalJoinButton)
 
-initZoom()
 
-print("program finished")
