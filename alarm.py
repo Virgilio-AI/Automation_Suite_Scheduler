@@ -8,24 +8,9 @@
 import pyautogui as pg
 import os
 import time as t
+import utilities
+
 ncmpcppExists='img_alarm/ncmpcppExists.png'
-# =============
-# ==== helper functions  for playing music =====
-# =============
-def stuckUntilFound(timeLimit,img):
-	counter=0
-	while 1:
-		counter+=0.2
-		if counter == timeLimit:
-			print("not found")
-			return -1
-		try:
-			x,y=pg.locateCenterOnScreen(img,confidence=0.9)
-			print(x,y)
-			break
-		except:
-			t.sleep(0.2)
-			pass
 
 def addPlaylist():
 	pg.press('a')
@@ -64,7 +49,7 @@ def playmusic(info): # the input should be time: [time]
 	trash,time = info.split(' ') # get the second part of the string
 	openTerminal = 'st -e sh -c ' # open in a new terminal command
 	os.system(openTerminal + "'" + "ncmpcpp" +"' &") # execute command for music
-	stuckUntilFound(10,ncmpcppExists) # start the program until the image is visible
+	utilities.stuckUntilFound(10,ncmpcppExists) # start the program until the image is visible
 	clearMusic() # clear all previous music
 	addAllSongs() # add all songs to the playlist and shuffle
 	enterToPlaylist() # enter to playList

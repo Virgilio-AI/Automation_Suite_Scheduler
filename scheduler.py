@@ -59,7 +59,7 @@ def getInfoActionName():
 				return info[i],actions[i],names[i]
 		if int(curHour) == int(comHour) - 1:
 				return info[i],actions[i],names[i]
-	return "false"
+	return "false", "false" , "false"
 
 #def closeWindow():
 	# missing to finish

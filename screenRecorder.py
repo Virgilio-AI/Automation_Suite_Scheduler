@@ -13,6 +13,9 @@ import os
 import time as t
 import sys
 import traceback
+# local python files import
+import presets
+import utilities
 
 def splitStringByString(strin,delimeter):
 	resultArray=[]
@@ -46,20 +49,21 @@ def parseName(strin):
 			ans+=a
 	return ans
 
-def recordScreen(time,materia,semestre):
+def recordScreen(time,materia):
 	nameOfWindow = getNameOfWindowDisplayingTheClass()
 	dateCommand = subprocess.check_output(['date']).decode('utf-8').split(' ')
 	mes = dateCommand[1]
 	materia = parseName(materia)
-	name = materia + "_" + dateCommand[0] +"_" + dateCommand[3] +"_" + dateCommand[1] +"_" + dateCommand[7][0:len(dateCommand[7])-1]
-	parentDirectory = "/home/rockhight/Videos/clasesGrabadas/semestre"+str(semestre)+"/"+materia+"/"+mes
+	name = materia + "_" + dateCommand[0] +"_" + dateCommand[2] +"_" + dateCommand[1] +"_" + dateCommand[6][0:len(dateCommand[6])-1]
+	parentDirectory = zoomClasesDirectory + "/" + materia + "/" +mes
 	try:
 		subprocess.check_call(['mkdir', '-p', ''+parentDirectory+''])
 	except:
 		print("could not create the folder")
 
+	giveWarning(2,"started to record screen")
 	commandForScreenRecord = "ffmpeg -video_size 1366x768 -framerate 25 -f x11grab -i :0.0+1920+0 -f pulse -ac 2 -i alsa_output.pci-0000_00_1f.3.analog-stereo.monitor -t "+str(time)+" "+parentDirectory+"/" + name+".mkv"
+	giveWarning(2,"ended screen recorging")
 	os.system(commandForScreenRecord)
-	#print(commandForScreenRecord)
-
+	print(commandForScreenRecord)
 
