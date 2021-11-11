@@ -26,7 +26,7 @@ import utilities
 
 def menu():
 	print("\ninitiated cycle")
-	utilities.giveWarning(1,"initiated cicle")
+	os.system("notify-send \"initiated cicle\"")
 	# the state of the program
 	state = "\nactive: " + str(active) + \
 			"\nalarm active: " + str(alarmActive) + \
