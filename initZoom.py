@@ -15,6 +15,8 @@ import time as t
 import traceback
 # local python files imports
 import utilities
+from presets import *
+import screenRecorder
 
 cancelButton='img_initZoom/cancelButton.png'
 userButton='img_initZoom/userButton.png'
@@ -75,22 +77,39 @@ def closeAllBrowserTabs(time):
 
 
 
-def initZoom(link):
+def initZoom(link,name,actionTime):
 	# explorer options
 	defaultBrowser='brave'
 	openTerminal = 'st -e sh -c '
 	bashCommands = defaultBrowser + " '" + link + "'"
 	openExplorer = bashCommands + " &"
 	# main program
-	utilities.giveWarning(3,"zoom is about to start")
+
+	# warnings and information
+	print("enter zoom")
+	utilities.giveWarning(3,"initiating zoom meeting")
+	utilities.giveWarning(1,"name of class, " + name)
+	utilities.giveWarning(1,"zoom is about to start")
+
+	# open brave with zoom and init session
 	os.system(openExplorer)
 	utilities.clickUntilFound(30,cancelButton)
 	utilities.clickUntilFound(5,joinFromBrowserButton)
 	if forkIfDifferent(5,signed) == 2:
 		utilities.clickUntilFound(5,userButton)
 		t.sleep(1)
-		closeAllBrowserTabs(5)
-		initZoom(link)
+		closeAllBrowserTabs(2)
+		initZoom(link,name,actionTime)
+	# move window to the right
 	utilities.moveToMonitorOnRight()
+
+	# if recording is set
+	if zoomClassRecorderActive:
+		screenRecorder.recordScreen(actionTime,name)
+
+	print("enter for cicle: ")
+	t.sleep(actionTime)
+	closeAllBrowserTabs(2)
+
 
 

@@ -43,10 +43,11 @@ def getTimeLinkColumns():
 	info = zoom_csv_dt['info'].tolist()
 	action = zoom_csv_dt.action.tolist()
 	name = zoom_csv_dt.name.tolist()
-	return times ,info,action,name
+	actionTime = zoom_csv_dt['time-length'].tolist()
+	return times ,info,action,name,actionTime
 
 def getInfoActionName():
-	timeCol,info,actions,names = getTimeLinkColumns()
+	timeCol,info,actions,names,actionTimeCol = getTimeLinkColumns()
 	curHour, curMinute = getHour()
 	for i in range(0, len(timeCol)):
 		comHour,comMinute = getStringHour(timeCol[i])
@@ -56,11 +57,9 @@ def getInfoActionName():
 			print("equal")
 			if abs(int(curMinute) - int(comMinute)) < 40:
 				print("equal again: " + str(abs(int(curMinute) - int(comMinute))))
-				return info[i],actions[i],names[i]
+				return info[i],actions[i],names[i],actionTimeCol[i]
 		if int(curHour) == int(comHour) - 1:
-				return info[i],actions[i],names[i]
-	return "false", "false" , "false"
+				return info[i],actions[i],names[i],actionTimeCol[i]
+	return "false", "false" , "false","false"
 
-#def closeWindow():
-	# missing to finish
 

@@ -22,23 +22,33 @@ from presets import *
 import utilities
 # browser configurations
 
+
+
 def menu():
 	print("\ninitiated cycle")
-	print("\nactive: " + str(active) + "\nalarm active: " + str(alarmActive) + "\ntime playing  :" + str(timePlaying) + "\nzoom class record active: " + str(zoomClassRecorderActive) + "\n zoom class opener: " + str(zoomClassOpener))
-	info,action,name = scheduler.getInfoActionName()
-	print("name: " + name + "\naction: " + action +  "\ninfo: " + info)
+	utilities.giveWarning(1,"initiated cicle")
+	# the state of the program
+	state = "\nactive: " + str(active) + \
+			"\nalarm active: " + str(alarmActive) + \
+			"\ntime playing  :" + str(timePlaying) + \
+			"\nzoom class record active: " + str(zoomClassRecorderActive) +  \
+			"\n zoom class opener: " + str(zoomClassOpener)
+	# notify the state
+	os.system("notify-send \""+state+"\"")
+	print(state)
+	# get info = link,action
+	# name = name of the action
+	# action = action
+	info,action,name,actionTime = scheduler.getInfoActionName()
+	print("name: " + str(name) + "\naction: " + str(action) +  "\ninfo: " + str(info) + "\naction time: " + str(actionTime))
+	# if it is time to execute the alarm
 	if action == 'music'  and active and alarmActive:
-		alarm.playmusic(info)
+		utilities.giveWarning(1,"initiating main alarm")
+		alarm.playmusic(info,actionTime)
+	# if it is time to initiate a meeting
 	elif action == 'zoom' and active and zoomClassOpener:
-		print("enter zoom")
-		utilities.giveWarning(1,"initiating zoom meeting")
-		initZoom.initZoom(info)
-		if zoomClassRecorderActive:
-			screenRecorder.recordScreen(10000,name)
-		print("enter for cicle: ")
-		t.sleep(5400)
-		scheduler.closeWindow()
-	elif action == 'false':
+		initZoom.initZoom(info,name,actionTime)
+	elif actionTime == 'false':
 		print("pass: getInfoActionName() error")
 	t.sleep(mainCicleRepetition)
 

@@ -14,7 +14,7 @@ import time as t
 import sys
 import traceback
 # local python files import
-import presets
+from presets import *
 import utilities
 
 def splitStringByString(strin,delimeter):
@@ -61,9 +61,9 @@ def recordScreen(time,materia):
 	except:
 		print("could not create the folder")
 
-	giveWarning(2,"started to record screen")
-	commandForScreenRecord = "ffmpeg -video_size 1366x768 -framerate 25 -f x11grab -i :0.0+1920+0 -f pulse -ac 2 -i alsa_output.pci-0000_00_1f.3.analog-stereo.monitor -t "+str(time)+" "+parentDirectory+"/" + name+".mkv"
-	giveWarning(2,"ended screen recorging")
+	utilities.giveWarning(2,"started to record screen")
+	commandForScreenRecord = "ffmpeg -video_size 1366x768 -framerate 25 -f x11grab -i :0.0+1920+0 -f pulse -ac 2 -i alsa_output.pci-0000_00_1f.3.analog-stereo.monitor -t "+str(time)+" "+parentDirectory+"/" + name+".mkv &"
+	utilities.giveWarning(2,"ended screen recorging")
 	os.system(commandForScreenRecord)
 	print(commandForScreenRecord)
 

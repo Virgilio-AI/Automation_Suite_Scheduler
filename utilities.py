@@ -68,4 +68,10 @@ def giveWarning(time,message):
 		t.sleep(1)
 		counter+=1
 
-
+def closeWindow():
+	pg.keyDown('win')
+	pg.keyDown('shift')
+	pg.keyDown('c')
+	pg.keyUp('c')
+	pg.keyUp('win')
+	pg.keyUp('shift')

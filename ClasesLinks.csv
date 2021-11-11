@@ -1,29 +1,29 @@
-time,info,action,name
+time,info,action,name,time-length
 LUNES,LUNES
-1:16:00,time: 9000,music,alarm
-1:17:30,https://up-edu-mx.zoom.us/j/97544896217?pwd=b3ZaQWxqZTVjRlh2YWZiZ2NuRzd1QT09,zoom,Optimizacion y metaheuristica
+1:16:00,shuffle all,music,alarm,1800.00
+1:17:30,https://up-edu-mx.zoom.us/j/97544896217?pwd=b3ZaQWxqZTVjRlh2YWZiZ2NuRzd1QT09,zoom,Optimizacion y metaheuristica,5400.00
 
 MARTES,MARTES
-2:07:00,time: 9000,music,alarm
-2:15:00,https://up-edu-mx.zoom.us/j/92819829961?pwd=cHRzNzNrSjh4bEg3c1FIenNqWkowdz09,zoom,Micro Controladores 1
-2:17:00,https://up-edu-mx.zoom.us/j/95958659368?pwd=YkFZNFFOYVdLeFRtdjhmcy8yUU1Ldz09,zoom,Modelado de agentes y entornos virtuales
+2:07:00,shuffle all,music,alarm,1800.00
+2:15:00,https://up-edu-mx.zoom.us/j/92819829961?pwd=cHRzNzNrSjh4bEg3c1FIenNqWkowdz09,zoom,Micro Controladores 1,5400.00
+2:17:00,https://up-edu-mx.zoom.us/j/95958659368?pwd=YkFZNFFOYVdLeFRtdjhmcy8yUU1Ldz09,zoom,Modelado de agentes y entornos virtuales,5400.00
 
 MIERCOLES,MIERCOLES
-3:07:00,time: 9000,music,alarm
-3:16:00,https://up-edu-mx.zoom.us/j/97544896217?pwd=b3ZaQWxqZTVjRlh2YWZiZ2NuRzd1QT09,zoom,Optimizacion y metaheuristica
+3:07:00,shuffle all,music,alarm,1800.00
+3:17:30,https://up-edu-mx.zoom.us/j/97544896217?pwd=b3ZaQWxqZTVjRlh2YWZiZ2NuRzd1QT09,zoom,Optimizacion y metaheuristica,5400.00
 
 JUEVES,JUEVES
-4:07:00,time: 9000,music,alarm
-4:15:00,https://up-edu-mx.zoom.us/j/92819829961?pwd=cHRzNzNrSjh4bEg3c1FIenNqWkowdz09,zoom,Micro Controladores 1
-4:19:00,https://up-edu-mx.zoom.us/j/96267530050?pwd=ZzROSU1UcnVFd3lTdXIzVUlpQkdzZz09,zoom,Introduccion a las bases de datos
+4:07:00,shuffle all,music,alarm,1800.00
+4:15:00,https://up-edu-mx.zoom.us/j/92819829961?pwd=cHRzNzNrSjh4bEg3c1FIenNqWkowdz09,zoom,Micro Controladores 1,5400.00
+4:19:00,https://up-edu-mx.zoom.us/j/96267530050?pwd=ZzROSU1UcnVFd3lTdXIzVUlpQkdzZz09,zoom,Introduccion a las bases de datos,5400.00
 
 VIERNES,VIERNES
-5:07:00,time: 9000,music,alarm
-5:17:00,https://up-edu-mx.zoom.us/j/95958659368?pwd=YkFZNFFOYVdLeFRtdjhmcy8yUU1Ldz09,zoom,Modelado de agentes y entornos virtuales
+5:07:00,shuffle all,music,alarm,1800.00
+5:17:00,https://up-edu-mx.zoom.us/j/95958659368?pwd=YkFZNFFOYVdLeFRtdjhmcy8yUU1Ldz09,zoom,Modelado de agentes y entornos virtuales,5400.00
 
 SABADO,SABADO
-6:07:00,time: 9000,music,alarm
-6:23:20,https://up-edu-mx.zoom.us/j/95061191684?pwd=SGU1c0dRRnpXZTBWWlZpTXhuQzdqQT09,zoom,Mision Colibri
+6:07:00,shuffle all,music,alarm,1800.00
+6:23:20,https://up-edu-mx.zoom.us/j/95061191684?pwd=SGU1c0dRRnpXZTBWWlZpTXhuQzdqQT09,zoom,Mision Colibri,18000.00
 
 DOMINGO,DOMINGO
-7:07:00,time: 9000,music,alarm
+7:07:00,shuffle all,music,alarm,1800.00
