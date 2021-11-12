@@ -13,6 +13,7 @@ import utilities
 ncmpcppExists='img_alarm/ncmpcppExists.png'
 
 def addPlaylist():
+	t.sleep(0.01)
 	pg.press('a')
 	t.sleep(0.01)
 	pg.press("enter")
@@ -22,17 +23,19 @@ def addPlaylist():
 def addAllSongs():
 	t.sleep(0.01)
 	pg.press('2')
-	for element in range(0, 10):
+	for element in range(0, 9):
 		t.sleep(0.01)
 		pg.press('j')
 		addPlaylist()
 def clearMusic():
+	t.sleep(0.01)
 	pg.press('1')
 	t.sleep(0.01)
 	pg.press('c')
 	t.sleep(0.01)
 	pg.press('y')
 def enterToPlaylist():
+	t.sleep(0.01)
 	pg.press("1")
 	t.sleep(0.01)
 	pg.press("Z")
@@ -41,9 +44,9 @@ def enterToPlaylist():
 	t.sleep(0.01)
 	pg.press("enter")
 def maximizeVolumeNcmpcpp():
-	for it in range(1,50):
+	for it in range(1,30):
+		t.sleep(0.01)
 		pg.press("right")
-
 # =============
 # ==== main functions =====
 # =============
@@ -51,14 +54,15 @@ def maximizeVolumeNcmpcpp():
 def playmusic(info,actionTime): # the input should be time: [time]
 	openTerminal = 'st -e sh -c ' # open in a new terminal command
 	os.system(openTerminal + "'" + "ncmpcpp" +"' &") # execute command for music
-	utilities.clickUntilFound(10,ncmpcppExists) # start the program until the image is visible
-	os.system("pactl -- set-sink-volume 0 100%") # set the volume to 100%
+	utilities.waitUntilFound(10,ncmpcppExists) # start the program until the image is visible
+	os.system("pactl -- set-sink-volume 0 80%") # set the volume to 80%
 	maximizeVolumeNcmpcpp()
 	clearMusic() # clear all previous music
 	addAllSongs() # add all songs to the playlist and shuffle
 	enterToPlaylist() # enter to playList
 	pg.press('v')
 	t.sleep(int(actionTime)) # wait until the timer ends
+	t.sleep(0.01)
 	pg.press('space')
 	clearMusic() # clear all the music again
 	utilities.closeWindow()

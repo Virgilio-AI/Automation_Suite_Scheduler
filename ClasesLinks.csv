@@ -1,29 +1,41 @@
 time,info,action,name,time-length
 LUNES,LUNES
-1:16:00,shuffle all,music,alarm,1800.00
 1:17:30,https://up-edu-mx.zoom.us/j/97544896217?pwd=b3ZaQWxqZTVjRlh2YWZiZ2NuRzd1QT09,zoom,Optimizacion y metaheuristica,5400.00
+1:20:30,finish everything,alert,to close and finish everything,1.00
+1:21:00,"go to sleep, remember. your estability is more important than what you are doing",alert,the limit to go to sleep,2.00
 
 MARTES,MARTES
-2:07:00,shuffle all,music,alarm,1800.00
+2:14:30,"go to class, don't forget you cellphone",alert,,2.00
 2:15:00,https://up-edu-mx.zoom.us/j/92819829961?pwd=cHRzNzNrSjh4bEg3c1FIenNqWkowdz09,zoom,Micro Controladores 1,5400.00
 2:17:00,https://up-edu-mx.zoom.us/j/95958659368?pwd=YkFZNFFOYVdLeFRtdjhmcy8yUU1Ldz09,zoom,Modelado de agentes y entornos virtuales,5400.00
+2:20:30,finish everything,alert,to close and finish everything,1.00
+2:21:00,"go to sleep, remember. your estability is more important than what you are doing",alert,the limit to go to sleep,2.00
 
 MIERCOLES,MIERCOLES
-3:07:00,shuffle all,music,alarm,1800.00
 3:17:30,https://up-edu-mx.zoom.us/j/97544896217?pwd=b3ZaQWxqZTVjRlh2YWZiZ2NuRzd1QT09,zoom,Optimizacion y metaheuristica,5400.00
+3:20:30,finish everything,alert,to close and finish everything,1.00
+3:21:00,"go to sleep, remember. your estability is more important than what you are doing",alert,the limit to go to sleep,2.00
 
 JUEVES,JUEVES
-4:07:00,shuffle all,music,alarm,1800.00
+4:14:30,"go to class, don't forget you cellphone",alert,,2.00
 4:15:00,https://up-edu-mx.zoom.us/j/92819829961?pwd=cHRzNzNrSjh4bEg3c1FIenNqWkowdz09,zoom,Micro Controladores 1,5400.00
 4:19:00,https://up-edu-mx.zoom.us/j/96267530050?pwd=ZzROSU1UcnVFd3lTdXIzVUlpQkdzZz09,zoom,Introduccion a las bases de datos,5400.00
+4:20:30,finish everything,alert,to close and finish everything,1.00
+4:21:00,"go to sleep, remember. your estability is more important than what you are doing",alert,the limit to go to sleep,2.00
+4:23:30,finish everything,alert,to close and finish everything,1.00
 
 VIERNES,VIERNES
-5:07:00,shuffle all,music,alarm,1800.00
+5:11:30,got to the asesory,alert,go to international affairs office,5
 5:17:00,https://up-edu-mx.zoom.us/j/95958659368?pwd=YkFZNFFOYVdLeFRtdjhmcy8yUU1Ldz09,zoom,Modelado de agentes y entornos virtuales,5400.00
+5:20:30,finish everything,alert,to close and finish everything,1.00
+5:21:00,"go to sleep, remember. your estability is more important than what you are doing",alert,the limit to go to sleep,2.00
 
 SABADO,SABADO
-6:07:00,shuffle all,music,alarm,1800.00
+6:14:30,"go to class, don't forget you cellphone",alert,,2.00
 6:23:20,https://up-edu-mx.zoom.us/j/95061191684?pwd=SGU1c0dRRnpXZTBWWlZpTXhuQzdqQT09,zoom,Mision Colibri,18000.00
+6:20:30,finish everything,alert,to close and finish everything,1.00
+6:21:00,"go to sleep, remember. your estability is more important than what you are doing",alert,the limit to go to sleep,2.00
 
 DOMINGO,DOMINGO
-7:07:00,shuffle all,music,alarm,1800.00
+7:20:30,finish everything,alert,to close and finish everything,1.00
+7:21:00,"go to sleep, remember. your estability is more important than what you are doing",alert,the limit to go to sleep,2.00

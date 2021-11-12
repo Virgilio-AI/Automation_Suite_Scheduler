@@ -15,7 +15,22 @@ import os
 import time as t
 import traceback
 from gtts import gTTS
+import presets
 
+def waitUntilFound(timeLimit,img):
+	counter=0
+	while 1:
+		counter+=0.2
+		if counter == timeLimit:
+			print("not found")
+			return -1
+		try:
+			x,y=pg.locateCenterOnScreen(img,confidence=0.9)
+			print(x,y)
+			break
+		except:
+			t.sleep(0.2)
+			pass
 def clickUntilFound(timeLimit,img):
 	counter=0
 	while 1:
@@ -56,6 +71,7 @@ def forceCreateDirectory(parentDirectory): # ex: name/name2
 	subprocess.check_call(['mkdir', '-p', ''+parentDirectory+''])
 
 def giveWarning(time,message):
+	os.system("pactl set-sink-mute @DEFAULT_SINK@ false")
 	counter = 0
 	language = 'en'
 	sound = gTTS(text=message,lang=language,slow=False)
@@ -69,9 +85,59 @@ def giveWarning(time,message):
 		counter+=1
 
 def closeWindow():
+	t.sleep(0.01)
 	pg.keyDown('win')
+	t.sleep(0.01)
 	pg.keyDown('shift')
+	t.sleep(0.01)
 	pg.keyDown('c')
+	t.sleep(0.01)
 	pg.keyUp('c')
+	t.sleep(0.01)
 	pg.keyUp('win')
+	t.sleep(0.01)
 	pg.keyUp('shift')
+	t.sleep(0.01)
+
+# =============
+# ==== get the time =====
+# =============
+def getDayOfTheWeek():
+	return int(str(subprocess.check_output(['date','+%u']).decode('utf-8')))
+def getMonth():
+	return int(str(subprocess.check_output(['date','+%m']).decode('utf-8')))
+def getHour():
+	hour=int(str(subprocess.check_output(['date','+%H']).decode('utf-8')))
+	minute=int(str(subprocess.check_output(['date','+%M']).decode('utf-8')))
+	return hour,minute
+def getDayOfTheMonth():
+	return int(str(subprocess.check_output(['date','+%d']).decode('utf-8')))
+
+# %%
+# to get an hour from a string that is in the csv
+def getStringHour(strin):
+	return strin.split(':')[1],strin.split(':')[2]
+
+
+# =============
+# ==== check if avaliable =====
+# =============
+
+def checkIfActive():
+	dayOfTheWeek = getDayOfTheWeek()
+	if dayOfTheWeek == 1:
+		return presets.mondayPresets
+	if dayOfTheWeek == 2:
+		return presets.tuesdayPresets
+	if dayOfTheWeek == 3:
+		return presets.wednesdayPresets
+	if dayOfTheWeek == 4:
+		return presets.thursdayPresets
+	if dayOfTheWeek == 5:
+		return presets.fridayPresets
+	if dayOfTheWeek == 6:
+		return presets.saturdayPresets
+	if dayOfTheWeek == 7:
+		return presets.sundayPresets
+
+
