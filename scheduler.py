@@ -90,10 +90,10 @@ def getInfoActionName():
 		comHour,comMinute = utilities.getStringHour(timeCol[i])
 		print("curHour: " + str(curHour) + "curMinute " + str(curMinute) + "|")
 		print("comHour: " + str(comHour) + "comMinute: " + str(comMinute + "|"))
-		if curHour == comHour and abs(curMinute - comMinute) < presets.acceptance:
+		if (int(curHour) == int(comHour)) and (abs(int(curMinute) - int(comMinute)) < presets.acceptance):
 				print("equal " + str(abs(int(curMinute) - int(comMinute))))
 				return info[i],actions[i],names[i],actionTimeCol[i]
-		if int(curHour) == int(comHour) - 1 and (comMinute + ( 60 - curMinute) ) < presets.acceptance:
+		if (int(curHour) == int(comHour) - 1) and (int(comMinute) + ( 60 - int(curMinute)) ) < presets.acceptance:
 				return info[i],actions[i],names[i],actionTimeCol[i]
 	return "false", "false" , "false","false" # info,action,name,actionTime
 
