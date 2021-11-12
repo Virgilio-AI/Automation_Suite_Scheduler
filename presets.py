@@ -95,7 +95,7 @@ zoomClasesDirectory='/home/rockhight/Videos/clasesGrabadas/semestre5'
 
 
 circadianRithmAlarm = True
-circadianRithmAlarmTime = "01:20"
+circadianRithmAlarmTime = "06:30"
 circadianRithmAlarmAction = "music"
 circadianRithmAlarminfo = "shuffle all"
 circadianRitmActionTime = 3600 # seconds

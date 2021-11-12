@@ -70,8 +70,11 @@ def moveToMonitorOnRight():
 def forceCreateDirectory(parentDirectory): # ex: name/name2
 	subprocess.check_call(['mkdir', '-p', ''+parentDirectory+''])
 
+
 def giveWarning(time,message):
-	os.system("pactl set-sink-mute @DEFAULT_SINK@ false")
+	volumePercentage = subprocess.getoutput('pamixer --get-volume')
+	t.sleep(0.01)
+	os.system("pactl set-sink-mute @DEFAULT_SINK@ false ; pactl -- set-sink-volume 0 100%")
 	counter = 0
 	language = 'en'
 	sound = gTTS(text=message,lang=language,slow=False)
@@ -83,6 +86,8 @@ def giveWarning(time,message):
 		os.system("mpv \""+nameOfFile+"\"")
 		t.sleep(1)
 		counter+=1
+	os.system("pactl -- set-sink-volume 0 "+volumePercentage+"%") # set the volume to 80%
+	t.sleep(0.01)
 
 def closeWindow():
 	t.sleep(0.01)
@@ -141,3 +146,4 @@ def checkIfActive():
 		return presets.sundayPresets
 
 
+giveWarning(1,"hola mundo")
