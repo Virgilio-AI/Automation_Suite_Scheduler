@@ -146,4 +146,3 @@ def checkIfActive():
 		return presets.sundayPresets
 
 
-giveWarning(1,"hola mundo")
