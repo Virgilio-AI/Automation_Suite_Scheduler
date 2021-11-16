@@ -1,4 +1,3 @@
-
 # Fecha: 10/November/2021 - Wednesday
 # Autor: Virgilio Murillo Ochoa
 # personal github: Virgilio-AI
@@ -6,101 +5,91 @@
 # contact: virgiliomurilloochoa1@gmail.com
 
 import math
+import json
+import os
 
+
+# =============
+# ==== open presets.json file for current file configurations =====
+# =============
+with open('presets.json', 'r') as handle:
+	fixed_json = ''.join(line for line in handle if not line.startswith('//'))
+	presets_dt = json.loads(fixed_json)
 # =============
 # ==== main configurations =====
 # =============
-active = True
+active = presets_dt["active"]
 # how many seconds to wait before running the main cicle again, too few seconds can be very process consuming
-mainCicleRepetition = 900
+mainCicleRepetition = presets_dt["mainCicleRepetition"]
 # acceptance for meeting, minutes. leave the default to attend all meetings
 acceptance = int(math.ceil(900/60))
-
 # =============
 # ==== alarm configurations =====
 # =============
-alarmActive=True
-timePlaying = 1800 # in seconds
-
+alarmActive=presets_dt["alarmActive"]
+timePlaying = presets_dt["timePlaying"] # in seconds
 # =============
 # ==== alerts =====
 # =============
-alertActive = True
-
+alertActive = presets_dt["alertActive"]
 # =============
 # ==== configurations depending on the day of the week =====
 # =============
-mondayPresets = [ 
-		True,  # for entering zoom clases
-		True,  # for setting alarm
-		True,  # for giving alerts
-		True,  # for circadian rithm alarm
-		]
-tuesdayPresets = [ 
-		True,  # for entering zoom clases
-		True,  # for setting alarm
-		True,  # for giving alerts
-		True,  # for circadian rithm alarm
-		]
-wednesdayPresets = [ 
-		True,  # for entering zoom clases
-		True,  # for setting alarm
-		True,  # for giving alerts
-		True,  # for circadian rithm alarm
-		]
-thursdayPresets = [ 
-		True,  # for entering zoom clases
-		True,  # for setting alarm
-		True,  # for giving alerts
-		True,  # for circadian rithm alarm
-		]
-fridayPresets = [ 
-		True,  # for entering zoom clases
-		True,  # for setting alarm
-		True,  # for giving alerts
-		True,  # for circadian rithm alarm
-		]
-saturdayPresets = [ 
-		True,  # for entering zoom clases
-		True,  # for setting alarm
-		True,  # for giving alerts
-		True,  # for circadian rithm alarm
-		]
-sundayPresets = [ 
-		True,  # for entering zoom clases
-		True,  # for setting alarm
-		True,  # for giving alerts
-		True,  # for circadian rithm alarm
-		]
+mondayPresets =    presets_dt["mondayPresets"]
+tuesdayPresets =   presets_dt["tuesdayPresets"]
+wednesdayPresets = presets_dt["wednesdayPresets"]
+thursdayPresets =  presets_dt["thursdayPresets"]
+fridayPresets =    presets_dt["fridayPresets"]
+saturdayPresets =  presets_dt["saturdayPresets"]
+sundayPresets =    presets_dt["sundayPresets"]
 # =============
 # ==== recording zoom clases =====
 # =============
-zoomClassRecorderActive=True
-zoomClassOpener=True
-
-
+zoomClassRecorderActive= presets_dt["zoomClassRecorderActive"]
+zoomClassOpener= presets_dt["zoomClassOpener"]
 # =============
 # ==== recording configurations =====
 # =============
-zoomClasesDirectory='/home/rockhight/Videos/clasesGrabadas/semestre5'
-
+zoomClasesDirectory= presets_dt["zoomClasesDirectory"]
 # =============
 # ==== circadian ritm alarm clock =====
 # =============
-# note: this is configured for mexico, for different countries you may have to adapt it
-# example:
-# if you put 05:00
-# then the actual time in mexico will vary from 4:30 to 5:30
-# because the time changes one every six months
-
-
-circadianRithmAlarm = True
-circadianRithmAlarmTime = "06:30"
-circadianRithmAlarmAction = "music"
-circadianRithmAlarminfo = "shuffle all"
-circadianRitmActionTime = 3600 # seconds
-
+circadianRithmAlarm = presets_dt["circadianRithmAlarm"]
+circadianRithmAlarmTime = presets_dt["circadianRithmAlarmTime"]
+circadianRithmAlarmVolume = presets_dt["circadianRithmAlarmVolume"]
+circadianRithmAlarmAction = presets_dt["circadianRithmAlarmAction"]
+circadianRithmAlarminfo = presets_dt["circadianRithmAlarminfo"]
+circadianRitmActionTime = presets_dt["circadianRitmActionTime"]
 # don't edit this is you don't know what you are doing
 circadianRitmHour,circadianRitmMinute = int(circadianRithmAlarmTime.split(':')[0]), int(circadianRithmAlarmTime.split(':')[1])
 
 
+
+# call function to refresh all global variables
+def init():
+	with open('presets.json', 'r') as handle:
+		fixed_json = ''.join(line for line in handle if not line.startswith('//'))
+		presets_dt = json.loads(fixed_json)
+
+	active = presets_dt["active"]
+	mainCicleRepetition = presets_dt["mainCicleRepetition"]
+	acceptance = int(math.ceil(900/60))
+	alarmActive=presets_dt["alarmActive"]
+	alertActive = presets_dt["alertActive"]
+	mondayPresets =    presets_dt["mondayPresets"]
+	tuesdayPresets =   presets_dt["tuesdayPresets"]
+	wednesdayPresets = presets_dt["wednesdayPresets"]
+	thursdayPresets =  presets_dt["thursdayPresets"]
+	fridayPresets =    presets_dt["fridayPresets"]
+	saturdayPresets =  presets_dt["saturdayPresets"]
+	sundayPresets =    presets_dt["sundayPresets"]
+	zoomClassRecorderActive= presets_dt["zoomClassRecorderActive"]
+	zoomClassOpener= presets_dt["zoomClassOpener"]
+	zoomClasesDirectory= presets_dt["zoomClasesDirectory"]
+	circadianRithmAlarm = presets_dt["circadianRithmAlarm"]
+	circadianRithmAlarmTime = presets_dt["circadianRithmAlarmTime"]
+	circadianRithmAlarmVolume = presets_dt["circadianRithmAlarmVolume"]
+	circadianRithmAlarmAction = presets_dt["circadianRithmAlarmAction"]
+	circadianRithmAlarminfo = presets_dt["circadianRithmAlarminfo"]
+	circadianRitmActionTime = presets_dt["circadianRitmActionTime"]
+	circadianRitmHour,circadianRitmMinute = int(circadianRithmAlarmTime.split(':')[0]), int(circadianRithmAlarmTime.split(':')[1])

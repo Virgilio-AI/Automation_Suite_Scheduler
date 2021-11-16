@@ -37,6 +37,7 @@ def buildStateMessage():
 
 def menu():
 	print("\ninitiated cycle")
+	print("circadian alarm: " + str(circadianRitmHour) + ":" + str(circadianRitmMinute))
 	os.system("notify-send \"initiated cicle\"")
 	# the state of the program
 	state = buildStateMessage()
@@ -53,7 +54,7 @@ def menu():
 	# if it is time to execute the alarm
 	if action == 'music'  and active and alarmActive and utilities.checkIfActive()[1]:
 		utilities.giveWarning(1,"initiating main alarm")
-		alarm.playmusic(info,actionTime)
+		alarm.playmusic(info,actionTime,circadianRithmAlarmVolume)
 	# if it is time to initiate a meeting
 	elif action == 'zoom' and active and zoomClassOpener and utilities.checkIfActive()[0]:
 		initZoom.initZoom(info,name,actionTime)
@@ -70,6 +71,7 @@ if __name__ == '__main__':
 	utilities.giveWarning(1,"automation suite has started")
 	while 1:
 		try:
+			init()
 			menu()
 		except:
 			utilities.giveWarning(1,"an exception has ocured")

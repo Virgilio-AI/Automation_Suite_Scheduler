@@ -24,9 +24,10 @@ def addAllSongs():
 	t.sleep(0.01)
 	pg.press('2')
 	for element in range(0, 9):
-		t.sleep(0.01)
-		pg.press('j')
-		addPlaylist()
+		if element == 1 or element == 2 or element == 5 or  6 ==element  or element == 7 or element == 8 or element == 9:
+			t.sleep(0.01)
+			pg.press('j')
+			addPlaylist()
 def clearMusic():
 	t.sleep(0.01)
 	pg.press('1')
@@ -51,20 +52,20 @@ def maximizeVolumeNcmpcpp():
 # ==== main functions =====
 # =============
 
-def playmusic(info,actionTime): # the input should be time: [time]
+# wait the action and if non stop is set apply it
+
+def playmusic(info,actionTime,Volume): # the input should be time: [time]
 	openTerminal = 'st -e sh -c ' # open in a new terminal command
 	os.system(openTerminal + "'" + "ncmpcpp" +"' &") # execute command for music
 	utilities.waitUntilFound(10,ncmpcppExists) # start the program until the image is visible
-	os.system("pactl -- set-sink-volume 0 80%") # set the volume to 80%
+	os.system("pactl -- set-sink-volume 0 "+str(Volume)+"%") # set the volume to 80%
 	maximizeVolumeNcmpcpp()
 	clearMusic() # clear all previous music
 	addAllSongs() # add all songs to the playlist and shuffle
 	enterToPlaylist() # enter to playList
 	pg.press('v')
-	t.sleep(int(actionTime)) # wait until the timer ends
+	t.sleep(int(actionTime))
 	t.sleep(0.01)
 	pg.press('space')
 	clearMusic() # clear all the music again
 	utilities.closeWindow()
-
-

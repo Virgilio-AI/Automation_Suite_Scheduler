@@ -30,6 +30,7 @@ def waitUntilFound(timeLimit,img):
 			break
 		except:
 			t.sleep(0.2)
+			print("not founding")
 			pass
 def clickUntilFound(timeLimit,img):
 	counter=0

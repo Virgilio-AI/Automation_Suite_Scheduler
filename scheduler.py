@@ -77,8 +77,10 @@ def getInfoActionName():
 	# return the alarm if the circadian ritm is on
 
 	curHour, curMinute = utilities.getHour()
-	if curHour == 5 and curMinute < presets.acceptance:
-		updateCircadianWakeUp()
+#	if curHour == 5 and curMinute < presets.acceptance:
+	updateCircadianWakeUp()
+	print(presets.circadianRitmHour)
+	print(presets.circadianRitmMinute)
 	if int(curHour) == int(presets.circadianRitmHour) and utilities.checkIfActive()[3]:
 		print("equal")
 		if abs(int(curMinute) - int(presets.circadianRitmMinute)) < presets.acceptance:
@@ -98,5 +100,3 @@ def getInfoActionName():
 	return "false", "false" , "false","false" # info,action,name,actionTime
 
 
-#updateCircadianWakeUp()
-#print(str(presets.circadianRitmHour) + ":" + str(presets.circadianRitmMinute))
