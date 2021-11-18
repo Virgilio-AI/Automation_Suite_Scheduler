@@ -3,6 +3,7 @@ import pandas as pd
 import subprocess
 import presets
 import utilities
+import os
 # %%
 # to get the current day of the week
 
@@ -87,7 +88,7 @@ def getInfoActionName():
 	cInfo = presets.circadianRithmAlarminfo
 	cAction = presets.circadianRithmAlarmAction
 	cName = "circadian ritm alarm"
-	cTime = presets.circadianRithmAlarmTime
+	cTime = presets.circadianRitmActionTime
 	cActive = utilities.checkIfActive()[3]
 
 	print("hr: " + str(hr) + "mi " + str(mi) + "|")
@@ -95,7 +96,7 @@ def getInfoActionName():
 	# check the circadian alarm
 	if cActive and (  ( ( hr==ch ) and ( abs( mi-cm ) <=ac )) or (( hr == ch - 1 )  and ( (mi + ( 60 - cm ) ) < ac ) )):
 		print("circadian alarm equal")
-		os.system("echo \"cInfo: "+str(cInfo)+"current hour: "+str(hr)+ ":" +str(mi)+"circadianHour: " +str(cr) + ":" +str(cm) + "\" >> alarmLog/alarm_log")
+		os.system("echo \"cInfo: "+str(cInfo)+" |current hour: "+str(hr)+ ":" +str(mi)+" |circadianHour: " +str(ch) + ":" +str(cm) + "\" >> alarmLog/alarm_log")
 		return cInfo,cAction,cName,cTime
 	# get the columns as lists
 	timeCol,info,actions,names,actionTimeCol = getTimeLinkColumns()
