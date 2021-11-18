@@ -73,30 +73,45 @@ def updateCircadianWakeUp():
 
 
 def getInfoActionName():
-	# check if you need to updateCircadianRitm
-	# return the alarm if the circadian ritm is on
-
-	curHour, curMinute = utilities.getHour()
-#	if curHour == 5 and curMinute < presets.acceptance:
+	# acceptance of the algoritm
+	ac = presets.acceptance
+	print("acceptance: " + str(ac))
+	# current hour and minute
+	hr, mi = utilities.getHour()
 	updateCircadianWakeUp()
-	print(presets.circadianRitmHour)
-	print(presets.circadianRitmMinute)
-	if int(curHour) == int(presets.circadianRitmHour) and utilities.checkIfActive()[3]:
-		print("equal")
-		if abs(int(curMinute) - int(presets.circadianRitmMinute)) < presets.acceptance:
-			print("equal again: " + str(abs(int(curMinute) - int(presets.circadianRitmMinute))))
-			return presets.circadianRithmAlarminfo,presets.circadianRithmAlarmAction,"circadian rithm alarm",presets.circadianRitmActionTime
+	#time and hour the circadian ritm alarm is set to
+	ch = int(presets.circadianRitmHour)
+	cm = int(presets.circadianRitmMinute)
 
+	# circadian rim alarm presets
+	cInfo = presets.circadianRithmAlarminfo
+	cAction = presets.circadianRithmAlarmAction
+	cName = "circadian ritm alarm"
+	cTime = presets.circadianRithmAlarmTime
+	cActive = utilities.checkIfActive()[3]
+
+	print("hr: " + str(hr) + "mi " + str(mi) + "|")
+	print("circadian alarm: " + str(ch) + ":" + str(cm) )
+	# check the circadian alarm
+	if cActive and (  ( ( hr==ch ) and ( abs( mi-cm ) <=ac )) or (( hr == ch - 1 )  and ( (mi + ( 60 - cm ) ) < ac ) )):
+		print("circadian alarm equal")
+		os.system("echo \"cInfo: "+str(cInfo)+"current hour: "+str(hr)+ ":" +str(mi)+"circadianHour: " +str(cr) + ":" +str(cm) + "\" >> alarmLog/alarm_log")
+		return cInfo,cAction,cName,cTime
+	# get the columns as lists
 	timeCol,info,actions,names,actionTimeCol = getTimeLinkColumns()
+	# for loop for checking the csv
 	for i in range(0, len(timeCol)):
-		comHour,comMinute = utilities.getStringHour(timeCol[i])
-		print("curHour: " + str(curHour) + "curMinute " + str(curMinute) + "|")
-		print("comHour: " + str(comHour) + "comMinute: " + str(comMinute + "|"))
-		if (int(curHour) == int(comHour)) and (abs(int(curMinute) - int(comMinute)) < presets.acceptance):
-				print("equal " + str(abs(int(curMinute) - int(comMinute))))
-				return info[i],actions[i],names[i],actionTimeCol[i]
-		if (int(curHour) == int(comHour) - 1) and (int(comMinute) + ( 60 - int(curMinute)) ) < presets.acceptance:
-				return info[i],actions[i],names[i],actionTimeCol[i]
+		# hour and minute of the currently analized appointment
+		cmH,cmM = utilities.getStringHour(timeCol[i])
+		comH = int(cmH)
+		comM = int(cmM)
+
+		print("hr: " + str(hr) + "mi " + str(mi) + "|")
+		print("comH: " + str(comH) + "comM: " + str(comM) + "|")
+
+		if((hr==comH)and(abs(mi-comM)<=ac)) or ((hr == comH - 1) and ((mi + ( 60 - comM) ) < ac)):
+			print("equal " + str(abs(mi - comM)))
+			return info[i],actions[i],names[i],actionTimeCol[i]
 	return "false", "false" , "false","false" # info,action,name,actionTime
 
-
+getInfoActionName()

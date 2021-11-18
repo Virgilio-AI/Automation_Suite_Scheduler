@@ -22,9 +22,7 @@ active = presets_dt["active"]
 # how many seconds to wait before running the main cicle again, too few seconds can be very process consuming
 mainCicleRepetition = presets_dt["mainCicleRepetition"]
 # acceptance for meeting, minutes. leave the default to attend all meetings
-acceptance = int(math.ceil(900/60))
-# =============
-# ==== alarm configurations =====
+acceptance = int(math.ceil(mainCicleRepetition/60)+1) # ============= ==== alarm configurations =====
 # =============
 alarmActive=presets_dt["alarmActive"]
 timePlaying = presets_dt["timePlaying"] # in seconds
