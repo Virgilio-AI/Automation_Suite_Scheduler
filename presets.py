@@ -58,8 +58,11 @@ circadianRithmAlarmVolume = presets_dt["circadianRithmAlarmVolume"]
 circadianRithmAlarmAction = presets_dt["circadianRithmAlarmAction"]
 circadianRithmAlarminfo = presets_dt["circadianRithmAlarminfo"]
 circadianRitmActionTime = presets_dt["circadianRitmActionTime"]
+
 # don't edit this is you don't know what you are doing
-circadianRitmHour,circadianRitmMinute = int(circadianRithmAlarmTime.split(':')[0]), int(circadianRithmAlarmTime.split(':')[1])
+circadianRitmHour = int(circadianRithmAlarmTime.split(":")[0])
+circadianRitmMinute = int(circadianRithmAlarmTime.split(":")[1])
+
 
 
 
@@ -68,6 +71,11 @@ def init():
 	with open('presets.json', 'r') as handle:
 		fixed_json = ''.join(line for line in handle if not line.startswith('//'))
 		presets_dt = json.loads(fixed_json)
+	global active,mainCicleRepetition,acceptance,alarmActive,alertActive
+	global mondayPresets,tuesdayPresets,wednesdayPresets,thursdayPresets,fridayPresets,saturdayPresets,sundayPresets
+	global zoomClassRecorderActive,zoomClassOpener,zoomClasesDirectory
+	global circadianRithmAlarm,circadianRithmAlarmTime,circadianRithmAlarmVolume,circadianRithmAlarmAction,circadianRithmAlarminfo
+	global circadianRitmActionTime
 
 	active = presets_dt["active"]
 	mainCicleRepetition = presets_dt["mainCicleRepetition"]
@@ -91,3 +99,6 @@ def init():
 	circadianRithmAlarminfo = presets_dt["circadianRithmAlarminfo"]
 	circadianRitmActionTime = presets_dt["circadianRitmActionTime"]
 	circadianRitmHour,circadianRitmMinute = int(circadianRithmAlarmTime.split(':')[0]), int(circadianRithmAlarmTime.split(':')[1])
+	print(circadianRitmMinute,circadianRitmHour)
+
+

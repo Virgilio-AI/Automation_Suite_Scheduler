@@ -24,10 +24,9 @@ def addAllSongs():
 	t.sleep(0.01)
 	pg.press('2')
 	for element in range(0, 9):
-		if element == 1 or element == 2 or element == 5 or  6 ==element  or element == 7 or element == 8 or element == 9:
-			t.sleep(0.01)
-			pg.press('j')
-			addPlaylist()
+		t.sleep(0.01)
+		pg.press('j')
+		addPlaylist()
 def clearMusic():
 	t.sleep(0.01)
 	pg.press('1')

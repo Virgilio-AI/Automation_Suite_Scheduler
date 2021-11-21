@@ -4,6 +4,7 @@ import subprocess
 import presets
 import utilities
 import os
+import json
 # %%
 # to get the current day of the week
 
@@ -43,22 +44,31 @@ def getDistanceInCalendar(curDay,curMonth,dayChange,monthChange):
 # the minutes are descending each day, starts half hour more
 
 def updateCircadianWakeUp():
+
+	with open('presets.json', 'r') as handle:
+		fixed_json = ''.join(line for line in handle if not line.startswith('//'))
+		presets_dt = json.loads(fixed_json)
+	circadianRithmAlarmTime = presets_dt["circadianRithmAlarmTime"]
 	month = utilities.getMonth()
 	day = utilities.getDayOfTheMonth()
+	# don't edit this is you don't know what you are doing
+	circadianRitmHour = int(circadianRithmAlarmTime.split(":")[0])
+	circadianRitmMinute = int(circadianRithmAlarmTime.split(":")[1])
+
 	if ( month == 4 and day <=4 or month < 4) or ( month == 10 and day >=30 or month > 10):
 		print("winter")
 		ratio = 60/156
 		days = getDistanceInCalendar(day,month,30,10)
 		addedMinutes = days*ratio - 30
 	else:
+		print("summer")
 		ratio = 60/209
 		days = getDistanceInCalendar(day,month,4,4)
 		addedMinutes = 30 - days*ratio
 	print("\nadded minutes: " +str(addedMinutes))
 	print("\ndays: " + str(days))
-
-	tempH = presets.circadianRitmHour
-	tempM = presets.circadianRitmMinute
+	tempH = circadianRitmHour
+	tempM = circadianRitmMinute
 	tempM = tempM + int(addedMinutes)
 	if tempM < 0:
 		tempH -=1
@@ -79,10 +89,16 @@ def getInfoActionName():
 	print("acceptance: " + str(ac))
 	# current hour and minute
 	hr, mi = utilities.getHour()
-	updateCircadianWakeUp()
+
+	if hr > 5 :
+		updateCircadianWakeUp()
+
 	#time and hour the circadian ritm alarm is set to
 	ch = int(presets.circadianRitmHour)
 	cm = int(presets.circadianRitmMinute)
+
+	# debug the comparisons
+	os.system("echo \"current hour: "+str(hr)+ ":" +str(mi)+" |circadianHour: " +str(ch) + ":" +str(cm) + "\" >> alarmLog/comparison_log")
 
 	# circadian rim alarm presets
 	cInfo = presets.circadianRithmAlarminfo
@@ -115,4 +131,3 @@ def getInfoActionName():
 			return info[i],actions[i],names[i],actionTimeCol[i]
 	return "false", "false" , "false","false" # info,action,name,actionTime
 
-getInfoActionName()

@@ -18,26 +18,26 @@ import screenRecorder
 import alarm
 import initZoom
 import scheduler
-from presets import *
+import presets
 import utilities
 # browser configurations
 
 def buildStateMessage():
 	state=""
-	if not active:
-		state+="\nactive: " + str(active)
-	if not alarmActive:
-		state += "\nalarm active: " +str(alarmActive)
-	if not zoomClassOpener:
-		state += "\nzoomClassOpener: " +str(zoomClassOpener)
+	if not presets.active:
+		state+="\nactive: " + str(presets.active)
+	if not presets.alarmActive:
+		state += "\nalarm active: " +str(presets.alarmActive)
+	if not presets.zoomClassOpener:
+		state += "\nzoomClassOpener: " +str(presets.zoomClassOpener)
 	if state != "":
-		state += "\ntime playing: " +str(timePlaying)
+		state += "\ntime playing: " +str(presets.timePlaying)
 	return state
 
 
 def menu():
 	print("\ninitiated cycle")
-	print("circadian alarm: " + str(circadianRitmHour) + ":" + str(circadianRitmMinute))
+	print("circadian alarm: " + str(presets.circadianRitmHour) + ":" + str(presets.circadianRitmMinute))
 	os.system("notify-send \"initiated cicle\"")
 	# the state of the program
 	state = buildStateMessage()
@@ -52,26 +52,27 @@ def menu():
 	info,action,name,actionTime = scheduler.getInfoActionName()
 	print("name: " + str(name) + "\naction: " + str(action) +  "\ninfo: " + str(info) + "\naction time: " + str(actionTime))
 	# if it is time to execute the alarm
-	if action == 'music'  and active and alarmActive and utilities.checkIfActive()[1]:
+	if action == 'music'  and presets.active and presets.alarmActive and utilities.checkIfActive()[1]:
 		utilities.giveWarning(1,"initiating main alarm")
-		alarm.playmusic(info,actionTime,circadianRithmAlarmVolume)
+		alarm.playmusic(info,actionTime,presets.circadianRithmAlarmVolume)
 	# if it is time to initiate a meeting
-	elif action == 'zoom' and active and zoomClassOpener and utilities.checkIfActive()[0]:
+	elif action == 'zoom' and presets.active and presets.zoomClassOpener and utilities.checkIfActive()[0]:
 		initZoom.initZoom(info,name,actionTime)
-	elif action == 'alert' and active and alertActive and utilities.checkIfActive()[2]:
+	elif action == 'alert' and presets.active and presets.alertActive and utilities.checkIfActive()[2]:
 		utilities.giveWarning(actionTime,info)
 	elif actionTime == 'false':
 		print("pass: getInfoActionName() error")
-	t.sleep(mainCicleRepetition)
+	t.sleep(presets.mainCicleRepetition)
 
 
 
 if __name__ == '__main__':
 	# search for link in csv
+	presets.init()
 	utilities.giveWarning(1,"automation suite has started")
 	while 1:
 		try:
-			init()
+			presets.init()
 			menu()
 		except:
 			utilities.giveWarning(1,"an exception has ocured")

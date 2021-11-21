@@ -29,7 +29,7 @@
 // ===========
 	"mondayPresets":[
 // for entering zoom classes
-		true,
+		false,
 // for setting alarm
 		true,
 // for giving alerts
@@ -39,7 +39,7 @@
 	],
 	"tuesdayPresets":[
 // for entering zoom classes
-		true,
+		false,
 // for setting alarm
 		true,
 // for giving alerts
@@ -49,7 +49,7 @@
 	],
 	"wednesdayPresets":[
 // for entering zoom classes
-		true,
+		false,
 // for setting alarm
 		true,
 // for giving alerts
@@ -59,7 +59,7 @@
 	],
 	"thursdayPresets":[
 // for entering zoom classes
-		true,
+		false,
 // for setting alarm
 		true,
 // for giving alerts
@@ -69,7 +69,7 @@
 	],
 	"fridayPresets":[
 // for entering zoom classes
-		true,
+		false,
 // for setting alarm
 		true,
 // for giving alerts
@@ -79,7 +79,7 @@
 	],
 	"saturdayPresets":[
 // for entering zoom classes
-		true,
+		false,
 // for setting alarm
 		true,
 // for giving alerts
@@ -89,7 +89,7 @@
 	],
 	"sundayPresets":[
 // for entering zoom classes
-		true,
+		false,
 // for setting alarm
 		true,
 // for giving alerts
@@ -116,10 +116,9 @@
 // ===========
 
 	"circadianRithmAlarm":true,
-	"circadianRithmAlarmTime":"08:00",
+	"circadianRithmAlarmTime":"07:00",
 	"circadianRithmAlarmVolume":80,
 	"circadianRithmAlarmAction":"music",
 	"circadianRithmAlarminfo":"shuffle all",
 	"circadianRitmActionTime":1800
-
 }
