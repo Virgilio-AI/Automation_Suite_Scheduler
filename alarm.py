@@ -52,6 +52,9 @@ def maximizeVolumeNcmpcpp():
 # =============
 
 # wait the action and if non stop is set apply it
+def echoTime():
+	hr,mn = utilities.getHour()
+	utilities.giveWarning(4,"the time is:"+str(hr)+","+str(mn))
 
 def playmusic(info,actionTime,Volume): # the input should be time: [time]
 	openTerminal = 'st -e sh -c ' # open in a new terminal command
@@ -63,7 +66,29 @@ def playmusic(info,actionTime,Volume): # the input should be time: [time]
 	addAllSongs() # add all songs to the playlist and shuffle
 	enterToPlaylist() # enter to playList
 	pg.press('v')
-	t.sleep(int(actionTime))
+	# delay the time and work in the hours
+	intervals=int(actionTime/4)+1
+
+	pg.press('space')
+	echoTime()
+	pg.press('space')
+	t.sleep(intervals)
+	pg.press('space')
+	echoTime()
+	pg.press('space')
+	t.sleep(intervals)
+	pg.press('space')
+	echoTime()
+	pg.press('space')
+	t.sleep(intervals)
+	pg.press('space')
+	echoTime()
+	pg.press('space')
+	t.sleep(intervals)
+	pg.press('space')
+	echoTime()
+	pg.press('space')
+
 	t.sleep(0.01)
 	pg.press('space')
 	clearMusic() # clear all the music again

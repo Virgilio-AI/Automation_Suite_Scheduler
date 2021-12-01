@@ -75,7 +75,7 @@ def forceCreateDirectory(parentDirectory): # ex: name/name2
 def giveWarning(time,message):
 	volumePercentage = subprocess.getoutput('pamixer --get-volume')
 	t.sleep(0.01)
-	os.system("pactl set-sink-mute @DEFAULT_SINK@ false ; pactl -- set-sink-volume 0 100%")
+	os.system("pactl set-sink-mute @DEFAULT_SINK@ false ; pactl -- set-sink-volume 0 "+str(presets.alertVolume)+"%")
 	counter = 0
 	language = 'en'
 	sound = gTTS(text=message,lang=language,slow=False)

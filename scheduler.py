@@ -90,8 +90,7 @@ def getInfoActionName():
 	# current hour and minute
 	hr, mi = utilities.getHour()
 
-	if hr > 5 :
-		updateCircadianWakeUp()
+	updateCircadianWakeUp()
 
 	#time and hour the circadian ritm alarm is set to
 	ch = int(presets.circadianRitmHour)
