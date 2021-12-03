@@ -34,7 +34,6 @@ def buildStateMessage():
 		state += "\ntime playing: " +str(presets.timePlaying)
 	return state
 
-
 def menu():
 	print("\ninitiated cycle")
 	print("circadian alarm: " + str(presets.circadianRitmHour) + ":" + str(presets.circadianRitmMinute))
