@@ -38,33 +38,22 @@ def deleteTopLevel(frame):
 
 def sur(stri):
 	return '\\"' + stri + '\\"'
+# =============
+# ==== buttons =====
+# =============
 
-def addButton(frame,info,action,name,weeks,action_time,hour,minute):
-	print(info.get(),action.get(),name.get(),weeks.get(),action_time.get(),hour.get(),minute.get())
-	info = info.get()
-	action = action.get()
-	name = name.get()
-	weeks = weeks.get()
-	action_time = action_time.get()
-	hour = hour.get()
-	minute = minute.get()
+def addButton(yearStart,monthStart,dayStart,daysActive,actionTime,EventType):
 
-	if( weeks.isnumeric() and action_time.isnumeric() and hour.isnumeric() and minute.isnumeric()):
-
-		addRecurrentTask = "mariadb --execute=\"use automation_suite ; insert into recurrent_actions_table(info,action,name,weeks,action_time,hour,minute) values("+sur(info) +","+ sur(action) +","+ sur(name) +","+ str(weeks) +","+ str(action_time) +","+ str(hour) +","+ str(minute) +") ;\" "
-		print(addRecurrentTask)
-		os.system(addRecurrentTask)
-	elif ( not weeks.isnumeric() ):
-		errorMsg(frame,"weeks has to be a numeric value")
-	elif ( not action_time.isnumeric() ):
-		errorMsg(frame,"action_time has to be a numeric value")
-	elif ( not hour.isnumeric() ):
-		errorMsg(frame,"hour has to be a numeric value")
-	elif ( notminute.isnumeric() ):
-		errorMsg(frame,"minute has to be a numeric value")
+	if( yearStart.isnumeric() and monthStart.isnumeric() and dayStart.isnumeric() and daysActive.isnumeric() and actionTime.isnumeric() ):
+		firstAction = "mariadb --execute=\"use automation_suite ; insert into Event(actionTime,EventTypeId) values("+str(actionTime)+",(select id from EventType where name == '"+str(EventType)+"')) ;\" "
+		secondAction = "mariadb --execute=\"use automation_suite ; insert into WeeklyEvents(EventId,yearStart,monthStart,dayStart,daysActive) values((select count(id) from Event),"+str(yearStart)+","+str(monthStart)+","+str(dayStart)+","+str(daysActive)+") ;\" "
 
 
-def addTask():
+		print(firstAction)
+		print(secondAction)
+
+
+def addWeeklyTask():
 	level_add_task = Toplevel(frame)
 	center(level_add_task,300,500)
 
@@ -79,61 +68,53 @@ def addTask():
 	newLine = Label(level_add_task,text="")
 	newLine.pack(side=TOP)
 
-	# info label
-	infoLabel = Label(level_add_task,text="info:")
-	infoLabel.pack(side=TOP)
+	# yearStart label
+	yearStartLabel = Label(level_add_task,text="yearStart:")
+	yearStartLabel.pack(side=TOP)
 	# start entering information
-	info = tk.StringVar()
-	infoTextBox = tk.Entry(level_add_task, width = 50, textvariable = info)
-	infoTextBox.pack(side=TOP)
+	yearStart = tk.StringVar()
+	yearStartTextBox = tk.Entry(level_add_task, width = 50, textvariable = yearStart)
+	yearStartTextBox.pack(side=TOP)
 
-	# action label
-	actionLabel = Label(level_add_task,text="action:")
-	actionLabel.pack(side=TOP)
-	# start entering actionrmation
-	action = tk.StringVar()
-	actionTextBox = tk.Entry(level_add_task, width = 50, textvariable = action)
-	actionTextBox.pack(side=TOP)
+	# monthStart label
+	monthStartLabel = Label(level_add_task,text="monthStart:")
+	monthStartLabel.pack(side=TOP)
+	# start entering monthStartrmation
+	monthStart = tk.StringVar()
+	monthStartTextBox = tk.Entry(level_add_task, width = 50, textvariable = monthStart)
+	monthStartTextBox.pack(side=TOP)
 
-	# name label
-	nameLabel = Label(level_add_task,text="name:")
-	nameLabel.pack(side=TOP)
-	# start entering namermation
-	name = tk.StringVar()
-	nameTextBox = tk.Entry(level_add_task, width = 50, textvariable = name)
-	nameTextBox.pack(side=TOP)
+	# dayStart label
+	dayStartLabel = Label(level_add_task,text="dayStart:")
+	dayStartLabel.pack(side=TOP)
+	# start entering dayStartrmation
+	dayStart = tk.StringVar()
+	dayStartTextBox = tk.Entry(level_add_task, width = 50, textvariable = dayStart)
+	dayStartTextBox.pack(side=TOP)
 
 	# weeks label
-	weeksLabel = Label(level_add_task,text="weeks:")
-	weeksLabel.pack(side=TOP)
-	# start entering weeksrmation
-	weeks = tk.StringVar()
-	weeksTextBox = tk.Entry(level_add_task, width = 50, textvariable = weeks)
-	weeksTextBox.pack(side=TOP)
+	daysActiveLabel = Label(level_add_task,text="daysActive:")
+	daysActiveLabel.pack(side=TOP)
+	# start entering daysActivermation
+	daysActive = tk.StringVar()
+	daysActiveTextBox = tk.Entry(level_add_task, width = 50, textvariable = daysActive)
+	daysActiveTextBox.pack(side=TOP)
 
-	# action_time label
-	action_timeLabel = Label(level_add_task,text="action_time:")
-	action_timeLabel.pack(side=TOP)
-	# start entering action_timermation
-	action_time = tk.StringVar()
-	action_timeTextBox = tk.Entry(level_add_task, width = 50, textvariable = action_time)
-	action_timeTextBox.pack(side=TOP)
+	# EventType label
+	EventTypeLabel = Label(level_add_task,text="EventType:")
+	EventTypeLabel.pack(side=TOP)
+	# start entering EventTypermation
+	EventType = tk.StringVar()
+	EventTypeTextBox = tk.Entry(level_add_task, width = 50, textvariable = EventType)
+	EventTypeTextBox.pack(side=TOP)
 
-	# hour label
-	hourLabel = Label(level_add_task,text="hour:")
-	hourLabel.pack(side=TOP)
-	# start entering hourrmation
-	hour = tk.StringVar()
-	hourTextBox = tk.Entry(level_add_task, width = 50, textvariable = hour)
-	hourTextBox.pack(side=TOP)
-
-	# minute label
-	minuteLabel = Label(level_add_task,text="minute:")
-	minuteLabel.pack(side=TOP)
-	# start entering minutermation
-	minute = tk.StringVar()
-	minuteTextBox = tk.Entry(level_add_task, width = 50, textvariable = minute)
-	minuteTextBox.pack(side=TOP)
+	# actionTime label
+	actionTimeLabel = Label(level_add_task,text="actionTime:")
+	actionTimeLabel.pack(side=TOP)
+	# start entering actionTimermation
+	actionTime = tk.StringVar()
+	actionTimeTextBox = tk.Entry(level_add_task, width = 50, textvariable = actionTime)
+	actionTimeTextBox.pack(side=TOP)
 
 
 
@@ -150,13 +131,10 @@ def addTask():
 	back_button.pack(side=BOTTOM)
 
 
-	# add button
+	# add button, action to do when pressed
 	# opt parameters = fg="color",bg="color",command=somFunction
-	add_button = Button(buttonsFrame,text="add task",command=lambda: addButton(level_add_task,info,action,name,weeks,action_time,hour,minute))
+	add_button = Button(buttonsFrame,text="add task",command=lambda: addButton(yearStart.get(),monthStart.get(),dayStart.get(),daysActive.get(),actionTime.get(),EventType.get()))
 	add_button.pack(side=TOP)
-
-	print(str(info),str(action),str(name),str(weeks),str(action_time),str(hour),str(minute))
-
 
 
 
@@ -184,11 +162,11 @@ def main():
 	label_window.pack(side=TOP) 
 
 	# opt parameters = fg="color",bg="color",command=somFunction
-	addButton = Button(frame,text="add task",command=addTask)
+	addButton = Button(frame,text="add weekly task",command=addWeeklyTask)
 	addButton.pack(side=TOP)
 
 	# opt parameters = fg="color",bg="color",command=somFunction
-	deleteButton = Button(frame,text="delete or alter task",comman=deleteTasks)
+	deleteButton = Button(frame,text="delete or alter weekly tasks",comman=deleteTasks)
 	deleteButton.pack(side=TOP)
 
 	# opt parameters = fg="color",bg="color",command=somFunction

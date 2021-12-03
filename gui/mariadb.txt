@@ -1,0 +1,11 @@
+id	EventId	yearStart	monthStart	dayStart	daysActive
+1	1	2021	8	23	100
+id	actionTime	EventTypeId
+1	1800	3
+2	1800	1
+id	name	actionDescription
+1	alert	gives a personalized voice alert for the system
+2	zoom	initiates a zoom meeting
+3	alarm	reproduces an alarm
+id	EventId	year	month	day	hour	minute
+1	2	2022	4	12	14	30

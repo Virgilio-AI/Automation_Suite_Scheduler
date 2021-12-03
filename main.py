@@ -35,8 +35,6 @@ def buildStateMessage():
 	return state
 
 def menu():
-	print("\ninitiated cycle")
-	print("circadian alarm: " + str(presets.circadianRitmHour) + ":" + str(presets.circadianRitmMinute))
 	os.system("notify-send \"initiated cicle\"")
 	# the state of the program
 	state = buildStateMessage()
@@ -51,7 +49,7 @@ def menu():
 	info,action,name,actionTime = scheduler.getInfoActionName()
 	print("name: " + str(name) + "\naction: " + str(action) +  "\ninfo: " + str(info) + "\naction time: " + str(actionTime))
 	# if it is time to execute the alarm
-	if action == 'music'  and presets.active and presets.alarmActive and utilities.checkIfActive()[1]:
+	if action == 'alarm'  and presets.active and presets.alarmActive and utilities.checkIfActive()[1]:
 		utilities.giveWarning(1,"initiating main alarm")
 		alarm.playmusic(info,actionTime,presets.circadianRithmAlarmVolume)
 	# if it is time to initiate a meeting

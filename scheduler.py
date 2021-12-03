@@ -67,7 +67,6 @@ def updateCircadianWakeUp():
 		addedMinutes = days*ratio - 30
 	# action to do if we are in summer
 	else:
-		print("summer")
 		ratio = 60/209
 		days = getDistanceInCalendar(day,month,4,4)
 		addedMinutes = 30 - days*ratio
@@ -85,7 +84,7 @@ def updateCircadianWakeUp():
 	presets.circadianRitmMinute = tempM
 
 
-def getMissingMinutes(toCompareHour,toCompareMinute,currentHour,currentMinite):
+def getMissingMinutes(toCompareHour,toCompareMinute,currentHour,currentMinite,acceptance):
 	if currentHour==toCompareHour :
 		if toCompareMinute - currentMinite >= 0:
 			return toCompareMinute - currentMinite
@@ -93,7 +92,7 @@ def getMissingMinutes(toCompareHour,toCompareMinute,currentHour,currentMinite):
 			return 0
 	elif currentHour == toCompareHour - 1 :
 		missingMinutes = (currentMinite+(60-toCompareMinute))
-		if missingMinutes >ac :
+		if missingMinutes >acceptance :
 			return 30
 		else:
 			return 0
@@ -112,8 +111,7 @@ def getInfoActionName():
 	cm = int(presets.circadianRitmMinute)
 
 	# debug the comparisons
-	os.system("echo \"
-			\n\n#======= month: "+str(utilities.getMonth())+
+	os.system("echo \"\n\n#======= month: "+str(utilities.getMonth())+
 			"\nday: "+str(utilities.getDayOfTheMonth())+
 			"\ncurrent hour: "+str(hr)+ ":" +str(mi)+" |circadianHour: " +str(ch) + ":" +str(cm) +
 			"\" >> alarmLog/comparison_log")
@@ -125,12 +123,11 @@ def getInfoActionName():
 	cTime = presets.circadianRitmActionTime
 	cActive = utilities.checkIfActive()[3]
 
-	missingMinutes=getMissingMinutes(ch,cm,hr,mi)
+	missingMinutes=getMissingMinutes(ch,cm,hr,mi,ac)
 	# check the circadian alarm
 	if (cActive and   ( ( hr==ch ) and ( missingMinutes <=ac ))) or (( hr == ch - 1 )  and ( missingMinutes ) < ac ) :
 	# append information for the log file and for debugging later
-		os.system("echo \"
-				\n#=====Month: "+str(utilities.getMonth())+" |day"+str(utilities.getDayOfTheMonth())+
+		os.system("echo \"\n#=====Month: "+str(utilities.getMonth())+" |day"+str(utilities.getDayOfTheMonth())+
 				"|MissingMinutes: "+str(missingMinutes)+" |action: "+str(cAction)+
 				"\ncInfo: "+str(cInfo)+" |current hour: "+str(hr)+ ":" +str(mi)+" |circadianHour: " +str(ch) + ":" +str(cm) +
 				"\" >> alarmLog/alarm_log")
@@ -150,7 +147,7 @@ def getInfoActionName():
 
 		if((hr==comH)and(abs(mi-comM)<=ac)) or ((hr == comH - 1) and ((mi + ( 60 - comM) ) < ac)):
 			# get the minutes for the comparisson
-			missingMin = getMissingMinutes(comH,comM,hr,mi)
+			missingMin = getMissingMinutes(comH,comM,hr,mi,ac)
 			# sleep the necessary time
 			t.sleep(missingMin*60)
 			# return statement
