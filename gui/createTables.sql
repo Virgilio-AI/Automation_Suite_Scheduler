@@ -65,11 +65,11 @@ create table if not exists UniqueEvents(
 
 
 
--- show tables ;
--- describe UniqueEvents ;
--- describe WeeklyEvents ;
--- describe Event ;
--- describe EventType ;
+show tables ;
+describe UniqueEvents ;
+describe WeeklyEvents ;
+describe Event ;
+describe EventType ;
 
 
 -- insert into EventType(name,actionDescription) values("alert","gives a personalized voice alert for the system") ;
@@ -79,22 +79,24 @@ create table if not exists UniqueEvents(
 
 -- insert into Event(actionTime,EventTypeId) values(1800,(select id from EventType where name = 'alarm')) ;
 -- insert into WeeklyEvents(EventId,yearStart,monthStart,dayStart,daysActive) values((select count(id) from Event),2021,8,23,100) ;
--- -- insert a unique event
--- insert into Event(actionTime,EventTypeId) values(1800,(select id from EventType where name = 'alert')) ;
--- insert into UniqueEvents(EventId,year,month,day,hour,minute) values((select count(id) from Event),2022,4,12,14,30) ;
+-- insert a unique event
+insert into Event(actionTime,EventTypeId) values(1800,(select id from EventType where name = 'alert')) ;
+insert into UniqueEvents(EventId,year,month,day,hour,minute) values((select count(id) from Event),2022,4,12,14,30) ;
 
+
+-- describe WeeklyEvents ;
 
 
 -- visualize data
 
-select * from WeeklyEvents ;
-
-
-select * from Event ;
-
-select * from EventType ;
-
-select * from UniqueEvents ;
+-- select * from WeeklyEvents ;
+-- 
+-- 
+-- select * from Event ;
+-- 
+-- select * from EventType ;
+-- 
+-- select * from UniqueEvents ;
 
 
 
