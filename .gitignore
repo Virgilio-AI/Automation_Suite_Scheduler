@@ -9,3 +9,4 @@ presets.py
 presets.json
 presets.py
 gui/mariadb.txt
+gui/test.sql
