@@ -36,6 +36,8 @@ def exitProgram():
 def deleteTopLevel(frame):
 	frame.destroy()
 
+
+
 def sur(stri):
 	return '\\"' + stri + '\\"'
 # =============
@@ -48,12 +50,9 @@ def addButton(yearStart,monthStart,dayStart,daysActive,actionTime,EventType):
 		firstAction = "mariadb --execute=\"use automation_suite ; insert into Event(actionTime,EventTypeId) values("+str(actionTime)+",(select id from EventType where name == '"+str(EventType)+"')) ;\" "
 		secondAction = "mariadb --execute=\"use automation_suite ; insert into WeeklyEvents(EventId,yearStart,monthStart,dayStart,daysActive) values((select count(id) from Event),"+str(yearStart)+","+str(monthStart)+","+str(dayStart)+","+str(daysActive)+") ;\" "
 
-
-		print(firstAction)
-		print(secondAction)
-
-
+def add
 def addWeeklyTask():
+# setting labels and text boxes for the page
 	level_add_task = Toplevel(frame)
 	center(level_add_task,300,500)
 
@@ -116,8 +115,6 @@ def addWeeklyTask():
 	actionTimeTextBox = tk.Entry(level_add_task, width = 50, textvariable = actionTime)
 	actionTimeTextBox.pack(side=TOP)
 
-
-
 	# =============
 	# ==== the frame for the buttoms =====
 	# =============
@@ -137,6 +134,96 @@ def addWeeklyTask():
 	add_button.pack(side=TOP)
 
 
+def addUniqueTaskButton():
+	# setting labels and text boxes for the page
+	level_add_task = Toplevel(frame)
+	center(level_add_task,300,500)
+
+
+	# the abel 
+	title_of_window = Label(level_add_task,text="input all the required information")
+	title_of_window.pack(side=TOP)
+
+
+
+	# test label 
+	newLine = Label(level_add_task,text="")
+	newLine.pack(side=TOP)
+
+	# yearStart label
+	yearLabel = Label(level_add_task,text="year:")
+	yearLabel.pack(side=TOP)
+	# start entering information
+	year = tk.StringVar()
+	yearTextBox = tk.Entry(level_add_task, width = 50, textvariable = year)
+	yearTextBox.pack(side=TOP)
+
+	# month label
+	monthLabel = Label(level_add_task,text="month:")
+	monthLabel.pack(side=TOP)
+	# start entering monthrmation
+	month = tk.StringVar()
+	monthTextBox = tk.Entry(level_add_task, width = 50, textvariable = month)
+	monthTextBox.pack(side=TOP)
+
+	# day label
+	dayLabel = Label(level_add_task,text="day:")
+	dayLabel.pack(side=TOP)
+	# start entering dayrmation
+	day = tk.StringVar()
+	dayTextBox = tk.Entry(level_add_task, width = 50, textvariable = day)
+	dayTextBox.pack(side=TOP)
+
+	# weeks label
+	hourLabel = Label(level_add_task,text="hour:")
+	hourLabel.pack(side=TOP)
+	# start entering hourrmation
+	hour = tk.StringVar()
+	hourTextBox = tk.Entry(level_add_task, width = 50, textvariable = hour)
+	hourTextBox.pack(side=TOP)
+
+	# minute label
+	minuteLabel = Label(level_add_task,text="minute:")
+	minuteLabel.pack(side=TOP)
+	# start entering minutermation
+	minute = tk.StringVar()
+	minuteTextBox = tk.Entry(level_add_task, width = 50, textvariable = minute)
+	minuteTextBox.pack(side=TOP)
+
+	# actionTime label
+	actionTimeLabel = Label(level_add_task,text="actionTime:")
+	actionTimeLabel.pack(side=TOP)
+	# start entering actionTimermation
+	actionTime = tk.StringVar()
+	actionTimeTextBox = tk.Entry(level_add_task, width = 50, textvariable = actionTime)
+	actionTimeTextBox.pack(side=TOP)
+
+
+	# EventType label
+	EventTypeLabel = Label(level_add_task,text="EventType:")
+	EventTypeLabel.pack(side=TOP)
+	# start entering EventTypermation
+	EventType = tk.StringVar()
+	EventTypeTextBox = tk.Entry(level_add_task, width = 50, textvariable = EventType)
+	EventTypeTextBox.pack(side=TOP)
+
+	# =============
+	# ==== the frame for the buttoms =====
+	# =============
+	# the frame for the buttons
+	buttonsFrame = Frame(level_add_task)
+	buttonsFrame.pack()
+
+	# back button
+	# opt parameters = fg="color",bg="color",command=somFunction
+	back_button = Button(buttonsFrame,text="back",command=lambda: deleteTopLevel(level_add_task))
+	back_button.pack(side=BOTTOM)
+
+
+	# add button, action to do when pressed
+	# opt parameters = fg="color",bg="color",command=somFunction
+	add_button = Button(buttonsFrame,text="add task",command=lambda: addUniqueButton(year,month,day,hour,minute,actionTime,EventType))
+	add_button.pack(side=TOP)
 
 
 def deleteTasks():
@@ -165,13 +252,20 @@ def main():
 	addButton = Button(frame,text="add weekly task",command=addWeeklyTask)
 	addButton.pack(side=TOP)
 
+	# to add unique task
+	# opt parameters = fg="color",bg="color",command=lambda: function(params)
+	addUniqueTaskButton = Button(frame,text="add unique task",command=addUniqueTaskButton).pack(side=TOP)
+
 	# opt parameters = fg="color",bg="color",command=somFunction
-	deleteButton = Button(frame,text="delete or alter weekly tasks",comman=deleteTasks)
+	deleteButton = Button(frame,text="delete or alter weekly tasks",command=deleteTasks)
 	deleteButton.pack(side=TOP)
 
 	# opt parameters = fg="color",bg="color",command=somFunction
 	close = Button(backFrame,text="exit",command=exitProgram)
 	close.pack(side=TOP)
+
+
+	
 
 	root.mainloop()
 
