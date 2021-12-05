@@ -45,6 +45,8 @@ create table if not exists Event(
 
 	actionTime int not null,
 	EventTypeId int not null,
+	hour int not null,
+	minute int not null,
 
 	primary key(id),
 	foreign key (EventTypeId) references EventType(id) on delete cascade
@@ -82,8 +84,6 @@ create table if not exists UniqueEvents(
 	year int not null,
 	month int not null,
 	day int not null,
-	hour int not null,
-	minute int not null,
 
 	primary key(id),
 	foreign key (EventId) references Event(id) on delete cascade
