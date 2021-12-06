@@ -54,7 +54,7 @@ def mardbs(stri):
 
 
 
-def queryUniqueTasks():
+def queryWeeklyTasks():
 # setting labels and text boxes for the page
 	level_add_task = Toplevel(frame)
 	center(level_add_task,300,500)
@@ -121,13 +121,13 @@ def queryUniqueTasks():
 
 	# add button, action to do when pressed
 	# opt parameters = fg="color",bg="color",command=somFunction
-	queryUniqueBut = Button(buttonsFrame,text="query with the given constrains",command=lambda: queryUniqueButton(EventType.get(),actionTime.get(),yearStart.get(),monthStart.get(),dayStart.get()))
+	queryUniqueBut = Button(buttonsFrame,text="query with the given constrains",command=lambda: queryWeeklyButton(EventType.get(),actionTime.get(),yearStart.get(),monthStart.get(),dayStart.get()))
 	queryUniqueBut.pack(side=TOP)
 
 
 
 
-def queryUniqueButton(EventType,actionTime,yearStart,monthStart,dayStart):
+def queryWeeklyButton(EventType,actionTime,yearStart,monthStart,dayStart):
 	command = ("""select WeeklyEvents.id as `WeeklyEvent_id`,EventType.name,EventType.actionDescription,Event.actionTime,WeeklyEvents.yearStart,
 WeeklyEvents.monthStart,WeeklyEvents.dayStart,WeeklyEvents.daysActive,group_concat(DayOfTheWeek.day) as `days`
 from DayOfTheWeek
@@ -182,11 +182,127 @@ inner join EventType on EventType.id = Event.EventTypeId\n""")
 
 	#print(command)
 
+def queryUniqueButton(EventType,actionTime,year,month,day):
+	command = ("""
+
+select UniqueEvents.id as `UniqueEvents id`,Event.actionTime,EventType.name,EventType.actionDescription as `description`,UniqueEvents.year,UniqueEvents.month,UniqueEvents.day,Event.hour,Event.minute as `min`,Event.hour,Event.minute
+from EventType
+inner join Event on EventType.id = Event.EventTypeId
+inner join UniqueEvents on UniqueEvents.EventId = Event.id """)
+	first =False
+	if (EventType != "" or actionTime != "" or year != "" or month != "" or day != ""):
+		command+="where ("
+
+	if EventType != "":
+		command += "(EventType.name = '"+str(EventType)+"')"
+		first = True
+
+	if actionTime != "":
+		if first:
+			command+="and (Event.actionTime = '"+str(actionTime)+"') "
+		else:
+			command+="(Event.actionTime = '"+str(actionTime)+"') "
+			first = True
+
+	if year != "":
+		if first:
+			command+="and (UniqueEvents.year = '"+str(year)+"') "
+		else:
+			command+="(UniqueEvents.year = '"+str(year)+"') "
+			first = True
+
+	if month != "":
+		if first:
+			command+="and (UniqueEvents.month = '"+str(month)+"') "
+		else:
+			command+="(UniqueEvents.month = '"+str(month)+"') "
+			first = True
+
+	if day != "":
+		if first:
+			command+="and (UniqueEvents.day = '"+str(day)+"') "
+		else:
+			command+="(UniqueEvents.day = '"+str(day)+"') "
+			first = True
+
+	if first:
+		command += ")\n"
+	command += " ; \n"
+	command = mardbs(command)
+	print(command)
+	
+	os.system(command)
+
+	#print(command)
+def queryUniqueTasks():
+	level_add_task = Toplevel(frame)
+	center(level_add_task,300,500)
+
+
+	# the abel 
+	title_of_window = Label(level_add_task,text="input all the information")
+	title_of_window.pack(side=TOP)
 
 
 
-def queryWeeklyTasks():
-	print("weekly")
+	# test label 
+	newLine = Label(level_add_task,text="")
+	newLine.pack(side=TOP)
+
+	EventTypeLabel = Label(level_add_task,text="EventType:")
+	EventTypeLabel.pack(side=TOP)
+	# start entering information
+	EventType = tk.StringVar()
+	EventTypeTextBox = tk.Entry(level_add_task, width = 50, textvariable = EventType)
+	EventTypeTextBox.pack(side=TOP)
+
+	actionTimeLabel = Label(level_add_task,text="actionTime:")
+	actionTimeLabel.pack(side=TOP)
+	# start entering information
+	actionTime = tk.StringVar()
+	actionTimeTextBox = tk.Entry(level_add_task, width = 50, textvariable = actionTime)
+	actionTimeTextBox.pack(side=TOP)
+
+	yearLabel = Label(level_add_task,text="year:")
+	yearLabel.pack(side=TOP)
+	# start entering information
+	year = tk.StringVar()
+	yearTextBox = tk.Entry(level_add_task, width = 50, textvariable = year)
+	yearTextBox.pack(side=TOP)
+
+	monthLabel = Label(level_add_task,text="month:")
+	monthLabel.pack(side=TOP)
+	# start entering information
+	month = tk.StringVar()
+	monthTextBox = tk.Entry(level_add_task, width = 50, textvariable = month)
+	monthTextBox.pack(side=TOP)
+
+	dayLabel = Label(level_add_task,text="day:")
+	dayLabel.pack(side=TOP)
+	# start entering information
+	day = tk.StringVar()
+	dayTextBox = tk.Entry(level_add_task, width = 50, textvariable = day)
+	dayTextBox.pack(side=TOP)
+
+
+	# =============
+	# ==== the frame for the buttoms =====
+	# =============
+	# the frame for the buttons
+	buttonsFrame = Frame(level_add_task)
+	buttonsFrame.pack()
+
+	# back button
+	# opt parameters = fg="color",bg="color",command=somFunction
+	back_button = Button(buttonsFrame,text="back",command=lambda: deleteTopLevel(level_add_task))
+	back_button.pack(side=BOTTOM)
+
+
+	# add button, action to do when pressed
+	# opt parameters = fg="color",bg="color",command=somFunction
+	queryUniqueBut = Button(buttonsFrame,text="query with the given constrains",command=lambda: queryUniqueButton(EventType.get(),actionTime.get(),year.get(),month.get(),day.get()))
+	queryUniqueBut.pack(side=TOP)
+
 
 def deleteUniqueTasks():
 	print("delete unique")
@@ -469,13 +585,13 @@ def main():
 	queryUniqueButton = Button(frame,text="query unique tasks",command=queryUniqueTasks)
 	queryUniqueButton.pack(side=TOP)
 
-	# opt parameters = fg="color",bg="color",command=somFunction
-	deleteButton = Button(frame,text="delete or alter weekly tasks",command=deleteWeeklyTasks)
-	deleteButton.pack(side=TOP)
-
-	# opt parameters = fg="color",bg="color",command=somFunction
-	deleteUniqueButton = Button(frame,text="delete or alter unique tasks",command=deleteUniqueTasks)
-	deleteUniqueButton.pack(side=TOP)
+#	# opt parameters = fg="color",bg="color",command=somFunction
+#	deleteButton = Button(frame,text="delete or alter weekly tasks",command=deleteWeeklyTasks)
+#	deleteButton.pack(side=TOP)
+#
+#	# opt parameters = fg="color",bg="color",command=somFunction
+#	deleteUniqueButton = Button(frame,text="delete or alter unique tasks",command=deleteUniqueTasks)
+#	deleteUniqueButton.pack(side=TOP)
 
 	# opt parameters = fg="color",bg="color",command=somFunction
 	close = Button(backFrame,text="exit",command=exitProgram)
