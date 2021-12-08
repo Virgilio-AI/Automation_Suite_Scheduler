@@ -47,6 +47,7 @@ create table if not exists Event(
 	EventTypeId int not null,
 	hour int not null,
 	minute int not null,
+	actionInformation varchar(300) not null,
 
 	primary key(id),
 	foreign key (EventTypeId) references EventType(id) on delete cascade
