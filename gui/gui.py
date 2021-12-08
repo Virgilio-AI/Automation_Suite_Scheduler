@@ -503,7 +503,7 @@ def deleteUniqueTasks():
 	deleteUniqueTasksButton = Button(buttonsFrame,text="delete with the given constrains ",command=lambda: deleteUniqueButton(EventType.get(),actionTime.get(),year.get(),month.get(),day.get()))
 	deleteUniqueTasksButton.pack(side=TOP)
 
-def addButton(layer,yearStart,monthStart,dayStart,daysActive,actionTime,EventType,daysOfTheWeek,hour,minute):
+def addButton(layer,yearStart,monthStart,dayStart,daysActive,actionTime,EventType,daysOfTheWeek,hour,minute,actionInformation):
 	daysOfTheWeekdic = {1:"monday",2:"thurday",3:"wednesday",4:"tuesday",5:"friday",6:"saturday",7:"sunday"}
 	daysOfTheWeekArr = daysOfTheWeek.split(',')
 	for it in daysOfTheWeekArr:
@@ -512,7 +512,7 @@ def addButton(layer,yearStart,monthStart,dayStart,daysActive,actionTime,EventTyp
 			return
 
 	if( yearStart.isnumeric() and monthStart.isnumeric() and dayStart.isnumeric() and daysActive.isnumeric() and actionTime.isnumeric() and hour.isnumeric() and minute.isnumeric() ):
-		firstAction = mardb("insert into Event(actionTime,EventTypeId,hour,minute) values("+str(actionTime)+",(select id from EventType where name = '"+str(EventType)+"' ),"+str(hour)+","+str(minute)+") ; ")
+		firstAction = mardb("insert into Event(actionTime,EventTypeId,hour,minute,actionInformation) values("+str(actionTime)+",(select id from EventType where name = '"+str(EventType)+"' ),"+str(hour)+","+str(minute)+",'"+str(actionInformation)+"') ; ")
 		os.system(firstAction)
 		secondAction = mardb("insert into WeeklyEvents(EventId,yearStart,monthStart,dayStart,daysActive) values((select count(id) from Event),"+str(yearStart)+","+str(monthStart)+","+str(dayStart)+","+str(daysActive)+") ;")
 		os.system(secondAction)
@@ -620,6 +620,14 @@ def addWeeklyTask():
 	minuteTextBox = tk.Entry(level_add_task, width = 50, textvariable = minute)
 	minuteTextBox.pack(side=TOP)
 
+	# actionInformation label
+	actionInformationLabel = Label(level_add_task,text="actionInformation:")
+	actionInformationLabel.pack(side=TOP)
+	# start entering actionInformationrmation
+	actionInformation = tk.StringVar()
+	actionInformationTextBox = tk.Entry(level_add_task, width = 50, textvariable = actionInformation)
+	actionInformationTextBox.pack(side=TOP)
+
 	# =============
 	# ==== the frame for the buttoms =====
 	# =============
@@ -635,12 +643,12 @@ def addWeeklyTask():
 
 	# add button, action to do when pressed
 	# opt parameters = fg="color",bg="color",command=somFunction
-	add_button = Button(buttonsFrame,text="add task",command=lambda: addButton(level_add_task,yearStart.get(),monthStart.get(),dayStart.get(),daysActive.get(),actionTime.get(),EventType.get(),daysOfTheWeek.get(),hour.get(),minute.get()))
+	add_button = Button(buttonsFrame,text="add task",command=lambda: addButton(level_add_task,yearStart.get(),monthStart.get(),dayStart.get(),daysActive.get(),actionTime.get(),EventType.get(),daysOfTheWeek.get(),hour.get(),minute.get(),actionInformation.get()))
 	add_button.pack(side=TOP)
 
-def addUniqueButton(layer,year,month,day,hour,minute,actionTime,EventType):
+def addUniqueButton(layer,year,month,day,hour,minute,actionTime,EventType,actionInformation):
 	if( year.isnumeric() and month.isnumeric() and day.isnumeric() and hour.isnumeric() and minute.isnumeric() and actionTime.isnumeric() ):
-		firstAction = mardb("insert into Event(actionTime,EventTypeId,hour,minute) values("+str(actionTime)+",(select id from EventType where name = '"+str(EventType)+"'),"+str(hour)+","+str(minute)+") ; ")
+		firstAction = mardb("insert into Event(actionTime,EventTypeId,hour,minute,actionInformation) values("+str(actionTime)+",(select id from EventType where name = '"+str(EventType)+"'),"+str(hour)+","+str(minute)+"'"+str(actionInformation)+"') ; ")
 
 		secondAction = mardb("insert into UniqueEvents(EventId,year,month,day) values((select count(id) from Event ),"+str(year)+","+str(month)+","+str(day)+") ;")
 		os.system(firstAction)
@@ -722,6 +730,15 @@ def addUniqueTaskButtonf():
 	EventTypeTextBox = tk.Entry(level_add_task, width = 50, textvariable = EventType)
 	EventTypeTextBox.pack(side=TOP)
 
+
+	
+	# actionInformation label
+	actionInformationLabel = Label(level_add_task,text="actionInformation:")
+	actionInformationLabel.pack(side=TOP)
+	# start entering actionInformationrmation
+	actionInformation = tk.StringVar()
+	actionInformationTextBox = tk.Entry(level_add_task, width = 50, textvariable = actionInformation)
+	actionInformationTextBox.pack(side=TOP)
 	# =============
 	# ==== the frame for the buttoms =====
 	# =============
@@ -737,7 +754,7 @@ def addUniqueTaskButtonf():
 
 	# add button, action to do when pressed
 	# opt parameters = fg="color",bg="color",command=somFunction
-	add_button = Button(buttonsFrame,text="add task",command=lambda: addUniqueButton(level_add_task,year.get(),month.get(),day.get(),hour.get(),minute.get(),actionTime.get(),EventType.get()))
+	add_button = Button(buttonsFrame,text="add task",command=lambda: addUniqueButton(level_add_task,year.get(),month.get(),day.get(),hour.get(),minute.get(),actionTime.get(),EventType.get(),actionInformation.get()))
 	add_button.pack(side=TOP)
 
 def main():
