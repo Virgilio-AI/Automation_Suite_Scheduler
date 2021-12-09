@@ -48,8 +48,6 @@ def clickUntilFound(timeLimit,img):
 		except:
 			t.sleep(0.2)
 			pass
-
-
 def moveToMonitorOnLeft():
 	pg.keyDown('win')
 	pg.keyDown('shift')
@@ -57,9 +55,6 @@ def moveToMonitorOnLeft():
 	pg.keyUp('<')
 	pg.keyUp('win')
 	pg.keyUp('shift')
-
-
-
 def moveToMonitorOnRight():
 	pg.keyDown('win')
 	pg.keyDown('shift')
@@ -67,11 +62,8 @@ def moveToMonitorOnRight():
 	pg.keyUp('>')
 	pg.keyUp('win')
 	pg.keyUp('shift')
-
 def forceCreateDirectory(parentDirectory): # ex: name/name2
 	subprocess.check_call(['mkdir', '-p', ''+parentDirectory+''])
-
-
 def giveWarning(time,message):
 	volumePercentage = subprocess.getoutput('pamixer --get-volume')
 	t.sleep(0.01)
@@ -118,17 +110,18 @@ def getHour():
 	return hour,minute
 def getDayOfTheMonth():
 	return int(str(subprocess.check_output(['date','+%d']).decode('utf-8')))
+def getYear():
+	return int(str(subprocess.check_output(['date','+%G']).decode('utf-8')))
+def getYearDay():
+	return int(str(subprocess.check_output(['date','+%j']).decode('utf-8')))
 
 # %%
 # to get an hour from a string that is in the csv
 def getStringHour(strin):
 	return strin.split(':')[1],strin.split(':')[2]
-
-
 # =============
 # ==== check if avaliable =====
 # =============
-
 def checkIfActive():
 	dayOfTheWeek = getDayOfTheWeek()
 	if dayOfTheWeek == 1:
@@ -146,4 +139,12 @@ def checkIfActive():
 	if dayOfTheWeek == 7:
 		return presets.sundayPresets
 
+# =============
+# ==== utilities for interating with maria db =====
+# =============
+
+def mardb(stri):
+	return "mariadb --execute=\" use automation_suite ; "+str(stri)+"\""
+def mardbs(stri):
+	return "mariadb --execute=' use automation_suite ; "+str(stri)+"'"
 

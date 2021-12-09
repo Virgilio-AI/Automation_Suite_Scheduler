@@ -98,7 +98,225 @@ def getMissingMinutes(toCompareHour,toCompareMinute,currentHour,currentMinite,ac
 			return 0
 	return 30
 
+def checkCsvUpdate():
+	lastUpdate = ""
+	with open('alarmLog/last_csv_update') as file_var:
+		for line in file_var:
+			lastUpdate = line.rstrip()
+	lyear,lyearday = map(int,lastUpdate.split())
+	cyear = utilities.getYear()
+	cyearDay = utilities.getYearDay()
+	difference = 0
+	if cyear == lyear:
+		difference = cyearDay - lyearday
+	elif cyear - lyear >1:
+		difference = 400
+	else :
+		if lyear%4 == 0:
+			difference = (366 - lyearday) + cyearDay
+		else :
+			difference = (365 - lyearday) + cyearDay
+	#print(difference)
+	if difference > 6:
+		updateCsv()
+
+
+def createTempUniqueTable():
+	command = ("""
+select UniqueEvents.id as `UniqueEvents id`,Event.actionTime,EventType.name,EventType.actionDescription as `description`,UniqueEvents.year,UniqueEvents.month,UniqueEvents.day,Event.hour,Event.minute as `min`,Event.actionInformation
+from EventType
+inner join Event on EventType.id = Event.EventTypeId
+inner join UniqueEvents on UniqueEvents.EventId = Event.id
+""")
+	command = utilities.mardbs(command)
+	command +="> tempUniqueTable"
+	os.system(command)
+	tempTable = ""
+	table = [[]]
+
+	with open('tempUniqueTable') as tempUniqueTable:
+		for line in tempUniqueTable:
+			tempLine = line.strip()
+			rline = ""
+			for char in tempLine:
+				if char == '\t':
+					rline += ","
+				else:
+					rline += char
+			lineWords = rline.split(',')
+			table.append(lineWords)
+			tempTable += rline + "\n"
+	os.remove('tempUniqueTable')
+	return table
+
+def createTempWeeklyTable():
+	command = ("""select WeeklyEvents.id as `WeeklyEvent_id`,EventType.name,EventType.actionDescription,Event.actionTime,WeeklyEvents.yearStart,
+WeeklyEvents.monthStart,WeeklyEvents.dayStart,WeeklyEvents.daysActive,group_concat(DayOfTheWeek.day) as `days`,Event.hour,Event.minute,Event.actionInformation
+from DayOfTheWeek
+inner join WeeklyEvents_DayOfTheWeek on WeeklyEvents_DayOfTheWeek.DayOfTheWeekId = DayOfTheWeek.id
+inner join WeeklyEvents on WeeklyEvents.id = WeeklyEvents_DayOfTheWeek.WeeklyEventsId 
+inner join Event on WeeklyEvents.EventId = Event.id
+inner join EventType on EventType.id = Event.EventTypeId""")
+
+	command = utilities.mardbs(command)
+	command +="> tempWeeklyTable"
+	os.system(command)
+	tempTable = ""
+	table = [[]]
+
+	with open('tempWeeklyTable') as tempUniqueTable:
+		for line in tempUniqueTable:
+			tempLine = line.strip()
+			rline = ""
+			for char in tempLine:
+				if char == '\t':
+					rline += ","
+				elif char == ',':
+					rline += '|'
+				else:
+					rline += char
+			lineWords = rline.split(',')
+			table.append(lineWords)
+			tempTable += rline + "\n"
+	os.remove('tempWeeklyTable')
+	return table
+
+def addDayOfTheWeek(day):
+	stri = ""
+	if day == 1:
+		stri = "LUNES"
+	elif day == 2:
+		stri = "MARTES"
+	elif day == 3:
+		stri = "MIERCOLES"
+	elif day == 4:
+		stri = "JUEVES"
+	elif day == 5:
+		stri = "VIERNES"
+	elif day == 6:
+		stri = "SABADO"
+	elif day == 7:
+		stri = "DOMINGO"
+	return stri
+
+
+def calculateYearDay(day,month,months):
+	ans = 0
+	if month > 12 or day > 31:
+		return 500
+
+	for i in range(1,month):
+		ans+=months[i]
+	ans+=day
+	return ans
+
+def appendUniqueTasksToCsv(tableUnique,day,dayOfTheWeek,months):
+	ans=""
+	for row in range(1,len(tableUnique)):
+		toCompare =calculateYearDay(int(tableUnique[row][6]),int(tableUnique[row][5]),months)
+		if day == toCompare:
+			ans+=""+str(dayOfTheWeek)+":"+str(tableUnique[row][7])+":"+str(tableUnique[row][8])+","+str(tableUnique[row][9])+","+str(tableUnique[row][2])+","+str(tableUnique[row][3])+","+str(tableUnique[row][1])+"\n"
+	return ans
+def checkDayOfTheWeek(daysInTable,dayOfTheWeek):
+	if dayOfTheWeek == 1:
+		for day in daysInTable:
+			if day == 'monday':
+				return True
+	elif dayOfTheWeek==2:
+		for day in daysInTable:
+			if day == 'tuesday':
+				return True
+	elif dayOfTheWeek==3:
+		for day in daysInTable:
+			if day == 'wednesday':
+				return True
+	elif dayOfTheWeek==4:
+		for day in daysInTable:
+			if day == 'thursday':
+				return True
+	elif dayOfTheWeek==5:
+		for day in daysInTable:
+			if day == 'friday':
+				return True
+	elif dayOfTheWeek==6:
+		for day in daysInTable:
+			if day == 'saturday':
+				return True
+	elif dayOfTheWeek==7:
+		for day in daysInTable:
+			if day == 'sunday':
+				return True
+	return False
+
+def appendWeeklyTasksToCsv(tableWeekly,day,dayOfTheWeek,months):
+	ans=""
+	for row in range(1,len(tableWeekly)):
+		toCompare = calculateYearDay(int(tableWeekly[row][6]),int(tableWeekly[row][5]),months)
+		daysInTable = tableWeekly[row][8].split('|')
+		dayOfTheWeekb = checkDayOfTheWeek(daysInTable,dayOfTheWeek)
+		if day >= toCompare and day < toCompare + int(tableWeekly[row][7]) and dayOfTheWeekb :
+#			ans+=""+str(dayOfTheWeek) + ":"+str(tableWeekly[row][9])+":"+str(tableWeekly[row][10])+","+str(tableWeekly[row])+"\n"
+#			print(ans)
+			ans+=""+str(dayOfTheWeek)+":"+str(tableWeekly[row][9])+":"+str(tableWeekly[row][10])+","+str(tableWeekly[row][11])+","+str(tableWeekly[row][1])+","+str(tableWeekly[row][2])+","+str(tableWeekly[row][3])+"\n"
+	return ans
+
+
+
+def updateCsv():
+	#	fopen("TasksOfTheWeek.csv","w")
+	cyear = utilities.getYear()
+	cmonth = utilities.getMonth()
+	cday = utilities.getDayOfTheMonth()
+	WeekDay = utilities.getDayOfTheWeek()
+	cyearDay = utilities.getYearDay()
+
+	february = 28
+	if cyear%4 == 0: february = 29
+	months = {1:31,2:february,3:31,4:30,5:31,6:30,7:31,8:31,9:30,10:31,11:30,12:31}
+	UniqueTable = createTempUniqueTable()
+	UniqueTable = UniqueTable[1:]
+	WeeklyTable = createTempWeeklyTable()
+	WeeklyTable = WeeklyTable[1:]
+	# unique
+	# 0 ,1         ,2   ,3          ,4   ,5    ,6  ,7   ,8
+	# id,actionTime,name,description,year,month,day,hour,minute
+
+	#Weekly
+	# 0 ,1   ,2                ,3         ,4        ,5         ,6       ,7         ,8                ,9   ,10    ,11
+	# id,name,actionDescription,actionTime,yearStart,monthStart,dayStart,daysActive,days(of the week),hour,minute,actionInformation
+
+	print(UniqueTable[0])
+	print()
+	print(WeeklyTable[0])
+	startDay = cyearDay - WeekDay
+	print("week day: "+str(WeekDay)+"\ncurrent day of the year: "+str(cyearDay)+"")
+
+	ans =""
+	ans+="time,info,action,name,time-length\n"
+	counter = 1
+	for day in range(startDay+1,startDay+8):
+		dayWeek = addDayOfTheWeek(day - startDay )
+		ans+= ""+str(dayWeek)+","+str(dayWeek)+"\n"
+		ans += appendUniqueTasksToCsv(UniqueTable,day,day-startDay,months)
+		ans += appendWeeklyTasksToCsv(WeeklyTable,day,day-startDay,months)
+		ans+="\n"
+
+	csv_output = open("testCsvFile.csv","w")
+	csv_output.write(ans)
+	csv_output.close()
+
+	tf = open("alarmLog/last_csv_update","w")
+	tf.write(str(cyear) +" " + str(cyearDay))
+	tf.close()
+
+
+
+
+
+
+
 def getInfoActionName():
+	checkCsvUpdate()
 	# acceptance of the algoritm
 	ac = presets.acceptance
 	# current hour and minute
@@ -154,4 +372,9 @@ def getInfoActionName():
 			return info[i],actions[i],names[i],actionTimeCol[i]
 	# return false so that when this happens we can get info output
 	return "false", "false" , "false","false" # info,action,name,actionTime
+
+
+
+
+
 
