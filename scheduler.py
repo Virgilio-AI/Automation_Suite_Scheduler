@@ -147,16 +147,19 @@ inner join UniqueEvents on UniqueEvents.EventId = Event.id
 			table.append(lineWords)
 			tempTable += rline + "\n"
 	os.remove('tempUniqueTable')
-	return table
+	return table[1:]
 
 def createTempWeeklyTable():
-	command = ("""select WeeklyEvents.id as `WeeklyEvent_id`,EventType.name,EventType.actionDescription,Event.actionTime,WeeklyEvents.yearStart,
+	command = ("""
+
+select WeeklyEvents.id as `WeeklyEvent_id`,EventType.name,EventType.actionDescription,Event.actionTime,WeeklyEvents.yearStart,
 WeeklyEvents.monthStart,WeeklyEvents.dayStart,WeeklyEvents.daysActive,group_concat(DayOfTheWeek.day) as `days`,Event.hour,Event.minute,Event.actionInformation
 from DayOfTheWeek
 inner join WeeklyEvents_DayOfTheWeek on WeeklyEvents_DayOfTheWeek.DayOfTheWeekId = DayOfTheWeek.id
 inner join WeeklyEvents on WeeklyEvents.id = WeeklyEvents_DayOfTheWeek.WeeklyEventsId 
 inner join Event on WeeklyEvents.EventId = Event.id
-inner join EventType on EventType.id = Event.EventTypeId""")
+inner join EventType on EventType.id = Event.EventTypeId\n""")
+	command+="group by WeeklyEvents.id;"
 
 	command = utilities.mardbs(command)
 	command +="> tempWeeklyTable"
@@ -172,14 +175,15 @@ inner join EventType on EventType.id = Event.EventTypeId""")
 				if char == '\t':
 					rline += ","
 				elif char == ',':
-					rline += '|'
+					rline += "|"
 				else:
 					rline += char
 			lineWords = rline.split(',')
 			table.append(lineWords)
 			tempTable += rline + "\n"
+
 	os.remove('tempWeeklyTable')
-	return table
+	return table[1:]
 
 def addDayOfTheWeek(day):
 	stri = ""
@@ -274,9 +278,7 @@ def updateCsv():
 	if cyear%4 == 0: february = 29
 	months = {1:31,2:february,3:31,4:30,5:31,6:30,7:31,8:31,9:30,10:31,11:30,12:31}
 	UniqueTable = createTempUniqueTable()
-	UniqueTable = UniqueTable[1:]
 	WeeklyTable = createTempWeeklyTable()
-	WeeklyTable = WeeklyTable[1:]
 	# unique
 	# 0 ,1         ,2   ,3          ,4   ,5    ,6  ,7   ,8
 	# id,actionTime,name,description,year,month,day,hour,minute
@@ -375,6 +377,5 @@ def getInfoActionName():
 
 
 
-
-
-
+table = createTempWeeklyTable()
+print(table)

@@ -8,6 +8,8 @@ import tkinter as tk
 import sys
 import os
 import keyboard
+import matplotlib.pyplot as plt
+import subprocess
 # =============
 # ==== utilities for the gui =====
 # =============
@@ -43,6 +45,46 @@ def mardb(stri):
 	return "mariadb --execute=\" use automation_suite ; "+str(stri)+"\""
 def mardbs(stri):
 	return "mariadb --execute=' use automation_suite ; "+str(stri)+"'"
+
+
+def createTempWeeklyTable():
+	command = ("""
+
+select WeeklyEvents.id as `WeeklyEvent_id`,EventType.name,EventType.actionDescription,Event.actionTime,WeeklyEvents.yearStart,
+WeeklyEvents.monthStart,WeeklyEvents.dayStart,WeeklyEvents.daysActive,group_concat(DayOfTheWeek.day) as `days`,Event.hour,Event.minute,Event.actionInformation
+from DayOfTheWeek
+inner join WeeklyEvents_DayOfTheWeek on WeeklyEvents_DayOfTheWeek.DayOfTheWeekId = DayOfTheWeek.id
+inner join WeeklyEvents on WeeklyEvents.id = WeeklyEvents_DayOfTheWeek.WeeklyEventsId 
+inner join Event on WeeklyEvents.EventId = Event.id
+inner join EventType on EventType.id = Event.EventTypeId\n""")
+	command+="group by WeeklyEvents.id;"
+
+	command = mardbs(command)
+	command +="> tempWeeklyTable"
+	os.system(command)
+	tempTable = ""
+	table = [[]]
+
+	with open('tempWeeklyTable') as tempUniqueTable:
+		for line in tempUniqueTable:
+			tempLine = line.strip()
+			rline = ""
+			for char in tempLine:
+				if char == '\t':
+					rline += ","
+				elif char == ',':
+					rline += "|"
+				else:
+					rline += char
+			lineWords = rline.split(',')
+			table.append(lineWords)
+			tempTable += rline + "\n"
+
+	os.remove('tempWeeklyTable')
+	return table[1:]
+
+
+
 # =============
 # ==== buttons =====
 # =============
@@ -757,6 +799,55 @@ def addUniqueTaskButtonf():
 	add_button = Button(buttonsFrame,text="add task",command=lambda: addUniqueButton(level_add_task,year.get(),month.get(),day.get(),hour.get(),minute.get(),actionTime.get(),EventType.get(),actionInformation.get()))
 	add_button.pack(side=TOP)
 
+
+def getYear():
+	return int(str(subprocess.check_output(['date','+%G']).decode('utf-8')))
+
+def calculateYearDay(day,month,months):
+	ans = 0
+	if month > 12 or day > 31:
+		return 500
+
+	for i in range(1,month):
+		ans+=months[i]
+	ans+=day
+	return ans
+
+def graphWeeklyTasks():
+	tempWeeklyTable = createTempWeeklyTable()
+	cyear = getYear()
+	print(tempWeeklyTable[0])
+	# Declaring a figure "gnt"
+	fig, gnt = plt.subplots()
+	# Setting Y-axis limits
+	gnt.set_ylim(0, 80)
+	# Setting X-axis limits
+	gnt.set_xlim(0, 366)
+	# Setting labels for x-axis and y-axis
+	gnt.set_xlabel(str(getYear()))
+	gnt.set_ylabel('tasks')
+
+	february = 28
+	if cyear%4 == 0: february = 29
+	months = {1:31,2:february,3:31,4:30,5:31,6:30,7:31,8:31,9:30,10:31,11:30,12:31}
+
+	# Setting graph attribute
+	gnt.grid(True)
+	# 0 ,1   ,2                ,3         ,4        ,5         ,6       ,7         ,8   ,9   ,10    ,11
+	# id,name,actionDescription,actionTime,yearStart,monthStart,dayStart,daysActive,days,hour,minute,actionInformation
+	labels = []
+	ticks = []
+	for row in range(1,len(tempWeeklyTable)):
+		dayStart = calculateYearDay(int(tempWeeklyTable[row][6]),int(tempWeeklyTable[row][5]),months)
+		gnt.broken_barh([(dayStart,dayStart+int(tempWeeklyTable[row][7]))],(int(row)*8,4))
+		labels.append(tempWeeklyTable[row][1]+" hour: "+str(tempWeeklyTable[row][9])+"")
+		ticks.append(int(row)*8 + 2)
+
+	gnt.set_yticklabels(labels)
+	gnt.set_yticks(ticks)
+	plt.show()
+
+
 def main():
 	center(root,300,500)
 
@@ -793,6 +884,9 @@ def main():
 	queryUniqueButton = Button(frame,text="query unique tasks",command=queryUniqueTasks)
 	queryUniqueButton.pack(side=TOP)
 
+	# opt parameters = fg="color",bg="color",command=somFunction
+	queryUniqueButton = Button(frame,text="graph weekly tasks",command=graphWeeklyTasks)
+	queryUniqueButton.pack(side=TOP)
 
 	# opt parameters = fg="color",bg="color",command=somFunction
 	close = Button(backFrame,text="exit",command=exitProgram)
