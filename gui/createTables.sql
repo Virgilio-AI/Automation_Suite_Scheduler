@@ -1,30 +1,10 @@
--- create database if not exists automation_suite_database ;
+-- create a the main database if it doesn't exists 
+create database if not exists automation_suite ;
+-- use the data base where the tables will be created
+
 use automation_suite ;
 
-drop table if exists WeeklyEvents_DayOfTheWeek ;
-drop table if exists WeeklyEvents ;
-drop table if exists UniqueEvents ;
-drop table if exists Event ;
-drop table if exists EventType ;
-drop table if exists DayOfTheWeek ;
-
--- data types -> varchar(n),Int,DECIMAL(M,N),BLOB,DATE,TIMESTAMP
--- constrains -> not null,unique,auto_increment
--- on delete -> on delete set null, on delete cascade
--- snippets -> foreign,
-
--- data types -> varchar(n),Int,DECIMAL(M,N),BLOB,DATE,TIMESTAMP
--- constrains -> not null,unique,auto_increment
--- on delete -> on delete set null, on delete cascade
--- snippets -> foreign,
-
--- EXAMPLE
--- student_id INT,
--- name VARCHAR(20) not null,
--- major VARCHAR(20) unique,
--- primary key(student_id)
--- foreign key(student_id) references branch(branch_id) on delete cascade
-
+-- day of the week will be related to WeeklyEvents in many to many
 create table if not exists DayOfTheWeek(
 	id int not null unique auto_increment,
 
@@ -32,14 +12,14 @@ create table if not exists DayOfTheWeek(
 
 	primary key(id)
 );
-
+-- EventType will be related to table Event in one to many
 create table if not exists EventType(
 	id int not null unique auto_increment,
 	name varchar(100),
 	actionDescription varchar(300),
 	primary key(id)
 );
-
+-- Event will be related to Weekly Events and UniqueEvents in one to many
 create table if not exists Event(
 	id int not null unique auto_increment,
 
@@ -52,7 +32,7 @@ create table if not exists Event(
 	primary key(id),
 	foreign key (EventTypeId) references EventType(id) on delete cascade
 );
-
+-- Weekly Events wil be related to Event in a relationship of one to one
 create table if not exists WeeklyEvents(
 	id int not null unique auto_increment,
 	EventId int not null,
@@ -66,7 +46,8 @@ create table if not exists WeeklyEvents(
 	primary key(id),
 	foreign key (EventId) references Event(id) on delete cascade
 );
-create table WeeklyEvents_DayOfTheWeek(
+-- this is the helper table to relate WeeklyEvents and DayOfTheWeek in a many to many way
+create table if not exists WeeklyEvents_DayOfTheWeek(
 	id int not null unique auto_increment,
 
 	WeeklyEventsId int not null,
@@ -76,8 +57,7 @@ create table WeeklyEvents_DayOfTheWeek(
 	foreign key (WeeklyEventsId) references WeeklyEvents(id) on delete cascade,
 	foreign key (DayOfTheWeekId) references DayOfTheWeek(id) on delete cascade
 );
-
-
+-- Unique events will be related in a one to many relationship with the event table
 create table if not exists UniqueEvents(
 	id int not null unique auto_increment,
 	EventId int not null,
@@ -90,22 +70,8 @@ create table if not exists UniqueEvents(
 	foreign key (EventId) references Event(id) on delete cascade
 );
 
-
-
-show tables ;
-
--- describe UniqueEvents ;
-
--- describe WeeklyEvents ;
-
--- describe Event ;
-
--- describe EventType ;
-
--- describe DayOfTheWeek ;
-
-
 -- create the default presets for Types of events
+-- this are the three default but will be adding more in the future
 
 delete from EventType where id > 0 ;
 alter table EventType auto_increment = 0 ;
@@ -114,6 +80,7 @@ insert into EventType(name,actionDescription) values("zoom","initiates a zoom me
 insert into EventType(name,actionDescription) values("alarm","reproduces an alarm") ;
 
 -- create the default presets for the days of the week
+-- this are just the days of the week
 delete from DayOfTheWeek where id > 0;
 alter table DayOfTheWeek  auto_increment = 0;
 insert into DayOfTheWeek(day) values("monday") ;
@@ -123,28 +90,4 @@ insert into DayOfTheWeek(day) values("thursday") ;
 insert into DayOfTheWeek(day) values("friday") ;
 insert into DayOfTheWeek(day) values("saturday") ;
 insert into DayOfTheWeek(day) values("sunday") ;
-
-
-
-
--- describe the tables
-describe DayOfTheWeek ;
-describe EventType ;
-describe Event ;
-describe WeeklyEvents ;
-describe WeeklyEvents_DayOfTheWeek ;
-describe UniqueEvents ;
-
-
-
-
-
-
--- visualize data
-
--- select * from WeeklyEvents ;
--- select * from Event ;
--- select * from EventType ;
--- select * from DayOfTheWeek ;
--- select * from UniqueEvents ;
 
