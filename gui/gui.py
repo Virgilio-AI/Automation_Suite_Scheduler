@@ -793,21 +793,6 @@ def main():
 	queryUniqueButton = Button(frame,text="query unique tasks",command=queryUniqueTasks)
 	queryUniqueButton.pack(side=TOP)
 
-	# opt parameters = fg="color",bg="color",command=somFunction
-	deleteWeeklyButton = Button(frame,text="delete weekly tasks",command=deleteWeeklyTasks)
-	deleteWeeklyButton.pack(side=TOP)
-
-	# opt parameters = fg="color",bg="color",command=somFunction
-	deleteUniqueButton = Button(frame,text="delete unique tasks",command=deleteUniqueTasks)
-	deleteUniqueButton.pack(side=TOP)
-
-#	# opt parameters = fg="color",bg="color",command=somFunction
-#	deleteButton = Button(frame,text="delete or alter weekly tasks",command=deleteWeeklyTasks)
-#	deleteButton.pack(side=TOP)
-#
-#	# opt parameters = fg="color",bg="color",command=somFunction
-#	deleteUniqueButton = Button(frame,text="delete or alter unique tasks",command=deleteUniqueTasks)
-#	deleteUniqueButton.pack(side=TOP)
 
 	# opt parameters = fg="color",bg="color",command=somFunction
 	close = Button(backFrame,text="exit",command=exitProgram)
