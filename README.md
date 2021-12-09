@@ -1,4 +1,4 @@
-# Data Structures and Algorithms - Spicy problems
+# Automation Suite - automation of all sort of boring tasks for linux
 this a an automation suite for linux, is ment to automate boring tasks like entering into zoom meetings and recording them, using python and maria db for the tasks
 everythink devides into unique tasks and weekly tasks
 unique tasks:
