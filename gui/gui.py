@@ -165,16 +165,14 @@ inner join EventType on EventType.id = Event.EventTypeId\n""")
 	command+="group by WeeklyEvents.id;"
 	command = mardbs(command)
 	print(command)
-	
 	os.system(command)
-	#print(command)
 def queryUniqueButton(EventType,actionTime,year,month,day):
 	command = ("""
 
 select UniqueEvents.id as `UniqueEvents id`,Event.actionTime,EventType.name,EventType.actionDescription as `description`,UniqueEvents.year,UniqueEvents.month,UniqueEvents.day,Event.hour,Event.minute as `min`,Event.hour,Event.minute,Event.actionInformation
 from EventType
 inner join Event on EventType.id = Event.EventTypeId
-inner join UniqueEvents on UniqueEvents.EventId = Event.id """)
+inner join UniqueEvents on UniqueEvents.EventId = Event.id\n""")
 	first =False
 	if (EventType != "" or actionTime != "" or year != "" or month != "" or day != ""):
 		command+="where ("
@@ -213,10 +211,12 @@ inner join UniqueEvents on UniqueEvents.EventId = Event.id """)
 
 	if first:
 		command += ")\n"
+
 	command += " ; \n"
 	command = mardbs(command)
+	print(command)
 	os.system(command)
-	#print(command)
+
 def queryUniqueTasks():
 	level_add_task = Toplevel(frame)
 	center(level_add_task,300,500)
@@ -514,9 +514,9 @@ def addButton(layer,yearStart,monthStart,dayStart,daysActive,actionTime,EventTyp
 	if( yearStart.isnumeric() and monthStart.isnumeric() and dayStart.isnumeric() and daysActive.isnumeric() and actionTime.isnumeric() and hour.isnumeric() and minute.isnumeric() ):
 		firstAction = mardb("insert into Event(actionTime,EventTypeId,hour,minute,actionInformation) values("+str(actionTime)+",(select id from EventType where name = '"+str(EventType)+"' ),"+str(hour)+","+str(minute)+",'"+str(actionInformation)+"') ; ")
 		os.system(firstAction)
+		print(firstAction)
 		secondAction = mardb("insert into WeeklyEvents(EventId,yearStart,monthStart,dayStart,daysActive) values((select count(id) from Event),"+str(yearStart)+","+str(monthStart)+","+str(dayStart)+","+str(daysActive)+") ;")
 		os.system(secondAction)
-		print(firstAction)
 		print(secondAction)
 
 

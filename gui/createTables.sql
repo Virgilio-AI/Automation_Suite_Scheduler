@@ -3,6 +3,13 @@ create database if not exists automation_suite ;
 -- use the data base where the tables will be created
 
 use automation_suite ;
+-- drop table if exists WeeklyEvents_DayOfTheWeek ;
+-- drop table if exists UniqueEvents ;
+-- drop table if exists WeeklyEvents ;
+-- drop table if exists Event ;
+-- drop table if exists DayOfTheWeek ;
+-- drop table if exists EventType ;
+
 
 -- day of the week will be related to WeeklyEvents in many to many
 create table if not exists DayOfTheWeek(
@@ -91,3 +98,5 @@ insert into DayOfTheWeek(day) values("friday") ;
 insert into DayOfTheWeek(day) values("saturday") ;
 insert into DayOfTheWeek(day) values("sunday") ;
 
+
+show tables ;
