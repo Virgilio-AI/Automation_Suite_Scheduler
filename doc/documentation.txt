@@ -1,0 +1,31 @@
+*basic usage
+* introduction
+* connection with mariadb
+--- query
+--- insertions
+--- graph
+
+* introduction
+this a an automation suite for linux, is ment to automate boring tasks like entering into zoom meetings and recording them, using python and maria db for the tasks everythink devides into unique tasks and weekly tasks unique tasks: tasks that only repeat themselves one time weekly tasks: tasks that repeat themselves every week for a determinated period of days
+
+* basic usage ->
+just run
+python main.py
+in your machine and you should start using it
+make sure you have mariadb installed and python with the necessaru dependencies
+* query ->
+just run the gui/gui.py
+the gui is pretty self explanatory
+
+press query WeeklyTasks so that you can query Weekly tasks
+press query Uniquely tasks so that you can query Unique tasks
+
+* insertions ->
+
+press add Unique task so that you can add a unique task
+press add Weekly Task so that you can add a WeeklyTask
+
+
+* graphs ->
+
+press graph weekly tasks so that you can graph the Weekly tasks in a nice gant char

@@ -4,10 +4,6 @@ sounds
 __pycache__
 __pycache__
 alarmLog
-presets.json
-presets.py
-presets.json
-presets.py
 gui/mariadb.txt
 gui/test.sql
 testCsvFile.csv
