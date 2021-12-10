@@ -51,14 +51,14 @@ def updateCircadianWakeUp():
 		# to ignore the comments that are inside the file
 		presets_dt = json.loads(fixed_json)
 	# get the circadian rithm alarm preset
-	circadianRithmAlarmTime = presets_dt["circadianRithmAlarmTime"]
+	circadianRitmAlarmTime = presets_dt["circadianRitmAlarmTime"]
 	# get current month and day
 	# this circadian ritm alarm is adjusted for mexicos change of time
 	month = utilities.getMonth()
 	day = utilities.getDayOfTheMonth()
 	# don't edit this is you don't know what you are doing
-	circadianRitmHour = int(circadianRithmAlarmTime.split(":")[0])
-	circadianRitmMinute = int(circadianRithmAlarmTime.split(":")[1])
+	circadianRitmHour = int(circadianRitmAlarmTime.split(":")[0])
+	circadianRitmMinute = int(circadianRitmAlarmTime.split(":")[1])
 	
 	# action to do if we are in winter
 	if ( month == 4 and day <=4 or month < 4) or ( month == 10 and day >=30 or month > 10):
@@ -337,8 +337,8 @@ def getInfoActionName():
 			"\" >> alarmLog/comparison_log")
 
 	# circadian rithm alarm presets
-	cInfo = presets.circadianRithmAlarminfo
-	cAction = presets.circadianRithmAlarmAction
+	cInfo = presets.circadianRitmAlarminfo
+	cAction = presets.circadianRitmAlarmAction
 	cName = "circadian ritm alarm"
 	cTime = presets.circadianRitmActionTime
 	cActive = utilities.checkIfActive()[3]

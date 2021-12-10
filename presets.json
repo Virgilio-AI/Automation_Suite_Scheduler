@@ -1,0 +1,105 @@
+// Fecha: 09/December/2021 - Thursday
+// Autor: Virgilio Murillo Ochoa
+// personal github: Virgilio-AI
+// linkedin: https://www.linkedin.com/in/virgilio-murillo-ochoa-b29b59203
+// contact: virgiliomurilloochoa1@gmail.com
+{
+// configurations for the whole program
+	"Active":true,
+	"alarmActive":true,
+	"zoomClasOpener":true,
+	"mainCicleRepetition":800,
+	"acceptance":900,
+// main configurations for alerts
+	"alertVolume":80,
+	"alertActive":true,
+// zoom clases configuration
+	"zoomClassOpener":false,
+	"zoomClassRecorderActive":false,
+
+
+	"monday":[
+// zoom meetings active
+		false,
+// alarm active
+		true,
+// alerts active
+		true,
+// circadian alarm
+		true
+	],
+
+	"tuesday":
+	[
+		false,
+// zoom meetings active
+		true,
+// alarm active
+		true,
+// alerts active
+		true
+	],
+
+	"wednesday":
+	[
+		false,
+// zoom meetings active
+		true,
+// alarm active
+		true,
+// alerts active
+		true
+	],
+
+	"thursay":
+	[
+		false,
+// zoom meetings active
+		true,
+// alarm active
+		true,
+// alerts active
+		true
+	],
+
+	"friday":
+	[
+		false,
+// zoom meetings active
+		true,
+// alarm active
+		true,
+// alerts active
+		true
+	],
+
+	"saturday":
+	[
+		false,
+// zoom meetings active
+		true,
+// alarm active
+		true,
+// alerts active
+		true
+	],
+
+	"sunday":
+	[
+		false,
+// zoom meetings active
+		true,
+// alarm active
+		true,
+// alerts active
+		true
+	],
+
+	"circadianRitmAlarmTime":"6:00",
+	"circadianRitmAlarminfo":"reproduces circadian alarm",
+	"circadianRitmAlarmAction":"alarm",
+	"circadianRitmActionTime":1800,
+	"timePlaying":1800,
+	"circadianRitmAlarmVolume":60
+}
+

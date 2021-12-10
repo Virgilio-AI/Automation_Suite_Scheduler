@@ -51,7 +51,7 @@ def menu():
 	# if it is time to execute the alarm
 	if action == 'alarm'  and presets.active and presets.alarmActive and utilities.checkIfActive()[1]:
 		utilities.giveWarning(1,"initiating main alarm")
-		alarm.playmusic(info,actionTime,presets.circadianRithmAlarmVolume)
+		alarm.playmusic(info,int(actionTime),presets.circadianRitmAlarmVolume)
 	# if it is time to initiate a meeting
 	elif action == 'zoom' and presets.active and presets.zoomClassOpener and utilities.checkIfActive()[0]:
 		initZoom.initZoom(info,name,actionTime)
