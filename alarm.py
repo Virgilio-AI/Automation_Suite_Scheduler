@@ -54,12 +54,12 @@ def maximizeVolumeNcmpcpp():
 # wait the action and if non stop is set apply it
 def echoTime():
 	hr,mn = utilities.getHour()
-	utilities.giveWarning(4,"the time is:"+str(hr)+","+str(mn))
+	utilities.giveWarning(4,"the time is "+str(hr)+" "+str(mn))
 
 def playmusic(info,actionTime,Volume): # the input should be time: [time]
 	openTerminal = 'st -e sh -c ' # open in a new terminal command
 	os.system(openTerminal + "'" + "ncmpcpp" +"' &") # execute command for music
-	utilities.waitUntilFound(10,ncmpcppExists) # start the program until the image is visible
+	utilities.waitUntilFound(5,ncmpcppExists) # start the program until the image is visible
 	os.system("pactl -- set-sink-volume 0 "+str(Volume)+"%") # set the volume to 80%
 	maximizeVolumeNcmpcpp()
 	clearMusic() # clear all previous music
@@ -93,3 +93,5 @@ def playmusic(info,actionTime,Volume): # the input should be time: [time]
 	pg.press('space')
 	clearMusic() # clear all the music again
 	utilities.closeWindow()
+
+
