@@ -14,18 +14,21 @@ from datetime import datetime
 import os
 import time as t
 import traceback
-from gtts import gTTS
+
+# commented so that the app works without the internet
+import pyttsx3 as tts
+# from gtts import gTTS
 import presets
 
 def waitUntilFound(timeLimit,img):
 	counter=0
 	while 1:
 		counter+=0.2
-		if counter == timeLimit:
+		if counter >= timeLimit:
 			print("not found")
 			return -1
 		try:
-			x,y=pg.locateCenterOnScreen(img,confidence=0.9)
+			x,y=pg.locateCenterOnScreen(img,confidence=0.7)
 			print(x,y)
 			break
 		except:
@@ -70,13 +73,21 @@ def giveWarning(time,message):
 	os.system("pactl set-sink-mute @DEFAULT_SINK@ false ; pactl -- set-sink-volume 0 "+str(presets.alertVolume)+"%")
 	counter = 0
 	language = 'en'
-	sound = gTTS(text=message,lang=language,slow=False)
 	nameOfFile = "sounds/" + message.replace(" ","_") + ".mp3"
-	forceCreateDirectory("sounds")
-	sound.save(nameOfFile)
+	eng = tts.init()
+	# for the rate
+	eng.setProperty('rate',125)
+	volume = eng.getProperty('volume')   #getting to know current volume level (min=0 and max=1)
+	eng.setProperty('volume',1.5)
+
+#	voices = eng.getProperty('voices')       #getting details of current voice
+	eng.setProperty('voice', 'english_rp+f3')
+
+
 	while counter < time:
 		os.system("notify-send \""+message+"\"")
-		os.system("mpv \""+nameOfFile+"\"")
+		eng.say(message)
+		eng.runAndWait()
 		t.sleep(1)
 		counter+=1
 	os.system("pactl -- set-sink-volume 0 "+volumePercentage+"%") # set the volume to 80%
@@ -147,4 +158,3 @@ def mardb(stri):
 	return "mariadb --execute=\" use automation_suite ; "+str(stri)+"\""
 def mardbs(stri):
 	return "mariadb --execute=' use automation_suite ; "+str(stri)+"'"
-
