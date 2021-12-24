@@ -3,11 +3,11 @@
 // personal github: Virgilio-AI
 // linkedin: https://www.linkedin.com/in/virgilio-murillo-ochoa-b29b59203
 // contact: virgiliomurilloochoa1@gmail.com
+
 {
 // configurations for the whole program
 	"Active":true,
 	"alarmActive":true,
-	"zoomClasOpener":true,
 	"mainCicleRepetition":800,
 	"acceptance":900,
 // main configurations for alerts
@@ -95,11 +95,10 @@
 		true
 	],
 
-	"circadianRitmAlarmTime":"6:00",
+	"circadianRitmAlarmTime":"7:00",
 	"circadianRitmAlarminfo":"reproduces circadian alarm",
 	"circadianRitmAlarmAction":"alarm",
 	"circadianRitmActionTime":1800,
 	"timePlaying":1800,
 	"circadianRitmAlarmVolume":60
 }
-
