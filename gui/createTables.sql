@@ -85,6 +85,9 @@ alter table EventType auto_increment = 0 ;
 insert into EventType(name,actionDescription) values("alert","gives a personalized voice alert for the system") ;
 insert into EventType(name,actionDescription) values("zoom","initiates a zoom meeting") ;
 insert into EventType(name,actionDescription) values("alarm","reproduces an alarm") ;
+insert into EventType(name,actionDescription) values("circadian-alert","changes the time given the circadian hour, changing the hour given the circadian hour") ;
+insert into EventType(name,actionDescription) values("circadian-zoom","initiates a zoom meeting,changing the hour given the circadian hour") ;
+insert into EventType(name,actionDescription) values("circadian-alarm","reproduces an alarm,changing the hour given the circadian hour") ;
 
 -- create the default presets for the days of the week
 -- this are just the days of the week
@@ -100,3 +103,9 @@ insert into DayOfTheWeek(day) values("sunday") ;
 
 
 show tables ;
+
+select * from EventType ;
+select * from Event ;
+select * from DayOfTheWeek ;
+select * from WeeklyEvents ;
+select * from UniqueEvents ;
