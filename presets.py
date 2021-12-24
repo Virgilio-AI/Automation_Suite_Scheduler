@@ -18,7 +18,7 @@ with open('presets.json', 'r') as handle:
 active = presets_dt['Active']
 alarmActive = presets_dt['alarmActive']
 mainCicleRepetition = presets_dt['mainCicleRepetition']
-acceptance = presets_dt['acceptance']
+acceptance = mainCicleRepetition/60 + 1;
 
 
 # main configurations for alerts
