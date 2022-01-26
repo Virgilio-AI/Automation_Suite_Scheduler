@@ -12,3 +12,9 @@ horariosDiarios/history
 Log
 
 .*.png
+
+ClasesLinks.csv
+horariosSemanales/next.csv
+horariosSemanales/this.csv
+horariosDiarios/today.txt
+horariosDiarios/tomorrow.txt
