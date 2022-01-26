@@ -7,3 +7,8 @@ alarmLog
 gui/mariadb.txt
 gui/test.sql
 testCsvFile.csv
+
+horariosDiarios/history
+Log
+
+.*.png

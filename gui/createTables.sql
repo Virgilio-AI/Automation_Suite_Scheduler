@@ -88,6 +88,8 @@ insert into EventType(name,actionDescription) values("alarm","reproduces an alar
 insert into EventType(name,actionDescription) values("circadian-alert","changes the time given the circadian hour, changing the hour given the circadian hour") ;
 insert into EventType(name,actionDescription) values("circadian-zoom","initiates a zoom meeting,changing the hour given the circadian hour") ;
 insert into EventType(name,actionDescription) values("circadian-alarm","reproduces an alarm,changing the hour given the circadian hour") ;
+insert into EventType(name,actionDescription) values("human-task","reminder of something that has to be done, without alert") ;
+
 
 -- create the default presets for the days of the week
 -- this are just the days of the week
@@ -100,12 +102,14 @@ insert into DayOfTheWeek(day) values("thursday") ;
 insert into DayOfTheWeek(day) values("friday") ;
 insert into DayOfTheWeek(day) values("saturday") ;
 insert into DayOfTheWeek(day) values("sunday") ;
-
+ 
 
 show tables ;
 
-select * from EventType ;
+select * from EventType where name = 'circadian-alert' ;
 select * from Event ;
 select * from DayOfTheWeek ;
 select * from WeeklyEvents ;
 select * from UniqueEvents ;
+
+
