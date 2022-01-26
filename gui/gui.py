@@ -157,9 +157,14 @@ def queryWeeklyTasks():
 	# opt parameters = fg="color",bg="color",command=somFunction
 	queryUniqueBut = Button(buttonsFrame,text="query with the given constrains",command=lambda: queryWeeklyButton(EventType.get(),actionTime.get(),yearStart.get(),monthStart.get(),dayStart.get()))
 	queryUniqueBut.pack(side=TOP)
+
+	# the button to delete with the given constrains
+	# opt parameters = fg="color",bg="color",command=lambda: function(params)
+	deleteWeeklyBut = Button(buttonsFrame,text="delete with the given constrains",command=lambda: deleteWeeklyButton(EventType.get(),actionTime.get(),yearStart.get(),monthStart.get(),dayStart.get())).pack(side=TOP)
+
 def queryWeeklyButton(EventType,actionTime,yearStart,monthStart,dayStart):
-	command = ("""select WeeklyEvents.id as `WeeklyEvent_id`,EventType.name,EventType.actionDescription,Event.actionTime,WeeklyEvents.yearStart,
-WeeklyEvents.monthStart,WeeklyEvents.dayStart,WeeklyEvents.daysActive,group_concat(DayOfTheWeek.day) as `days`,Event.actionInformation 
+	command = ("""select WeeklyEvents.id as `WeeklyEvent_id`,EventType.name,EventType.id,Event.actionTime,WeeklyEvents.yearStart,
+WeeklyEvents.monthStart,WeeklyEvents.dayStart,WeeklyEvents.daysActive,group_concat(substring(DayOfTheWeek.day,1,3)) as `days`,Event.actionInformation 
 from DayOfTheWeek
 inner join WeeklyEvents_DayOfTheWeek on WeeklyEvents_DayOfTheWeek.DayOfTheWeekId = DayOfTheWeek.id
 inner join WeeklyEvents on WeeklyEvents.id = WeeklyEvents_DayOfTheWeek.WeeklyEventsId 
@@ -167,10 +172,11 @@ inner join Event on WeeklyEvents.EventId = Event.id
 inner join EventType on EventType.id = Event.EventTypeId\n""")
 	first =False
 	if (EventType != "" or actionTime != "" or yearStart != "" or monthStart != "" or dayStart != ""):
-		command+="where ("
+		command+="where "
 
 	if EventType != "":
-		command += "(EventType.name = '"+str(EventType)+"')"
+		command += "EventType.name = \""+str(EventType)+"\" "
+		
 		first = True
 
 	if actionTime != "":
@@ -202,7 +208,7 @@ inner join EventType on EventType.id = Event.EventTypeId\n""")
 			first = True
 
 	if first:
-		command += ")\n"
+		command += "\n"
 
 	command+="group by WeeklyEvents.id;"
 	command = mardbs(command)
@@ -323,230 +329,119 @@ def queryUniqueTasks():
 	# opt parameters = fg="color",bg="color",command=somFunction
 	queryUniqueBut = Button(buttonsFrame,text="query with the given constrains",command=lambda: queryUniqueButton(EventType.get(),actionTime.get(),year.get(),month.get(),day.get()))
 	queryUniqueBut.pack(side=TOP)
-def deleteWeeklyButton(EventType,actionTime,yearStart,monthStart,dayStart):
-	command = ("""select WeeklyEvents.id as `WeeklyEvent_id`,EventType.name,EventType.actionDescription,Event.actionTime,WeeklyEvents.yearStart,
-WeeklyEvents.monthStart,WeeklyEvents.dayStart,WeeklyEvents.daysActive,group_concat(DayOfTheWeek.day) as `days`, Event.actionInformation
-from DayOfTheWeek
-inner join WeeklyEvents_DayOfTheWeek on WeeklyEvents_DayOfTheWeek.DayOfTheWeekId = DayOfTheWeek.id
-inner join WeeklyEvents on WeeklyEvents.id = WeeklyEvents_DayOfTheWeek.WeeklyEventsId 
-inner join Event on WeeklyEvents.EventId = Event.id
-inner join EventType on EventType.id = Event.EventTypeId\n""")
-	first =False
-	if (EventType != "" or actionTime != "" or yearStart != "" or monthStart != "" or dayStart != ""):
-		command+="where ("
+
+	# opt parameters = fg="color",bg="color",command=lambda: function(params)
+	deleteUniqueBut = Button(buttonsFrame,text="delete with given constrains",command=lambda: deleteUniqueButton(EventType.get(),actionTime.get(),year.get(),month.get(),day.get())).pack(side=TOP)
+
+def deleteUniqueButton(EventType,actionTime,year,month,day):
+	ans = input("are you sure you want to delete??(yes)")
+	if ans != "yes":
+		return
+	command=("""
+	delete from Event where id in (select EventId from UniqueEvents)
+	\n""")
+	first = False
+	if EventType != "" or actionTime != "" or year != "" or month != "" or day != "":
+		command = ("""
+		delete from Event where  id in (select EventId from UniqueEvents where ( """)
+	else:
+		command = ("""
+		delete from Event where  id in (select EventId from UniqueEvents) """)
 
 	if EventType != "":
-		command += "(EventType.name = '"+str(EventType)+"')"
+		command += "EventTypeId = (select id from EventType where name = \""+str(EventType)+"\" )"
 		first = True
 
 	if actionTime != "":
 		if first:
-			command+="and (Event.actionTime = '"+str(actionTime)+"') "
+			command+="and (actionTime = "+str(actionTime)+") "
 		else:
-			command+="(Event.actionTime = '"+str(actionTime)+"') "
+			command+="(actionTime = "+str(actionTime)+") "
+			first = True
+
+	if year != "":
+		if first:
+			command+="and (year = "+str(year)+") "
+		else:
+			command+="(year = "+str(year)+" ) "
+			first = True
+
+	if month != "":
+		if first:
+			command+="and (month = "+str(month)+") "
+		else:
+			command+="(month = "+str(month)+") "
+			first = True
+
+	if day != "":
+		if first:
+			command+="and day = "+str(day)+") "
+		else:
+			command+="(day = "+str(day)+") "
+			first = True
+
+	command += ")) ;\n"
+
+	command = mardbs(command)
+	print(command)
+	os.system(command)
+
+def deleteWeeklyButton(EventType,actionTime,yearStart,monthStart,dayStart):
+
+	ans = input("are you sure you want to delete??(yes)")
+	if ans != "yes":
+		return
+	first =False
+	if (EventType != "" or actionTime != "" or yearStart != "" or monthStart != "" or dayStart != ""):
+		command = ("""
+		delete from Event where  id in (select EventId from WeeklyEvents where ( """)
+	else:
+		command = ("""
+		delete from Event where  id in (select EventId from WeeklyEvents) """)
+
+	if EventType != "":
+		command += "EventTypeId = (select id from EventType where name = \""+str(EventType)+"\" )"
+		first = True
+
+	if actionTime != "":
+		if first:
+			command+="and (actionTime = "+str(actionTime)+") "
+		else:
+			command+="(actionTime = "+str(actionTime)+") "
 			first = True
 
 	if yearStart != "":
 		if first:
-			command+="and (WeeklyEvents.yearStart = '"+str(yearStart)+"') "
+			command+="and (yearStart = "+str(yearStart)+") "
 		else:
-			command+="(WeeklyEvents.yearStart = '"+str(yearStart)+"') "
+			command+="(yearStart = "+str(yearStart)+" ) "
 			first = True
 
 	if monthStart != "":
 		if first:
-			command+="and (WeeklyEvents.monthStart = '"+str(monthStart)+"') "
+			command+="and (monthStart = "+str(monthStart)+") "
 		else:
-			command+="(WeeklyEvents.monthStart = '"+str(monthStart)+"') "
+			command+="(monthStart = "+str(monthStart)+") "
 			first = True
 
 	if dayStart != "":
 		if first:
-			command+="and (WeeklyEvents.dayStart = '"+str(dayStart)+"') "
+			command+="and dayStart = "+str(dayStart)+") "
 		else:
-			command+="(WeeklyEvents.dayStart = '"+str(dayStart)+"') "
+			command+="(dayStart = "+str(dayStart)+") "
 			first = True
 
-	if first:
-		command += ")\n"
+	command += ")) ;\n"
 
-	command+="group by WeeklyEvents.id;"
 	command = mardbs(command)
 	print(command)
-	
-	#os.system(command)
-	#print(command)
-def deleteUniqueButton(EventType,actionTime,year,month,day):
-	command = ""
-	if EventType == "" and actionTime == "" and year == "" and month == "" and day == "" :
-		command = "delete * from Event "
-	else :
-		first = True
-		command += "delete from Event where Event.id = ( select EventId from UniqueEvents where("
-		if actionTime != "" :
-			if first:
-				command += "UniqueEvents.actionTime = "+str(actionTime)+" "
-				first=False
-			else:
-				command += " and UniqueEvents.actionTime = "+str(actionTime)+" "
-		if year != "":
-			if first:
-				first=False
-				command += "UniqueEvents.year = "+str(year)+""
-			else:
-				command += " and UniqueEvents.year = "+str(year)+""
-		if month != "":
-			if first:
-				first=False
-				command += "UniqueEvents.month = "+str(month)+""
-			else:
-				command += " and UniqueEvents.month = "+str(month)+""
-		if day != "":
-			if first:
-				first=False
-				command += "UniqueEvents.day = "+str(day)+""
-			else:
-				command += " and UniqueEvents.day = "+str(day)+""
-		command += "))"
-
-	command += " ; \n"
-	command = mardbs(command)
 	os.system(command)
 
+
 	# print(command)
-def deleteWeeklyTasks():
-# setting labels and text boxes for the page
-	level_add_task = Toplevel(frame)
-	center(level_add_task,300,500)
-
-	# the abel 
-	title_of_window = Label(level_add_task,text="input all the information")
-	title_of_window.pack(side=TOP)
-
-	# test label 
-	newLine = Label(level_add_task,text="")
-	newLine.pack(side=TOP)
-
-	EventTypeLabel = Label(level_add_task,text="EventType:")
-	EventTypeLabel.pack(side=TOP)
-	# start entering information
-	EventType = tk.StringVar()
-	EventTypeTextBox = tk.Entry(level_add_task, width = 50, textvariable = EventType)
-	EventTypeTextBox.pack(side=TOP)
-
-	actionTimeLabel = Label(level_add_task,text="actionTime:")
-	actionTimeLabel.pack(side=TOP)
-	# start entering information
-	actionTime = tk.StringVar()
-	actionTimeTextBox = tk.Entry(level_add_task, width = 50, textvariable = actionTime)
-	actionTimeTextBox.pack(side=TOP)
-
-	yearStartLabel = Label(level_add_task,text="yearStart:")
-	yearStartLabel.pack(side=TOP)
-	# start entering information
-	yearStart = tk.StringVar()
-	yearStartTextBox = tk.Entry(level_add_task, width = 50, textvariable = yearStart)
-	yearStartTextBox.pack(side=TOP)
-
-	monthStartLabel = Label(level_add_task,text="monthStart:")
-	monthStartLabel.pack(side=TOP)
-	# start entering information
-	monthStart = tk.StringVar()
-	monthStartTextBox = tk.Entry(level_add_task, width = 50, textvariable = monthStart)
-	monthStartTextBox.pack(side=TOP)
-
-	dayStartLabel = Label(level_add_task,text="dayStart:")
-	dayStartLabel.pack(side=TOP)
-	# start entering information
-	dayStart = tk.StringVar()
-	dayStartTextBox = tk.Entry(level_add_task, width = 50, textvariable = dayStart)
-	dayStartTextBox.pack(side=TOP)
-
-
-	# =============
-	# ==== the frame for the buttoms =====
-	# =============
-	# the frame for the buttons
-	buttonsFrame = Frame(level_add_task)
-	buttonsFrame.pack()
-
-	# back button
-	# opt parameters = fg="color",bg="color",command=somFunction
-	back_button = Button(buttonsFrame,text="back",command=lambda: deleteTopLevel(level_add_task))
-	back_button.pack(side=BOTTOM)
-
-
-	# add button, action to do when pressed
-	# opt parameters = fg="color",bg="color",command=somFunction
-	deleteWeeklyBut = Button(buttonsFrame,text="delete with the given constrains",command=lambda: deleteWeeklyButton(EventType.get(),actionTime.get(),yearStart.get(),monthStart.get(),dayStart.get()))
-	deleteWeeklyBut.pack(side=TOP)
-def deleteUniqueTasks():
-	level_add_task = Toplevel(frame)
-	center(level_add_task,300,500)
-
-	# the abel 
-	title_of_window = Label(level_add_task,text="input all the information")
-	title_of_window.pack(side=TOP)
-
-	# test label 
-	newLine = Label(level_add_task,text="")
-	newLine.pack(side=TOP)
-
-	EventTypeLabel = Label(level_add_task,text="EventType:")
-	EventTypeLabel.pack(side=TOP)
-	# start entering information
-	EventType = tk.StringVar()
-	EventTypeTextBox = tk.Entry(level_add_task, width = 50, textvariable = EventType)
-	EventTypeTextBox.pack(side=TOP)
-
-	actionTimeLabel = Label(level_add_task,text="actionTime:")
-	actionTimeLabel.pack(side=TOP)
-	# start entering information
-	actionTime = tk.StringVar()
-	actionTimeTextBox = tk.Entry(level_add_task, width = 50, textvariable = actionTime)
-	actionTimeTextBox.pack(side=TOP)
-
-	yearLabel = Label(level_add_task,text="year:")
-	yearLabel.pack(side=TOP)
-	# start entering information
-	year = tk.StringVar()
-	yearTextBox = tk.Entry(level_add_task, width = 50, textvariable = year)
-	yearTextBox.pack(side=TOP)
-
-	monthLabel = Label(level_add_task,text="month:")
-	monthLabel.pack(side=TOP)
-	# start entering information
-	month = tk.StringVar()
-	monthTextBox = tk.Entry(level_add_task, width = 50, textvariable = month)
-	monthTextBox.pack(side=TOP)
-
-	dayLabel = Label(level_add_task,text="day:")
-	dayLabel.pack(side=TOP)
-	# start entering information
-	day = tk.StringVar()
-	dayTextBox = tk.Entry(level_add_task, width = 50, textvariable = day)
-	dayTextBox.pack(side=TOP)
-
-	# =============
-	# ==== the frame for the buttoms =====
-	# =============
-	# the frame for the buttons
-	buttonsFrame = Frame(level_add_task)
-	buttonsFrame.pack()
-
-	# back button
-	# opt parameters = fg="color",bg="color",command=somFunction
-	back_button = Button(buttonsFrame,text="back",command=lambda: deleteTopLevel(level_add_task))
-	back_button.pack(side=BOTTOM)
-
-
-	# add button, action to do when pressed
-	# opt parameters = fg="color",bg="color",command=somFunction
-	deleteUniqueTasksButton = Button(buttonsFrame,text="delete with the given constrains ",command=lambda: deleteUniqueButton(EventType.get(),actionTime.get(),year.get(),month.get(),day.get()))
-	deleteUniqueTasksButton.pack(side=TOP)
 
 def addButton(layer,yearStart,monthStart,dayStart,daysActive,actionTime,EventType,daysOfTheWeek,hour,minute,actionInformation):
-	daysOfTheWeekdic = {1:"monday",2:"thurday",3:"wednesday",4:"tuesday",5:"friday",6:"saturday",7:"sunday"}
+	daysOfTheWeekdic = {1:"monday",2:"tuesday",3:"wednesday",4:"thursday",5:"friday",6:"saturday",7:"sunday"}
 	daysOfTheWeekArr = daysOfTheWeek.split(',')
 	for it in daysOfTheWeekArr:
 		if not ( it in daysOfTheWeekdic.values()):
@@ -557,14 +452,14 @@ def addButton(layer,yearStart,monthStart,dayStart,daysActive,actionTime,EventTyp
 		firstAction = mardb("insert into Event(actionTime,EventTypeId,hour,minute,actionInformation) values("+str(actionTime)+",(select id from EventType where name = '"+str(EventType)+"' ),"+str(hour)+","+str(minute)+",'"+str(actionInformation)+"') ; ")
 		os.system(firstAction)
 		print(firstAction)
-		secondAction = mardb("insert into WeeklyEvents(EventId,yearStart,monthStart,dayStart,daysActive) values((select count(id) from Event),"+str(yearStart)+","+str(monthStart)+","+str(dayStart)+","+str(daysActive)+") ;")
+		secondAction = mardb("insert into WeeklyEvents(EventId,yearStart,monthStart,dayStart,daysActive) values((select max(id) from Event),"+str(yearStart)+","+str(monthStart)+","+str(dayStart)+","+str(daysActive)+") ;")
 		os.system(secondAction)
 		print(secondAction)
 
 
 
 		for element in range(0, len(daysOfTheWeekArr)):
-			tempAction = mardb("insert into WeeklyEvents_DayOfTheWeek(WeeklyEventsId,DayOfTheWeekId) values((select count(id) from WeeklyEvents),(select id from DayOfTheWeek where day = '"+str(daysOfTheWeekArr[element])+"'));")
+			tempAction = mardb("insert into WeeklyEvents_DayOfTheWeek(WeeklyEventsId,DayOfTheWeekId) values((select max(id) from WeeklyEvents),(select id from DayOfTheWeek where day = '"+str(daysOfTheWeekArr[element])+"'));")
 			os.system(tempAction)
 			print(tempAction)
 		errorMsg(layer,"task added succesfully")
@@ -624,9 +519,27 @@ def addWeeklyTask():
 	EventTypeLabel = Label(level_add_task,text="EventType:")
 	EventTypeLabel.pack(side=TOP)
 	# start entering EventTypermation
+	#	EventType = tk.StringVar()
+	#	EventTypeTextBox = tk.Entry(level_add_task, width = 50, textvariable = EventType)
+	#	EventTypeTextBox.pack(side=TOP)
+	
+	
+	EventTypes = [
+	"alarm",
+	"alert",
+	"zoom",
+	"circadian-alert",
+	"circadian-zoom",
+	"circadian-alarm",
+	"human-task"
+	] #etc
+	
+	
 	EventType = tk.StringVar()
-	EventTypeTextBox = tk.Entry(level_add_task, width = 50, textvariable = EventType)
-	EventTypeTextBox.pack(side=TOP)
+	EventType.set(EventTypes[0]) # default value
+	
+	EventTypeDropMenu = OptionMenu(level_add_task, EventType, *EventTypes)
+	EventTypeDropMenu.pack()
 
 	# actionTime label
 	actionTimeLabel = Label(level_add_task,text="actionTime:")
@@ -692,7 +605,7 @@ def addUniqueButton(layer,year,month,day,hour,minute,actionTime,EventType,action
 	if( year.isnumeric() and month.isnumeric() and day.isnumeric() and hour.isnumeric() and minute.isnumeric() and actionTime.isnumeric() ):
 		firstAction = mardb("insert into Event(actionTime,EventTypeId,hour,minute,actionInformation) values("+str(actionTime)+",(select id from EventType where name = '"+str(EventType)+"'),"+str(hour)+","+str(minute)+",'"+str(actionInformation)+"' ) ; ")
 
-		secondAction = mardb("insert into UniqueEvents(EventId,year,month,day) values((select count(id) from Event ),"+str(year)+","+str(month)+","+str(day)+") ;")
+		secondAction = mardb("insert into UniqueEvents(EventId,year,month,day) values((select max(id) from Event ),"+str(year)+","+str(month)+","+str(day)+") ;")
 		os.system(firstAction)
 		os.system(secondAction)
 	else:
@@ -763,14 +676,24 @@ def addUniqueTaskButtonf():
 	actionTimeTextBox = tk.Entry(level_add_task, width = 50, textvariable = actionTime)
 	actionTimeTextBox.pack(side=TOP)
 
-
-	# EventType label
-	EventTypeLabel = Label(level_add_task,text="EventType:")
-	EventTypeLabel.pack(side=TOP)
-	# start entering EventTypermation
+	EventTypeTypeLabel = Label(level_add_task,text="EventType:")
+	EventTypeTypeLabel.pack(side=TOP)
+	
+	EventTypes = [
+	"alarm",
+	"alert",
+	"zoom",
+	"circadian-alert",
+	"circadian-zoom",
+	"circadian-alarm"
+	]
+	
 	EventType = tk.StringVar()
-	EventTypeTextBox = tk.Entry(level_add_task, width = 50, textvariable = EventType)
-	EventTypeTextBox.pack(side=TOP)
+	EventType.set(EventTypes[0]) # default value
+	
+	EventTypeDropMenu = OptionMenu(level_add_task, EventType, *EventTypes)
+	EventTypeDropMenu.pack()
+
 
 
 	
