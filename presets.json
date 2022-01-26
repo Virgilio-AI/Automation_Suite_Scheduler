@@ -13,14 +13,28 @@
 // main configurations for alerts
 	"alertVolume":80,
 	"alertActive":true,
-// zoom clases configuration
-	"zoomClassOpener":false,
-	"zoomClassRecorderActive":false,
+// ==========
+// ==== zoom clases configuration =====
+// ===========
+	"zoomClassOpener":true,
+	"zoomClassRecorderActive":true,
+	"zoomClasesDirectory":"/home/rockhight/Videos/clasesGrabadas",
+// ==========
+// ==== what to do with the daily schedule =====
+// ===========
+// choose to print the daily schedule
+	"printDailySchedule":false,
+// the name of the printer, leave default for the default printer
+	"printerName":"default",
+// choose if you want to mail the schedule
+	"mailDailySchedule":false,
+// choose the mail adress you want to use
+	"mailAdress":"virgiliomurilloochoa1@gmail.com",
 
 
 	"monday":[
 // zoom meetings active
-		false,
+		true,
 // alarm active
 		true,
 // alerts active
@@ -31,7 +45,7 @@
 
 	"tuesday":
 	[
-		false,
+		true,
 // zoom meetings active
 		true,
 // alarm active
@@ -42,7 +56,7 @@
 
 	"wednesday":
 	[
-		false,
+		true,
 // zoom meetings active
 		true,
 // alarm active
@@ -53,7 +67,7 @@
 
 	"thursay":
 	[
-		false,
+		true,
 // zoom meetings active
 		true,
 // alarm active
@@ -64,7 +78,7 @@
 
 	"friday":
 	[
-		false,
+		true,
 // zoom meetings active
 		true,
 // alarm active
@@ -75,7 +89,7 @@
 
 	"saturday":
 	[
-		false,
+		true,
 // zoom meetings active
 		true,
 // alarm active
@@ -86,7 +100,7 @@
 
 	"sunday":
 	[
-		false,
+		true,
 // zoom meetings active
 		true,
 // alarm active
@@ -100,5 +114,27 @@
 	"circadianRitmAlarmAction":"alarm",
 	"circadianRitmActionTime":1800,
 	"timePlaying":1800,
-	"circadianRitmAlarmVolume":60
+	"circadianRitmAlarmVolume":100,
+// ==========
+// ==== youtube urls =====
+// ===========
+	"youtubeUrls_minTime":
+	[
+		["https://www.youtube.com/c/TATEConfidential/videos",2],
+		["https://www.youtube.com/c/TateSpeech/videos",1.5],
+		["https://www.youtube.com/c/DotCSV/videos",0.0],
+		["https://www.youtube.com/c/LukeSmithxyz/videos",0.0],
+		["https://www.youtube.com/c/NCYTAmazings/videos",0.0],
+		["https://www.youtube.com/c/MundoDesconocidoOficial/videos",0.0],
+		["https://www.youtube.com/c/AndreiJikh/videos",0.0],
+		["https://www.youtube.com/c/HistoriaIncomprendida/videos",0.0],
+		["https://www.youtube.com/c/RationalMaleClips/videos",0.0],
+		["https://www.youtube.com/c/FreedominThought/videos?view=0.0&sort=dd&flow=grid",0.0],
+		["https://www.youtube.com/c/VisualPolitikTV/videos",0.0],
+		["https://www.youtube.com/c/NOTICIASDEULTIMAHORAOFICIAL/videos",0]
+	],
+// ==========
+// ==== imprimir horario =====
+// ===========
+	"schedulePrint":true
 }

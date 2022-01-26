@@ -43,6 +43,11 @@ def enterToPlaylist():
 	pg.press("y")
 	t.sleep(0.01)
 	pg.press("enter")
+
+	t.sleep(0.1)
+	# pause the plating song
+	pg.press('space')
+
 def maximizeVolumeNcmpcpp():
 	for it in range(1,30):
 		t.sleep(0.01)
@@ -54,13 +59,23 @@ def maximizeVolumeNcmpcpp():
 # wait the action and if non stop is set apply it
 def echoTime():
 	hr,mn = utilities.getHour()
-	utilities.giveWarning(4,"the time is "+str(hr)+" "+str(mn))
+	utilities.giveWarningNoVolChange(4,"the time is "+str(hr)+" "+str(mn))
+def echoTimeAndPlayMusic(Volume,dividedBy,multipliedBy,intervals):
+	os.system("pactl -- set-sink-volume 0 "+str(int(Volume*multipliedBy/dividedBy + 10))+"%") # set the volume to 80%
+	t.sleep(0.5)
+	echoTime()
+	os.system("pactl -- set-sink-volume 0 "+str(int(Volume*multipliedBy/dividedBy))+"%") # set the volume to 80%
+	t.sleep(0.5)
+	pg.press('space')
+	t.sleep(intervals)
+	pg.press('space')
 
 def playmusic(info,actionTime,Volume): # the input should be time: [time]
+	if Volume > 150:
+		Volume = 100
 	openTerminal = 'st -e sh -c ' # open in a new terminal command
 	os.system(openTerminal + "'" + "ncmpcpp" +"' &") # execute command for music
 	utilities.waitUntilFound(5,ncmpcppExists) # start the program until the image is visible
-	os.system("pactl -- set-sink-volume 0 "+str(Volume)+"%") # set the volume to 80%
 	maximizeVolumeNcmpcpp()
 	clearMusic() # clear all previous music
 	addAllSongs() # add all songs to the playlist and shuffle
@@ -68,30 +83,12 @@ def playmusic(info,actionTime,Volume): # the input should be time: [time]
 	pg.press('v')
 	# delay the time and work in the hours
 	intervals=int(actionTime/4)+1
-
-	pg.press('space')
-	echoTime()
-	pg.press('space')
-	t.sleep(intervals)
-	pg.press('space')
-	echoTime()
-	pg.press('space')
-	t.sleep(intervals)
-	pg.press('space')
-	echoTime()
-	pg.press('space')
-	t.sleep(intervals)
-	pg.press('space')
-	echoTime()
-	pg.press('space')
-	t.sleep(intervals)
-	pg.press('space')
-	echoTime()
-	pg.press('space')
-
-	t.sleep(0.01)
-	pg.press('space')
+	# t.sleep(0.5)
+	# pg.press('space')
+	echoTimeAndPlayMusic(Volume,4,2,intervals)
+	echoTimeAndPlayMusic(Volume,4,3,intervals)
+	echoTimeAndPlayMusic(Volume,4,4,intervals)
 	clearMusic() # clear all the music again
 	utilities.closeWindow()
 
-
+# playmusic("this is the music",300,80)

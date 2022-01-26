@@ -50,8 +50,18 @@ def menu():
 	print("name: " + str(name) + "\naction: " + str(action) +  "\ninfo: " + str(info) + "\naction time: " + str(actionTime))
 	# if it is time to execute the alarm
 	if action == 'alarm'  and presets.active and presets.alarmActive and utilities.checkIfActive()[1]:
-		utilities.giveWarning(1,"initiating main alarm")
-		alarm.playmusic(info,int(actionTime),presets.circadianRitmAlarmVolume)
+		if utilities.InternetConnection():
+			utilities.giveWarning(1,"initiating main alarm")
+			print(presets.youtubeUrls_minTime)
+			utilities.playYoutubeVideos(presets.youtubeUrls_minTime)
+			alarm.playmusic(info,int(actionTime),presets.circadianRitmAlarmVolume)
+			if presets.schedulePrint:
+				utilities.schedulePrint()
+		else:
+			utilities.giveWarning(1,"initiating main alarm")
+			alarm.playmusic(info,int(actionTime),presets.circadianRitmAlarmVolume)
+			if presets.schedulePrint:
+				utilities.schedulePrint()
 	# if it is time to initiate a meeting
 	elif action == 'zoom' and presets.active and presets.zoomClassOpener and utilities.checkIfActive()[0]:
 		initZoom.initZoom(info,name,actionTime)
@@ -62,17 +72,18 @@ def menu():
 	t.sleep(presets.mainCicleRepetition)
 
 
-
 if __name__ == '__main__':
-	# search for link in csv
 	presets.init()
+	utilities.deleteSoundDirectory()
 	utilities.giveWarning(1,"automation suite has started")
 	while 1:
 		try:
 			presets.init()
 			menu()
-		except:
+		except Exception as e:
+			os.system("echo \"=============\n\n"+str(e)+"\n\n==========\" >> Log/exceptionLog")
 			utilities.giveWarning(1,"an exception has ocured")
 			t.sleep(30)
-	#record the scren
+
+
 

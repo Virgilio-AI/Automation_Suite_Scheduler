@@ -19,6 +19,12 @@ import traceback
 import pyttsx3 as tts
 # from gtts import gTTS
 import presets
+from selenium import webdriver
+from bs4 import BeautifulSoup
+from pytube import YouTube
+from pytube import Channel
+import requests
+
 
 def waitUntilFound(timeLimit,img):
 	counter=0
@@ -29,9 +35,11 @@ def waitUntilFound(timeLimit,img):
 			return -1
 		try:
 			x,y=pg.locateCenterOnScreen(img,confidence=0.7)
+			print("FOUND")
 			print(x,y)
 			break
-		except:
+		except Exception as e:
+			print(e)
 			t.sleep(0.2)
 			print("not founding")
 			pass
@@ -43,12 +51,13 @@ def clickUntilFound(timeLimit,img):
 			print("not found")
 			return -1
 		try:
-			x,y=pg.locateCenterOnScreen(img,confidence=0.9)
+			x,y=pg.locateCenterOnScreen(img,confidence=0.7)
 			pg.moveTo(x,y,0.1)
 			pg.click()
 			print(x,y)
 			break
-		except:
+		except Exception as e:
+			print(e)
 			t.sleep(0.2)
 			pass
 def moveToMonitorOnLeft():
@@ -65,8 +74,38 @@ def moveToMonitorOnRight():
 	pg.keyUp('>')
 	pg.keyUp('win')
 	pg.keyUp('shift')
+
+def deleteSoundDirectory():
+	directory = 'sounds'
+	for filename in os.listdir(directory):
+		f = os.path.join(directory, filename)
+	# checking if it is a file
+		if os.path.isfile(f):
+			os.remove(f)
 def forceCreateDirectory(parentDirectory): # ex: name/name2
 	subprocess.check_call(['mkdir', '-p', ''+parentDirectory+''])
+
+def giveWarningNoVolChange(time,message):
+	os.system("pactl set-sink-mute @DEFAULT_SINK@ false ")
+	counter = 0
+	language = 'en'
+	nameOfFile = "sounds/" + message.replace(" ","_") + ".mp3"
+	eng = tts.init()
+	# for the rate
+	eng.setProperty('rate',125)
+	volume = eng.getProperty('volume')   #getting to know current volume level (min=0 and max=1)
+	eng.setProperty('volume',1.5)
+
+#	voices = eng.getProperty('voices')       #getting details of current voice
+	eng.setProperty('voice', 'english_rp+f3')
+
+	while counter < time:
+		os.system("notify-send \""+message+"\"")
+		eng.say(message)
+		eng.runAndWait()
+		t.sleep(1)
+		counter+=1
+
 def giveWarning(time,message):
 	volumePercentage = subprocess.getoutput('pamixer --get-volume')
 	t.sleep(0.01)
@@ -110,7 +149,7 @@ def closeWindow():
 
 # =============
 # ==== get the time =====
-# =============
+# ============
 def getDayOfTheWeek():
 	return int(str(subprocess.check_output(['date','+%u']).decode('utf-8')))
 def getMonth():
@@ -158,3 +197,90 @@ def mardb(stri):
 	return "mariadb --execute=\" use automation_suite ; "+str(stri)+"\""
 def mardbs(stri):
 	return "mariadb --execute=' use automation_suite ; "+str(stri)+"'"
+# =============
+# ==== Internet connection =====
+# =============
+def InternetConnection():
+	url = "https://www.google.com"
+	timeout = 5
+	try:
+		request = requests.get(url, timeout=timeout)
+		return True
+	except (requests.ConnectionError, requests.Timeout) as exception:
+		return False
+# =============
+# ==== connecting to a web scrapper =====
+# =============
+def playYoutubeVideos(urls):
+	os.system("pactl -- set-sink-volume 0 80%") # set the volume to 80%
+	videos = urls
+	maxLen = 1800
+	sumLen=0
+	for video in videos:
+		channel_info = Channel(video[0])
+		channelMinTime= video[1]
+		cont = 0
+		now = datetime.now()
+		for url in channel_info.url_generator():
+			video_details = YouTube(url)
+			videoLen = video_details.length/60
+			vidTime=video_details.publish_date
+			publish_date = str(video_details.publish_date).split(' ')[0]
+			hoursSincePublished = (now-vidTime).total_seconds()/3600
+			print("url: " + str(video) )
+			print("channel min time: " + str(channelMinTime))
+			print("video len: " + str(videoLen))
+			print("hours since published: " + str(hoursSincePublished))
+			print("now: " + str(now) )
+			print("vidTime: " + str(vidTime) )
+			print("vidInfo: " + str(video_details.vid_info) )
+			if hoursSincePublished < 32.0 and channelMinTime < videoLen:
+				print("=====")
+				print(f'Video URL: {url}')
+				print(f'Video Title: {video_details.title}')
+				print(f'the video length is: {videoLen}')
+				print((now-vidTime).total_seconds()/3600)
+				print(f'publish date: {publish_date}')
+				print("=====")
+				print(video_details.length)
+				os.system('st -e sh -c "brave ' + url + '" &')
+				yutubeImage='img_utilities/youtubeImage.png'
+				waitUntilFound(20,yutubeImage)
+				print("=====")
+				print(video_details.length)
+				t.sleep(video_details.length)
+				sumLen+=video_details.length
+				print("=====")
+				print(video_details.length)
+				pg.keyDown('ctrl')
+				pg.press('w')
+				pg.keyUp('ctrl')
+				if maxLen < sumLen:
+					break
+			elif hoursSincePublished > 31:
+				break
+			cont+=1
+			if cont > 5:
+				break
+
+def schedulePrint():
+	os.system('lp horariosDiarios/today.txt')
+#urls = [
+#		['https://www.youtube.com/c/NCYTAmazings/videos',0],
+#		['https://www.youtube.com/c/MundoDesconocidoOficial/videos',0],
+#		['https://www.youtube.com/c/AndreiJikh/videos',0],
+#		['https://www.youtube.com/c/FreedominThought/videos?view=0&sort=dd&flow=grid',0],
+##		['https://www.youtube.com/playlist?list=PLLYbRPKuSpQlp6E8MxeQkEQzxGlec3ydF',0],
+#		['https://www.youtube.com/c/HistoriaIncomprendida/videos',0],
+#		['https://www.youtube.com/c/TATEConfidential/videos',2],
+#		['https://www.youtube.com/c/VisualPolitikTV/videos',0],
+#		['https://www.youtube.com/c/DotCSV/videos',0],
+#		['https://www.youtube.com/c/LukeSmithxyz/videos',0],
+#		['https://www.youtube.com/c/TateSpeech/videos',1.5]
+#
+#		]
+#playYoutubeVideos(urls)
+
+
+ #https://www.youtube.com/watch?v=Qk5Fckkasvc
+ #playYoutubeVideos(presets.youtubeUrls_minTime)

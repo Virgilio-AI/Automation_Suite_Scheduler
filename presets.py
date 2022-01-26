@@ -55,7 +55,18 @@ circadianRitmAlarmVolume = presets_dt["circadianRitmAlarmVolume"]
 # configruations for the alarm
 timePlaying = presets_dt["timePlaying"]
 
+# =============
+# ==== radio alarm =====
+# =============
 
+# youtube urls for main alarm
+youtubeUrls_minTime = presets_dt["youtubeUrls_minTime"]
+
+# for the printing of the schedule
+schedulePrint = presets_dt["schedulePrint"]
+
+# select the directory for recorging the class
+zoomClasesDirectory = presets_dt["zoomClasesDirectory"]
 
 
 def init():
@@ -106,4 +117,16 @@ def init():
 
 	# configruations for the alarm
 	timePlaying = presets_dt["timePlaying"]
+
+	# =============
+	# ==== radio alarm =====
+	# =============
+
+	# youtube urls for main alarm
+	youtubeUrls_minTime = presets_dt["youtubeUrls_minTime"]
+
+	schedulePrint = presets_dt["schedulePrint"]
+
+	zoomClasesDirectory = presets_dt["zoomClasesDirectory"]
+
 
