@@ -38,8 +38,9 @@ def getTimeLinkColumns():
 	action = zoom_csv_dt.action.tolist()
 	name = zoom_csv_dt.name.tolist()
 	actionTime = zoom_csv_dt['time-length'].tolist()
+	Description = zoom_csv_dt['Description'].tolist()
 	# return 5 lists of the values of the current day
-	return times ,info,action,name,actionTime
+	return times ,info,action,name,actionTime,Description
 def getDistanceInCalendar(curDay,curMonth,dayChange,monthChange):
 	if ( monthChange < curMonth or ( monthChange == curMonth and dayChange < monthChange )):
 		return ( curDay - dayChange + (curMonth - monthChange)*30)
@@ -150,7 +151,7 @@ def checkCsvUpdate():
 		updateCsv()
 def createTempUniqueTable():
 	command = ("""
-	select UniqueEvents.id as `UniqueEvents id`,Event.actionTime,EventType.name,EventType.actionDescription as `description`,UniqueEvents.year,UniqueEvents.month,UniqueEvents.day,Event.hour,Event.minute as `min`,Event.actionInformation
+	select UniqueEvents.id as `UniqueEvents id`,Event.actionTime,EventType.name,EventType.actionDescription as `Action description`,UniqueEvents.year,UniqueEvents.month,UniqueEvents.day,Event.hour,Event.minute as `min`,Event.actionInformation,Event.Description
 	from EventType
 	inner join Event on EventType.id = Event.EventTypeId
 	inner join UniqueEvents on UniqueEvents.EventId = Event.id
@@ -178,7 +179,7 @@ def createTempWeeklyTable():
 	command = ("""
 	
 	select WeeklyEvents.id as `WeeklyEvent_id`,EventType.name,EventType.actionDescription,Event.actionTime,WeeklyEvents.yearStart,
-	WeeklyEvents.monthStart,WeeklyEvents.dayStart,WeeklyEvents.daysActive,group_concat(DayOfTheWeek.day) as `days`,Event.hour,Event.minute,Event.actionInformation
+	WeeklyEvents.monthStart,WeeklyEvents.dayStart,WeeklyEvents.daysActive,group_concat(DayOfTheWeek.day) as `days`,Event.hour,Event.minute,Event.actionInformation,Event.Description
 	from DayOfTheWeek
 	inner join WeeklyEvents_DayOfTheWeek on WeeklyEvents_DayOfTheWeek.DayOfTheWeekId = DayOfTheWeek.id
 	inner join WeeklyEvents on WeeklyEvents.id = WeeklyEvents_DayOfTheWeek.WeeklyEventsId 
@@ -236,7 +237,7 @@ def appendUniqueTasksToCsv(tableUnique,day,dayOfTheWeek,months):
 	for row in range(1,len(tableUnique)):
 		toCompare =calculateYearDay(int(tableUnique[row][6]),int(tableUnique[row][5]),months)
 		if day == toCompare:
-			ans+=""+str(dayOfTheWeek)+":"+str(tableUnique[row][7])+":"+str(tableUnique[row][8])+","+str(tableUnique[row][9])+","+str(tableUnique[row][2])+","+str(tableUnique[row][3])+","+str(tableUnique[row][1])+"\n"
+			ans+=""+str(dayOfTheWeek)+":"+str(tableUnique[row][7])+":"+str(tableUnique[row][8])+","+str(tableUnique[row][9])+","+str(tableUnique[row][2])+","+str(tableUnique[row][3])+","+str(tableUnique[row][1])+"," + str(tableUnique[row][10]) +"\n"
 	return ans
 def checkDayOfTheWeek(daysInTable,dayOfTheWeek):
 	if dayOfTheWeek == 1:
@@ -277,7 +278,7 @@ def appendWeeklyTasksToCsv(tableWeekly,day,dayOfTheWeek,months):
 		if day >= toCompare and day < toCompare + int(tableWeekly[row][7]) and dayOfTheWeekb :
 #			ans+=""+str(dayOfTheWeek) + ":"+str(tableWeekly[row][9])+":"+str(tableWeekly[row][10])+","+str(tableWeekly[row])+"\n"
 #			print(ans)
-			ans+=""+str(dayOfTheWeek)+":"+str(tableWeekly[row][9])+":"+str(tableWeekly[row][10])+","+str(tableWeekly[row][11])+","+str(tableWeekly[row][1])+","+str(tableWeekly[row][2])+","+str(tableWeekly[row][3])+"\n"
+			ans+=""+str(dayOfTheWeek)+":"+str(tableWeekly[row][9])+":"+str(tableWeekly[row][10])+","+str(tableWeekly[row][11])+","+str(tableWeekly[row][1])+","+str(tableWeekly[row][2])+","+str(tableWeekly[row][3])+"," + str(tableWeekly[row][12]) + "\n"
 	return ans
 def updateCsv():
 	#	fopen("TasksOfTheWeek.csv","w")
@@ -305,7 +306,7 @@ def updateCsv():
 	startDay = cyearDay - WeekDay
 	print("week day: "+str(WeekDay)+"\ncurrent day of the year: "+str(cyearDay)+"")
 	ans =""
-	ans+="time,info,action,name,time-length\n"
+	ans+="time,info,action,name,time-length,Description\n"
 	counter = 1
 	for day in range(startDay+1,startDay+8):
 		dayWeek = addDayOfTheWeek(day - startDay )
@@ -314,7 +315,7 @@ def updateCsv():
 		ans += appendWeeklyTasksToCsv(WeeklyTable,day,day-startDay,months)
 		ans+="\n"
 	ans2 =""
-	ans2+="time,info,action,name,time-length\n"
+	ans2+="time,info,action,name,time-length,Description\n"
 	counter = 1
 	startDay +=8
 	for day in range(startDay+1,startDay+8):
@@ -489,7 +490,7 @@ def getInfoActionName():
 			"\ncurrent hour: "+str(hr)+ ":" +str(mi)+
 			"\" >> Log/comparison_log")
 	# get the columns as lists
-	timeCol,info,actions,names,actionTimeCol = getTimeLinkColumns()
+	timeCol,info,actions,names,actionTimeCol,DescriptionCol = getTimeLinkColumns()
 	# for loop for checking the csv
 	for i in range(0, len(timeCol)):
 		# hour and minute of the currently analized appointment
@@ -509,7 +510,7 @@ def getInfoActionName():
 			t.sleep(missingMin*60)
 			# return statement
 			logTheAction(str(info[i] + "|" + str(comH)+":" + str(comM) + "|" + "slept minutes:"+str(missingMin)+" | acceptance="+str(ac)+""),str(actions[i]),str(names[i]),str(actionTimeCol[i]),str(hr) +":" + str(mi))
-			return info[i],actions[i],names[i],actionTimeCol[i]
+			return info[i],actions[i],names[i],actionTimeCol[i],DescriptionCol[i]
 	# return false so that when this happens we can get info output
-	return "false", "false" , "false","false" # info,action,name,actionTime
+	return "false", "false" , "false","false","false" # info,action,name,actionTime
 
