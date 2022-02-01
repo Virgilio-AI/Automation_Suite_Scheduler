@@ -46,8 +46,8 @@ def menu():
 	# get info = link,action
 	# name = name of the action
 	# action = action
-	info,action,name,actionTime = scheduler.getInfoActionName()
-	print("name: " + str(name) + "\naction: " + str(action) +  "\ninfo: " + str(info) + "\naction time: " + str(actionTime))
+	info,action,name,actionTime,Description = scheduler.getInfoActionName()
+	print("name: " + str(name) + "\naction: " + str(action) +  "\ninfo: " + str(info) + "\naction time: " + str(actionTime) + "Description: " + str(Description))
 	# if it is time to execute the alarm
 	if action == 'alarm'  and presets.active and presets.alarmActive and utilities.checkIfActive()[1]:
 		if utilities.InternetConnection():
@@ -64,7 +64,7 @@ def menu():
 				utilities.schedulePrint()
 	# if it is time to initiate a meeting
 	elif action == 'zoom' and presets.active and presets.zoomClassOpener and utilities.checkIfActive()[0]:
-		initZoom.initZoom(info,name,actionTime)
+		initZoom.initZoom(info,name,actionTime,Description)
 	elif action == 'alert' and presets.active and presets.alertActive and utilities.checkIfActive()[2]:
 		utilities.giveWarning(actionTime,info)
 	elif actionTime == 'false':
