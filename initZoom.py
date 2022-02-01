@@ -64,7 +64,7 @@ def closeAllBrowserTabs(time):
 		except:
 			t.sleep(0.2)
 			pass
-def initZoom(link,name,actionTime):
+def initZoom(link,name,actionTime,Description):
 	# explorer options
 	defaultBrowser='brave'
 	openTerminal = 'st -e sh -c '
@@ -74,7 +74,7 @@ def initZoom(link,name,actionTime):
 	# warnings and information
 	print("enter zoom")
 	utilities.giveWarning(3,"initiating zoom meeting")
-	utilities.giveWarning(1,"name of class, " + name)
+	utilities.giveWarning(1,"name of class, " + Description)
 	utilities.giveWarning(1,"zoom is about to start")
 	# open brave with zoom and init session
 	os.system(openExplorer)
@@ -90,7 +90,7 @@ def initZoom(link,name,actionTime):
 	utilities.moveToMonitorOnRight()
 	# if recording is set
 	if zoomClassRecorderActive:
-		screenRecorder.recordScreen(actionTime,name)
+		screenRecorder.recordScreen(actionTime,Description)
 		print("action time:" +str(actionTime))
 	print("enter for cicle: ")
 	t.sleep(actionTime)
