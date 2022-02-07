@@ -52,9 +52,11 @@ def parseName(strin):
 def recordScreen(time,materia):
 	nameOfWindow = getNameOfWindowDisplayingTheClass()
 	dateCommand = subprocess.check_output(['date']).decode('utf-8').split(' ')
+	hour = subprocess.check_output(['date','+%H']).decode('utf-8').split(' ')
 	mes = dateCommand[1]
+	day = dateCommand[3]
 	materia = parseName(materia)
-	name = materia + "_" + dateCommand[0] +"_" + dateCommand[2] +"_" + dateCommand[1] +"_" + dateCommand[6][0:len(dateCommand[6])-1]
+	name = materia + "_" + dateCommand[0] +"_" + day +"_" + dateCommand[1] +"_" + dateCommand[6][0:len(dateCommand[6])-1] + "_hr-"  +str(hour)
 	parentDirectory = zoomClasesDirectory + "/" + materia + "/" +mes
 	try:
 		subprocess.check_call(['mkdir', '-p', ''+parentDirectory+''])
