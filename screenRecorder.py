@@ -40,6 +40,28 @@ def getNameOfWindowDisplayingTheClass():
 			for element in range(5, len(words)):
 				nameOfWindow += " " + words[element]
 	return nameOfWindow
+def getUpperLeftPossitionWidthHeightOfWindowGivingName(name):
+	windowsOut=subprocess.check_output(['xwininfo', '-name',''+str(name)+'']).decode('utf-8')
+	infoByLines = splitStringByString(windowsOut,'\n')
+	upperLeftX = ''
+	upperLeftY = ''
+	width = ''
+	height = ''
+
+	for line in infoByLines:
+		words = line.split(' ')
+		if len(words) > 5 and words[2:5] == ['Absolute','upper-left','X:']:
+			upperLeftX = words[-1]
+		if len(words) > 5 and words[2:5] == ['Absolute','upper-left','Y:']:
+			upperLeftY = words[-1]
+		if len(words) > 1 and words[2] == 'Width:':
+			width = words[-1]
+		if len(words) > 1 and words[2] == 'Height:':
+			height = words[-1]
+	return upperLeftX,upperLeftY,width,height
+
+
+
 def parseName(strin):
 	ans=""
 	for a in strin:
@@ -67,10 +89,11 @@ def recordScreen(time,materia):
 
 	utilities.giveWarning(2,"started to record screen")
 	print(time)
-	commandForScreenRecord = "ffmpeg -video_size 1366x768 -framerate 25 -f x11grab -i :0.0+1920+0 -f pulse -ac 2 -i alsa_output.pci-0000_00_1f.3.analog-stereo.monitor -t "+str(time)+" "+parentDirectory+"/" + name+".mkv &"
+	winName = getNameOfWindowDisplayingTheClass()
+	upperLeftX,upperLeftY,width,height = getUpperLeftPossitionWidthHeightOfWindowGivingName(winName)
+	commandForScreenRecord = "ffmpeg -video_size "+str(width)+"x"+str(height)+" -framerate 25 -f x11grab -i :0.0+"+str(upperLeftX)+"+"+str(upperLeftY)+" -f pulse -ac 2 -i alsa_output.pci-0000_00_1f.3.analog-stereo.monitor -t "+str(time)+" "+parentDirectory+"/" + name+".mkv &"
 	print("====== command for record screen === ")
 	print(commandForScreenRecord)
 	print("===================================")
 	os.system(commandForScreenRecord)
 	utilities.giveWarning(2,"ended screen recorging")
-

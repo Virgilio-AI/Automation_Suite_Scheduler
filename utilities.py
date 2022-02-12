@@ -10,7 +10,7 @@
 import subprocess
 import pyautogui as pg
 import pandas as pd
-from datetime import datetime
+from datetime import datetime as dt
 import os
 import time as t
 import traceback
@@ -151,19 +151,18 @@ def closeWindow():
 # ==== get the time =====
 # ============
 def getDayOfTheWeek():
-	return int(str(subprocess.check_output(['date','+%u']).decode('utf-8')))
+	return int(str(int(dt.today().strftime('%w'))))
 def getMonth():
-	return int(str(subprocess.check_output(['date','+%m']).decode('utf-8')))
+	return int(str(int(dt.today().strftime('%m'))))
 def getHour():
-	hour=int(str(subprocess.check_output(['date','+%H']).decode('utf-8')))
-	minute=int(str(subprocess.check_output(['date','+%M']).decode('utf-8')))
-	return hour,minute
+	return (int(dt.today().strftime('%H')),int(dt.today().strftime('%M')))
 def getDayOfTheMonth():
-	return int(str(subprocess.check_output(['date','+%d']).decode('utf-8')))
+
+	str(int(dt.today().strftime('%d')))
 def getYear():
-	return int(str(subprocess.check_output(['date','+%G']).decode('utf-8')))
+	return int(str(int(dt.today().strftime('%Y'))))
 def getYearDay():
-	return int(str(subprocess.check_output(['date','+%j']).decode('utf-8')))
+	return int(str(int(dt.today().strftime('%j'))))
 
 # %%
 # to get an hour from a string that is in the csv
@@ -265,22 +264,3 @@ def playYoutubeVideos(urls):
 
 def schedulePrint():
 	os.system('lp horariosDiarios/today.txt')
-#urls = [
-#		['https://www.youtube.com/c/NCYTAmazings/videos',0],
-#		['https://www.youtube.com/c/MundoDesconocidoOficial/videos',0],
-#		['https://www.youtube.com/c/AndreiJikh/videos',0],
-#		['https://www.youtube.com/c/FreedominThought/videos?view=0&sort=dd&flow=grid',0],
-##		['https://www.youtube.com/playlist?list=PLLYbRPKuSpQlp6E8MxeQkEQzxGlec3ydF',0],
-#		['https://www.youtube.com/c/HistoriaIncomprendida/videos',0],
-#		['https://www.youtube.com/c/TATEConfidential/videos',2],
-#		['https://www.youtube.com/c/VisualPolitikTV/videos',0],
-#		['https://www.youtube.com/c/DotCSV/videos',0],
-#		['https://www.youtube.com/c/LukeSmithxyz/videos',0],
-#		['https://www.youtube.com/c/TateSpeech/videos',1.5]
-#
-#		]
-#playYoutubeVideos(urls)
-
-
- #https://www.youtube.com/watch?v=Qk5Fckkasvc
- #playYoutubeVideos(presets.youtubeUrls_minTime)
