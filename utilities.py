@@ -157,8 +157,7 @@ def getMonth():
 def getHour():
 	return (int(dt.today().strftime('%H')),int(dt.today().strftime('%M')))
 def getDayOfTheMonth():
-
-	str(int(dt.today().strftime('%d')))
+	return int(str(int(dt.today().strftime('%d'))))
 def getYear():
 	return int(str(int(dt.today().strftime('%Y'))))
 def getYearDay():
@@ -219,7 +218,7 @@ def playYoutubeVideos(urls):
 		channel_info = Channel(video[0])
 		channelMinTime= video[1]
 		cont = 0
-		now = datetime.now()
+		now = dt.now()
 		for url in channel_info.url_generator():
 			video_details = YouTube(url)
 			videoLen = video_details.length/60
@@ -232,8 +231,8 @@ def playYoutubeVideos(urls):
 			print("hours since published: " + str(hoursSincePublished))
 			print("now: " + str(now) )
 			print("vidTime: " + str(vidTime) )
-			print("vidInfo: " + str(video_details.vid_info) )
-			if hoursSincePublished < 32.0 and channelMinTime < videoLen:
+# 			print("vidInfo: " + str(video_details.vid_info) )
+			if hoursSincePublished < 40.0 and channelMinTime < videoLen:
 				print("=====")
 				print(f'Video URL: {url}')
 				print(f'Video Title: {video_details.title}')
@@ -264,3 +263,8 @@ def playYoutubeVideos(urls):
 
 def schedulePrint():
 	os.system('lp horariosDiarios/today.txt')
+
+
+
+
+playYoutubeVideos(presets.youtubeUrls_minTime)

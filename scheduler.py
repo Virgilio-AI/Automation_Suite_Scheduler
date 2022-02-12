@@ -118,6 +118,7 @@ def updateCircadianWakeUp():
 def getMissingMinutes(toCompareHour,toCompareMinute,currentHour,currentMinite,acceptance):
 	if currentHour==toCompareHour :
 		if toCompareMinute - currentMinite >= 0:
+			print("first if")
 			return toCompareMinute - currentMinite
 		else:
 			return 0
@@ -513,4 +514,6 @@ def getInfoActionName():
 			return info[i],actions[i],names[i],actionTimeCol[i],DescriptionCol[i]
 	# return false so that when this happens we can get info output
 	return "false", "false" , "false","false","false" # info,action,name,actionTime
+
+
 
