@@ -84,6 +84,3 @@ if __name__ == '__main__':
 			os.system("echo \"=============\n\n"+str(e)+"\n\n==========\" >> Log/exceptionLog")
 			utilities.giveWarning(1,"an exception has ocured")
 			t.sleep(30)
-
-
-
