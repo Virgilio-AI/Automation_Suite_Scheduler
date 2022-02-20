@@ -20,3 +20,4 @@ horariosDiarios/today.txt
 horariosDiarios/tomorrow.txt
 ClasesLinks.csv
 venv
+gui/automation_suite.sql
