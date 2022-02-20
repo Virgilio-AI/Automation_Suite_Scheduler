@@ -45,67 +45,73 @@
 
 	"tuesday":
 	[
-		true,
 // zoom meetings active
-		true,
+		false,
 // alarm active
 		true,
 // alerts active
+		true,
+// circadian alarm
 		true
 	],
 
 	"wednesday":
 	[
-		true,
 // zoom meetings active
-		true,
+		false,
 // alarm active
 		true,
 // alerts active
+		true,
+// circadian alarm
 		true
 	],
 
 	"thursay":
 	[
-		true,
 // zoom meetings active
-		true,
+		false,
 // alarm active
 		true,
 // alerts active
+		true,
+// circadian alarm
 		true
 	],
 
 	"friday":
 	[
-		true,
 // zoom meetings active
-		true,
+		false,
 // alarm active
 		true,
 // alerts active
+		true,
+// circadian alarm
 		true
 	],
 
 	"saturday":
 	[
-		true,
 // zoom meetings active
 		true,
 // alarm active
 		true,
 // alerts active
+		true,
+// circadian alarm
 		true
 	],
 
 	"sunday":
 	[
-		true,
 // zoom meetings active
 		true,
 // alarm active
 		true,
 // alerts active
+		true,
+// circadian alarm
 		true
 	],
 

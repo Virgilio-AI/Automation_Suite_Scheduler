@@ -14,12 +14,13 @@ import numpy as np # tool for 2d plots
 import sys
 import os
 # automation suite imports
-import screenRecorder
-import alarm
-import initZoom
-import scheduler
+from screenRecorder import ScreenRecorder
+from alarm import Alarm
+from initZoom import InitZoom
+from scheduler import Scheduler
+# import scheduler
 import presets
-import utilities
+from utilities import Utilities
 # browser configurations
 
 def buildStateMessage():
@@ -46,27 +47,27 @@ def menu():
 	# get info = link,action
 	# name = name of the action
 	# action = action
-	info,action,name,actionTime,Description = scheduler.getInfoActionName()
+	info,action,name,actionTime,Description = Scheduler().getInfoActionName()
 	print("name: " + str(name) + "\naction: " + str(action) +  "\ninfo: " + str(info) + "\naction time: " + str(actionTime) + "Description: " + str(Description))
 	# if it is time to execute the alarm
-	if action == 'alarm'  and presets.active and presets.alarmActive and utilities.checkIfActive()[1]:
-		if utilities.InternetConnection():
-			utilities.giveWarning(1,"initiating main alarm")
+	if action == 'alarm'  and presets.active and presets.alarmActive and Utilities().checkIfActive()[1]:
+		if Utilities().InternetConnection():
+			Utilities().giveWarning(1,"initiating main alarm")
 			print(presets.youtubeUrls_minTime)
-			utilities.playYoutubeVideos(presets.youtubeUrls_minTime)
-			alarm.playmusic(info,int(actionTime),presets.circadianRitmAlarmVolume)
+			Utilities().playYoutubeVideos(presets.youtubeUrls_minTime)
+			Alarm().playmusic(info,int(actionTime),presets.circadianRitmAlarmVolume)
 			if presets.schedulePrint:
-				utilities.schedulePrint()
+				Utilities().schedulePrint()
 		else:
-			utilities.giveWarning(1,"initiating main alarm")
-			alarm.playmusic(info,int(actionTime),presets.circadianRitmAlarmVolume)
+			Utilities().giveWarning(1,"initiating main alarm")
+			Alarm().playmusic(info,int(actionTime),presets.circadianRitmAlarmVolume)
 			if presets.schedulePrint:
-				utilities.schedulePrint()
+				Utilities().schedulePrint()
 	# if it is time to initiate a meeting
-	elif action == 'zoom' and presets.active and presets.zoomClassOpener and utilities.checkIfActive()[0]:
-		initZoom.initZoom(info,name,actionTime,Description)
-	elif action == 'alert' and presets.active and presets.alertActive and utilities.checkIfActive()[2]:
-		utilities.giveWarning(actionTime,info)
+	elif action == 'zoom' and presets.active and presets.zoomClassOpener and Utilities().checkIfActive()[0]:
+		InitZoom().initZoom(info,name,actionTime,Description)
+	elif action == 'alert' and presets.active and presets.alertActive and Utilities().checkIfActive()[2]:
+		Utilities().giveWarning(actionTime,info)
 	elif actionTime == 'false':
 		print("pass: getInfoActionName() error")
 	t.sleep(presets.mainCicleRepetition)
@@ -74,13 +75,14 @@ def menu():
 
 if __name__ == '__main__':
 	presets.init()
-	utilities.deleteSoundDirectory()
-	utilities.giveWarning(1,"automation suite has started")
+	Utilities().deleteSoundDirectory()
+	Utilities().giveWarning(1,"automation suite has started")
 	while 1:
 		try:
 			presets.init()
 			menu()
 		except Exception as e:
 			os.system("echo \"=============\n\n"+str(e)+"\n\n==========\" >> Log/exceptionLog")
-			utilities.giveWarning(1,"an exception has ocured")
+			Utilities().giveWarning(1,"an exception has ocured")
 			t.sleep(30)
+
