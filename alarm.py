@@ -49,9 +49,9 @@ class Alarm():
 		pg.press('space')
 	
 	def maximizeVolumeNcmpcpp(s):
-		for it in range(1,30):
-			t.sleep(0.01)
-			pg.press("right")
+		pg.keyDown("right")
+		t.sleep(2)
+		pg.keyUp("right")
 	# =============
 	# ==== main functions =====
 	# =============
@@ -71,11 +71,11 @@ class Alarm():
 		pg.press('space')
 	
 	def playmusic(s,info,actionTime,Volume): # the input should be time: [time]
-		if Volume > 150:
+		if Volume > 100:
 			Volume = 100
 		openTerminal = 'st -e sh -c ' # open in a new terminal command
 		os.system(openTerminal + "'" + "ncmpcpp" +"' &") # execute command for music
-		Utilities().waitUntilFound(5,ncmpcppExists) # start the program until the image is visible
+		Utilities().clickUntilFound(5,ncmpcppExists) # start the program until the image is visible
 		s.maximizeVolumeNcmpcpp()
 		s.clearMusic() # clear all previous music
 		s.addAllSongs() # add all songs to the playlist and shuffle
@@ -92,3 +92,6 @@ class Alarm():
 		Utilities().closeWindow()
 
 # playmusic("this is the music",300,80)
+
+# al = Alarm()
+# al.playmusic("information",5,100)

@@ -34,7 +34,7 @@
 
 	"monday":[
 // zoom meetings active
-		true,
+		false,
 // alarm active
 		true,
 // alerts active
@@ -46,7 +46,7 @@
 	"tuesday":
 	[
 // zoom meetings active
-		false,
+		true,
 // alarm active
 		true,
 // alerts active
@@ -70,7 +70,7 @@
 	"thursay":
 	[
 // zoom meetings active
-		false,
+		true,
 // alarm active
 		true,
 // alerts active

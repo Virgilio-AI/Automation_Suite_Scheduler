@@ -12,6 +12,7 @@ from email.mime.text import MIMEText
 from email.mime.base import MIMEBase 
 from email import encoders 
 
+from datetime import datetime
 from utilities import Utilities
 # %%
 # to get the current day of the week
@@ -353,6 +354,19 @@ class Scheduler():
 		else:
 			logVar+=">> Log/zoom_log"
 		os.system(logVar)
+	def sorting(s,times):
+		# times[idx][2:]
+		hourMin = []
+		for i in range(len(times)):
+			hourMinute = times[i][2:].split(':')
+			datetime_object = datetime.strptime(times[i][2:], '%H:%M')
+			hourMin.append([datetime_object,i])
+		hourMin.sort()
+
+		return hourMin
+
+
+
 	def createNewDaylyFile(s):
 		print("missing create new file")
 		tomorrowSchedule = open("horariosDiarios/tomorrow.txt","w")
@@ -386,10 +400,22 @@ class Scheduler():
 		action = zoom_csv_dt.action.tolist()
 		name = zoom_csv_dt.name.tolist()
 		actionTime = zoom_csv_dt['time-length'].tolist()
+		description = zoom_csv_dt['Description'].tolist()
+
 		# return 5 lists of the values of the current day
 		ans=""
-		for i in range(0,len(times)):
-			ans+=""+str(times[i][2:])+" | "+str(action[i])+" | "+str(name[i])+" | "+str(actionTime[i])+""+str(info[i])+"|\n\n"
+		date_idx = s.sorting(times)
+		indices =  []
+		for idx in date_idx:
+			indices.append(idx[1])
+		print(indices)
+		print(times)
+		for idx in indices:
+			ans +=f"""====== {str(times[idx][2:])} | {str(action[idx])} ======
+{str(name[idx])} | {str(description[idx])} | {str(actionTime[idx])} | {str(info[idx])}
+"""
+			# ans+=""+str(times[idx][2:])+" | "+str(action[idx])+" | "+str(name[idx])+" | "+str(actionTime[idx])+""+str(info[idx])+"|\n\n"
+
 		tomorrowSchedule.write(ans)
 		tomorrowSchedule.close()
 	def updateTodaysSchedule(s):
