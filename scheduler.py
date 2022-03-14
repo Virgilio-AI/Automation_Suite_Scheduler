@@ -533,6 +533,7 @@ class Scheduler():
 			# handle the circadian needs
 			if re.match("circadian-.*",actions[i]):
 				comH,comM = s.substractToCircadian(comH,comM)
+				print(comH,comM)
 				tempArr = actions[i].split('-')
 				actions[i] = tempArr[1]
 			if ((hr==comH)and(abs(mi-comM)<=ac)) or ((hr == comH - 1) and ((comM + ( 60 - mi) ) < ac)):

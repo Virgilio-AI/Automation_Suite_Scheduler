@@ -60,6 +60,43 @@ class Utilities():
 				print(e)
 				t.sleep(0.2)
 				pass
+	def moveWhenFound(s,timeLimit,img):
+		counter=0
+		while 1:
+			counter+=0.2
+			if counter == timeLimit:
+				print("not found")
+				return -1
+			try:
+				x,y=pg.locateCenterOnScreen(img,confidence=0.7)
+				pg.moveTo(x,y,0.1)
+				print(x,y)
+				break
+			except Exception as e:
+				print(e)
+				t.sleep(0.2)
+				pass
+	def moveClickedElement(s,timeLimit,img):
+		counter=0
+		while 1:
+			counter+=0.2
+			if counter == timeLimit:
+				print("not found")
+				return -1
+			try:
+				x,y = pg.locateCenterOnScreen(img,confidence=0.9)
+				pg.moveTo(x,y,0.1)
+				pg.mouseDown()
+				pg.drag(100,0,duration=0.5,button='left')
+				print(x,y)
+				pg.mouseUp()
+				break
+			except Exception as e:
+				print(e)
+				t.sleep(0.2)
+				pass
+
+
 	def moveToMonitorOnLeft(s):
 		pg.keyDown('win')
 		pg.keyDown('shift')
@@ -213,6 +250,16 @@ class Utilities():
 	# =============
 	# ==== connecting to a web scrapper =====
 	# =============
+
+
+	def FullYoutubeVolume(s):
+		VolueIcon = "img_utilities/VolumeIcon.png"
+		VolumeDot = "img_utilities/VolumeDot.png"
+
+		s.moveWhenFound(20,VolueIcon)
+		s.moveClickedElement(20,VolumeDot)
+
+
 	def playYoutubeVideos(s,urls):
 		os.system("pactl -- set-sink-volume 0 80%") # set the volume to 80%
 		videos = urls
@@ -221,6 +268,7 @@ class Utilities():
 		for video in videos:
 			channel_info = Channel(video[0])
 			channelMinTime= video[1]
+			channelMaxTime= video[2]
 			cont = 0
 			now = dt.now()
 			for url in channel_info.url_generator():
@@ -236,7 +284,7 @@ class Utilities():
 				print("now: " + str(now) )
 				print("vidTime: " + str(vidTime) )
 	# 			print("vidInfo: " + str(video_details.vid_info) )
-				if hoursSincePublished < 40.0 and channelMinTime < videoLen:
+				if hoursSincePublished < 40.0 and channelMinTime < videoLen and channelMaxTime > videoLen:
 					print("=====")
 					print(f'Video URL: {url}')
 					print(f'Video Title: {video_details.title}')
@@ -250,6 +298,12 @@ class Utilities():
 					s.waitUntilFound(20,yutubeImage)
 					print("=====")
 					print(video_details.length)
+
+					
+					# for setting full volume
+
+
+					s.FullYoutubeVolume()
 					t.sleep(video_details.length)
 					sumLen+=video_details.length
 					print("=====")
@@ -272,3 +326,5 @@ class Utilities():
 
 
 # playYoutubeVideos(presets.youtubeUrls_minTime)
+
+

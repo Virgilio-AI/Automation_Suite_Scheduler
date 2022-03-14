@@ -34,7 +34,7 @@
 
 	"monday":[
 // zoom meetings active
-		false,
+		true,
 // alarm active
 		true,
 // alerts active
@@ -58,7 +58,7 @@
 	"wednesday":
 	[
 // zoom meetings active
-		false,
+		true,
 // alarm active
 		true,
 // alerts active
@@ -82,7 +82,7 @@
 	"friday":
 	[
 // zoom meetings active
-		false,
+		true,
 // alarm active
 		true,
 // alerts active
@@ -126,17 +126,17 @@
 // ===========
 	"youtubeUrls_minTime":
 	[
-		["https://www.youtube.com/c/TATEConfidential/videos",2],
-		["https://www.youtube.com/c/TateSpeech/videos",1.5],
-		["https://www.youtube.com/c/DotCSV/videos",0.0],
-		["https://www.youtube.com/c/LukeSmithxyz/videos",0.0],
-		["https://www.youtube.com/c/NCYTAmazings/videos",0.0],
-		["https://www.youtube.com/c/MundoDesconocidoOficial/videos",0.0],
-		["https://www.youtube.com/c/AndreiJikh/videos",0.0],
-		["https://www.youtube.com/c/HistoriaIncomprendida/videos",0.0],
-		["https://www.youtube.com/c/RationalMaleClips/videos",0.0],
-		["https://www.youtube.com/c/FreedominThought/videos?view=0.0&sort=dd&flow=grid",0.0],
-		["https://www.youtube.com/c/VisualPolitikTV/videos",0.0]
+		["https://www.youtube.com/c/TATEConfidential/videos",2,30],
+		["https://www.youtube.com/c/TateSpeech/videos",1.5,30],
+		["https://www.youtube.com/c/DotCSV/videos",0.0,15],
+		["https://www.youtube.com/c/LukeSmithxyz/videos",0.0,20],
+		["https://www.youtube.com/c/NCYTAmazings/videos",0.0,30],
+		["https://www.youtube.com/c/MundoDesconocidoOficial/videos",0.0,30],
+		["https://www.youtube.com/c/AndreiJikh/videos",0.0,30],
+		["https://www.youtube.com/c/HistoriaIncomprendida/videos",0.0,30],
+		["https://www.youtube.com/c/RationalMaleClips/videos",0.0,20],
+		["https://www.youtube.com/c/FreedominThought/videos?view=0.0&sort=dd&flow=grid",0.0,20],
+		["https://www.youtube.com/c/VisualPolitikTV/videos",0.0,20]
 	],
 // ==========
 // ==== imprimir horario =====
