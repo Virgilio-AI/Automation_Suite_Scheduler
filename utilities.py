@@ -263,7 +263,7 @@ class Utilities():
 	def playYoutubeVideos(s,urls):
 		os.system("pactl -- set-sink-volume 0 80%") # set the volume to 80%
 		videos = urls
-		maxLen = 1800
+		maxLen = 15
 		sumLen=0
 		for video in videos:
 			channel_info = Channel(video[0])
@@ -303,7 +303,7 @@ class Utilities():
 					# for setting full volume
 
 
-					s.FullYoutubeVolume()
+					# s.FullYoutubeVolume()
 					t.sleep(video_details.length)
 					sumLen+=video_details.length
 					print("=====")

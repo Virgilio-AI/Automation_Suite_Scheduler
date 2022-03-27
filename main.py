@@ -76,7 +76,6 @@ def menu():
 if __name__ == '__main__':
 	presets.init()
 	Utilities().deleteSoundDirectory()
-	Utilities().giveWarning(1,"automation suite has started")
 	while 1:
 		try:
 			presets.init()
