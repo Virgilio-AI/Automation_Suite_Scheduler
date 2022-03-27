@@ -85,7 +85,6 @@ class Alarm():
 		intervals=int(actionTime/4)+1
 		# t.sleep(0.5)
 		# pg.press('space')
-		s.echoTimeAndPlayMusic(Volume,4,2,intervals)
 		s.echoTimeAndPlayMusic(Volume,4,3,intervals)
 		s.echoTimeAndPlayMusic(Volume,4,4,intervals)
 		s.clearMusic() # clear all the music again

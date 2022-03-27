@@ -16,7 +16,7 @@
 // ==========
 // ==== zoom clases configuration =====
 // ===========
-	"zoomClassOpener":true,
+	"zoomClassOpener":false,
 	"zoomClassRecorderActive":true,
 	"zoomClasesDirectory":"/home/rockhight/Videos/clasesGrabadas",
 // ==========
