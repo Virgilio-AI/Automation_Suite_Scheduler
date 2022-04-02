@@ -447,7 +447,9 @@ class Scheduler():
 		if str(today) != str(lastUpdate):
 			s.updateTheDaylySchedul(today)
 			hr,mi = Utilities().getHour()
-			if int(hr) > 9 and int(hr) < 20:
+			print("first")
+			if int(hr) > 8 and int(hr) < 20:
+				print("second")
 				s.autoCommit()
 			# s.sendTodaysSchedule() will improve with data bases
 	def sendTodaysSchedule(s):
@@ -553,9 +555,3 @@ class Scheduler():
 				return info[i],actions[i],names[i],actionTimeCol[i],DescriptionCol[i]
 		# return false so that when this happens we can get info output
 		return "false", "false" , "false","false","false" # info,action,name,actionTime
-
-
-
-# dayOfTheWeek = Utilities().getDayOfTheWeek()
-Utilities().dayUpdate()
-
