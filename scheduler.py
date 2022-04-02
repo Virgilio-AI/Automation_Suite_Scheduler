@@ -554,5 +554,6 @@ class Scheduler():
 
 
 
-dayOfTheWeek = Utilities().getDayOfTheWeek()
-print(dayOfTheWeek)
+# dayOfTheWeek = Utilities().getDayOfTheWeek()
+Utilities().dayUpdate()
+

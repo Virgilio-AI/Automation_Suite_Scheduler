@@ -263,41 +263,43 @@ class Utilities():
 	def playYoutubeVideos(s,urls):
 		os.system("pactl -- set-sink-volume 0 80%") # set the volume to 80%
 		videos = urls
-		maxLen = 15
+		maxLen = 10
 		sumLen=0
+		breakNested = False
+		cont = 0
 		for video in videos:
 			channel_info = Channel(video[0])
 			channelMinTime= video[1]
 			channelMaxTime= video[2]
-			cont = 0
 			now = dt.now()
+			if cont > 5:
+				print("entered break nested")
+				break
+			if breakNested:
+				print("entered break nested")
+				break
 			for url in channel_info.url_generator():
 				video_details = YouTube(url)
 				videoLen = video_details.length/60
 				vidTime=video_details.publish_date
 				publish_date = str(video_details.publish_date).split(' ')[0]
 				hoursSincePublished = (now-vidTime).total_seconds()/3600
-				print("url: " + str(video) )
-				print("channel min time: " + str(channelMinTime))
-				print("video len: " + str(videoLen))
-				print("hours since published: " + str(hoursSincePublished))
-				print("now: " + str(now) )
-				print("vidTime: " + str(vidTime) )
+				# print("url: " + str(video) )
+				# print("channel min time: " + str(channelMinTime))
+				# print("video len: " + str(videoLen))
+				# print("hours since published: " + str(hoursSincePublished))
+				# print("now: " + str(now) )
+				# print("vidTime: " + str(vidTime) )
 	# 			print("vidInfo: " + str(video_details.vid_info) )
 				if hoursSincePublished < 40.0 and channelMinTime < videoLen and channelMaxTime > videoLen:
 					print("=====")
-					print(f'Video URL: {url}')
 					print(f'Video Title: {video_details.title}')
-					print(f'the video length is: {videoLen}')
-					print((now-vidTime).total_seconds()/3600)
 					print(f'publish date: {publish_date}')
-					print("=====")
-					print(video_details.length)
+
 					os.system('st -e sh -c "brave ' + url + '" &')
 					yutubeImage='img_utilities/youtubeImage.png'
-					s.waitUntilFound(20,yutubeImage)
-					print("=====")
-					print(video_details.length)
+					s.waitUntilFound(10,yutubeImage)
+					print("time to wait: " + str(video_details.length))
 
 					
 					# for setting full volume
@@ -305,18 +307,19 @@ class Utilities():
 
 					# s.FullYoutubeVolume()
 					t.sleep(video_details.length)
-					sumLen+=video_details.length
+					sumLen+=int((video_details.length)//60)
 					print("=====")
-					print(video_details.length)
 					pg.keyDown('ctrl')
 					pg.press('w')
 					pg.keyUp('ctrl')
-					if maxLen < sumLen:
+					print("final comparison maxLen<sumLen:"+str(maxLen)+" < "+str(sumLen)+"")
+
+					cont+=1
+					if int(maxLen) < int(sumLen):
+						print("maxLen is less than sunLen")
+						breakNested=True
 						break
 				elif hoursSincePublished > 31:
-					break
-				cont+=1
-				if cont > 5:
 					break
 
 	def schedulePrint(s):
@@ -324,7 +327,5 @@ class Utilities():
 
 
 
-
-# playYoutubeVideos(presets.youtubeUrls_minTime)
-
-
+# util = Utilities()
+# util.playYoutubeVideos(presets.youtubeUrls_minTime)
