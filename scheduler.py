@@ -436,7 +436,7 @@ class Scheduler():
 		updateDayly.write(today)
 		updateDayly.close()
 	def autoCommit(s):
-		os.system('gitAutoUpload.zsh')
+		os.system('st -e sh -c "gitAutoUpload.zsh"')
 
 	def dayUpdate(s):
 		lastUpdate=""
@@ -446,7 +446,9 @@ class Scheduler():
 		today = str(Utilities().getYearDay())
 		if str(today) != str(lastUpdate):
 			s.updateTheDaylySchedul(today)
-			s.autoCommit()
+			hr,mi = Utilities().getHour()
+			if int(hr) > 9 and int(hr) < 20:
+				s.autoCommit()
 			# s.sendTodaysSchedule() will improve with data bases
 	def sendTodaysSchedule(s):
 		try:
